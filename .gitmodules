@@ -1,0 +1,6 @@
+[submodule "3rdparty/gflags"]
+	path = 3rdparty/gflags
+	url = https://github.com/hsiang-lee/gflags
+[submodule "3rdparty/glog"]
+	path = 3rdparty/glog
+	url = https://github.com/hsiang-lee/glog
