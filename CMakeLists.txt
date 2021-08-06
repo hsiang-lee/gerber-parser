@@ -15,6 +15,7 @@ if(BUILD_EXAMPLES)
 	
 	add_subdirectory(example/gerber2pdf)
 	add_subdirectory(example/gerber2image)
+	add_subdirectory(example/gerber2svg)
 	add_subdirectory(example/gerber_viewer)
 endif()
 
