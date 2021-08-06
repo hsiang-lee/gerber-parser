@@ -19,5 +19,7 @@ if(BUILD_EXAMPLES)
 endif()
 
 if(BUILD_TESTS)
+	add_subdirectory(3rdparty/googletest)
+
 	add_subdirectory(tests)
 endif()

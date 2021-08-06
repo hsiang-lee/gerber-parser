@@ -2,7 +2,6 @@
 # internally.
 
 find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
-find_package(GTest REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 
@@ -26,13 +25,12 @@ target_include_directories(
 	TestGerberRender PRIVATE	
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/gerber"
-    ${GTEST_INCLUDE_DIRS}
 )
 target_link_libraries(
 	TestGerberRender PRIVATE
-	${GTEST_BOTH_LIBRARIES}
-	GTest::gmock
-	GTest::gmock_main
+	gtest
+	gmock
+	gmock_main
 	Qt5::Core
 	Qt5::Widgets
 	Qt5::Gui
