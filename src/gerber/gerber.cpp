@@ -10,7 +10,7 @@
 
 bool gerber_warnings = true;
 
-Gerber::Gerber(const const std::string& file_name) {
+Gerber::Gerber(const std::string& file_name) {
 	gerber_file_.buffer_.clear();
 	gerber_file_.index_ = 0;
 

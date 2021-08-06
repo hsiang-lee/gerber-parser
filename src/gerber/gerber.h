@@ -31,7 +31,7 @@ private:
 	// M Codes: Miscellaneous functions
 	bool MCode(bool& end_of_file);
 
-	bool LoadGerber(const const std::string& file_name);
+	bool LoadGerber(const std::string& file_name);
 
 	// Parameters Variables and Structures:
 	struct FORMAT {
@@ -62,7 +62,7 @@ private:
 	friend class ParameterParser;
 
 public:
-	Gerber(const const std::string& file_name);
+	Gerber(const std::string& file_name);
 	~Gerber();
 
 	bool IsNegative() const;
