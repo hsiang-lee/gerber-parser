@@ -24,6 +24,7 @@ jobs:
       with:
         version: 5.14.2
         target: desktop
+        set-env: 'true'
 
     - uses: actions/checkout@v2
       with:
