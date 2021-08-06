@@ -1,6 +1,8 @@
 name: Make on Ubuntu
 
 on:
+  push:
+    branches: [master]
   pull_request:
     branches: [ master ]
 
@@ -20,10 +22,9 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.13.2
       with:
-        version: 5.14.2
         target: desktop
         set-env: 'true'
-
+      
     - uses: actions/checkout@v2
       with:
         submodules: 'true'
@@ -37,8 +38,17 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
+    #- name: Test
+    #  working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+    #  run: ctest -C ${{env.BUILD_TYPE}}
+    #  env:
+    #    QT_DEBUG_PLUGINS: 1
+
+    #- name: Upload test log
+    #  if: always()
+    #  uses: actions/upload-artifact@v2.2.4
+    #  with:
+    #    name: last_test_log_ubuntu
+    #    path: /home/runner/work/gerber_render/gerber_render/build/Testing/Temporary/LastTest.log

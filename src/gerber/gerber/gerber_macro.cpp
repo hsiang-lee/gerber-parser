@@ -1,5 +1,6 @@
 #include "gerber_macro.h"
 #include <glog/logging.h>
+#include <cmath>
 
 
 constexpr double kPi = 3.141592653589793238463;

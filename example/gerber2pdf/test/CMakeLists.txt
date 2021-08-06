@@ -1,8 +1,6 @@
 # Note: CMake support is community-based. The maintainers do not use CMake
 # internally.
 
-find_package(GTest REQUIRED)
-
 set(CMAKE_AUTOMOC ON)
 
 file(GLOB_RECURSE
@@ -30,13 +28,12 @@ target_include_directories(
 	TestGerber2pdf PRIVATE	
 	"${CMAKE_CURRENT_SOURCE_DIR}/.."
 	"${CMAKE_CURRENT_SOURCE_DIR}/../pdf"
-    ${GTEST_INCLUDE_DIRS}
 )
 target_link_libraries(
 	TestGerber2pdf PRIVATE
 	${GTEST_BOTH_LIBRARIES}
-	GTest::gmock
-	GTest::gmock_main
+	gtest
+	gtest_main
 	gerber_render
 )
 target_compile_definitions(TestGerber2pdf PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/../../../tests/test_data/")
