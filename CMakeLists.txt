@@ -21,5 +21,6 @@ endif()
 if(BUILD_TESTS)
 	add_subdirectory(3rdparty/googletest)
 
+	enable_testing()
 	add_subdirectory(tests)
 endif()
