@@ -1,8 +1,6 @@
 name: Make on Windows
 
 on:
-  push:
-    branches: [ develop ]
   pull_request:
     branches: [ master ]
 
