@@ -1,7 +1,6 @@
 #include "gerber_level.h"
 #include "gerber_aperture.h"
 #include "plotter.h"
-#include <cassert>
 #include <glog/logging.h>
 
 
@@ -123,9 +122,6 @@ bool GerberLevel::Segment::IsClosed() {
 		return false;
 	}
 
-	assert(command_list_.front()->command_ == RenderCommand::gcBeginLine);
-	assert(command_list_.back()->command_ == RenderCommand::gcLine || command_list_.back()->command_ == RenderCommand::gcArc);
-
 	if (command_list_.back()->End.X == command_list_.front()->X &&
 		command_list_.back()->End.Y == command_list_.front()->Y) {
 		closed_ = true;
@@ -148,8 +144,6 @@ void GerberLevel::Segment::Reverse() {
 	command_list_.clear();
 
 	auto begin_line = old_list.front();
-
-	assert(begin_line->command_ == RenderCommand::gcBeginLine);
 
 	double x = begin_line->X;
 	double y = begin_line->Y;
@@ -175,7 +169,6 @@ void GerberLevel::Segment::Reverse() {
 			break;
 
 		default:
-			assert(false);
 			break;
 		}
 	}
@@ -234,7 +227,6 @@ void GerberLevel::ExtractSegments() {
 				Add(render);
 			}
 			else {
-				assert(last_segment_, NewSegment());
 				last_segment_->Add(render);
 			}
 			break;
@@ -244,18 +236,15 @@ void GerberLevel::ExtractSegments() {
 				Add(render);
 			}
 			else {
-				assert(last_segment_, NewSegment());
 				last_segment_->Add(render);
 			}
 			break;
 
 		case RenderCommand::gcStroke:
-			assert(is_outline == false);
 			break;
 
 		case RenderCommand::gcClose:
 		case RenderCommand::gcFill:
-			assert(is_outline == true);
 			Add(render);
 			break;
 
@@ -277,7 +266,6 @@ void GerberLevel::ExtractSegments() {
 		case RenderCommand::gcCircle:
 		case RenderCommand::gcErase:
 		default:
-			assert(false);
 			break;
 		}
 	}
@@ -393,9 +381,6 @@ void GerberLevel::AddSegments() {
 	AddNew(RenderCommand::gcBeginOutline);
 
 	while (segment_list_) {
-		assert(!segment_list_->command_list_.empty());
-		assert(segment_list_->command_list_.front()->command_ == RenderCommand::gcBeginLine);
-
 		for (const auto& each : segment_list_->command_list_) {
 			render_commands_.push_back(each);
 		}
