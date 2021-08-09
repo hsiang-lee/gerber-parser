@@ -1,8 +1,6 @@
 name: Make on Ubuntu
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [ master ]
 
