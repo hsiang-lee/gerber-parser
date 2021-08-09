@@ -38,12 +38,12 @@ TEST(GerbRenderTest, TestScale) {
 
 	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
 
-	engine->Scale(19);
+	engine->Scale(1.2, 0.9, 0.8);
 	render.RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113563-f-gtl_scale20.bmp");
+	//image->save(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
 
-	QImage expected(QString(TestData) + "results/2301113563-f-gtl_scale20.bmp");
+	QImage expected(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
 	EXPECT_EQ(*image, expected);
 
 	EXPECT_FALSE(gerber->IsNegative());

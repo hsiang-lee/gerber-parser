@@ -17,6 +17,8 @@ public:
 	double Bottom() const;
 
 	std::pair<double, double> Center() const;
+	double Width() const;
+	double Height() const;
 
 	void UpdateBox(double l, double r, double t, double b);
 

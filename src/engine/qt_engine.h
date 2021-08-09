@@ -3,6 +3,7 @@
 #include <memory>
 #include <QPainterPath>
 #include "engine.h"
+#include "transformation.h"
 
 class QPainter;
 class QPixmap;
@@ -12,9 +13,9 @@ class QtEngine : public Engine {
 public:
 	QtEngine(QPaintDevice* device);
 
-	void Scale(double delta);
-	void Move(int delta_x, int delta_y);
+	void Scale(double delta, double center_x = 0.0, double center_y = 0.0);
 	void Select(int x, int y);
+	void Move(int delta_x, int delta_y);
 
 protected:
 	void BeginRender(const BoundBox& bound) override;
@@ -83,13 +84,9 @@ private:
 	double copy_right_;
 	double copy_bottom_;
 
-	double scale_;
-
 	static constexpr int kTimes = 10000;
 
-	double scaled_{ 1.0 };
-	int move_x{ 0 };
-	int move_y{ 0 };
+	Transformation trans_;
 
 	int select_x_{ 0 };
 	int select_y_{ 0 };
@@ -107,10 +104,4 @@ private:
 	std::map<int, Aperture> apertures_;
 
 	bool negative_{ false };
-
-	double GetScale(const BoundBox& box);
-	double ScaleX(const BoundBox& bound_scaled);
-	double ScaleY(const BoundBox& bound_scaled);
-	QRect GetPainterWindow(const BoundBox& box);
-	QRect GetPainterViewport();
 };

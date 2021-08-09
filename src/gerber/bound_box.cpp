@@ -33,6 +33,16 @@ std::pair<double, double> BoundBox::Center() const
 	return std::pair<double, double>((left_ + right_) / 2.0, (top_ + bottom_) / 2.0);
 }
 
+double BoundBox::Width() const
+{
+	return Right() - Left();
+}
+
+double BoundBox::Height() const
+{
+	return Top() - Bottom();
+}
+
 void BoundBox::UpdateBox(double l, double r, double t, double b)
 {
 	if (left_ > l) left_ = l;

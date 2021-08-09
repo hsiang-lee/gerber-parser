@@ -22,7 +22,7 @@ protected:
 	}
 
 	void wheelEvent(QWheelEvent* e) override {
-		engine_->Scale(e->delta() / 720.0);
+		engine_->Scale(e->delta() / 720.0, double(e->x()) / width(), double(e->y()) / height());
 		QWidget::wheelEvent(e);
 
 		update();

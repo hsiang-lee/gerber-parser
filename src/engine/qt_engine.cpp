@@ -7,20 +7,13 @@ QtEngine::QtEngine(QPaintDevice* device) : pic_(device)
 {
 }
 
-void QtEngine::Scale(double delta)
+void QtEngine::Scale(double delta, double center_x, double center_y)
 {
-	if (scaled_ + delta >= 0.1 && scaled_ + delta <= 20) {
-		scaled_ += delta;
+	if (trans_.Scale(delta, center_x, center_y)) {
 		apertures_.clear();
 		select_x_ = 0;
 		select_y_ = 0;
 	}
-}
-
-void QtEngine::Move(int delta_x, int delta_y)
-{
-	move_x += delta_x;
-	move_y += delta_y;
 }
 
 void QtEngine::Select(int x, int y)
@@ -29,73 +22,32 @@ void QtEngine::Select(int x, int y)
 	select_y_ = y;
 }
 
+void QtEngine::Move(int delta_x, int delta_y)
+{
+	trans_.Move(delta_x, delta_y);
+}
+
 void QtEngine::BeginRender(const BoundBox& bound) {
 	auto bound_scaled = bound;
 	bound_scaled.Scale(kTimes);
 
-	scale_ = GetScale(bound_scaled);
+	trans_.bound_box_ = bound_scaled;
+	trans_.SetPhysicalSize(pic_->width(), pic_->height());
 
 	painter_ = CreatePainter(pic_);
 	painter_->fillRect(0, 0, pic_->width(), pic_->height(), QColor(255, 255, 255));
-	painter_->setWindow(GetPainterWindow(bound_scaled));
+	painter_->setWindow(trans_.GetPainterWindow());
 	painter_->setClipRect(painter_->window());
-	painter_->setViewport(GetPainterViewport());
+	painter_->setViewport(trans_.GetPainterViewport());
 	painter_->setRenderHint(QPainter::Antialiasing);
 
 	path_.setFillRule(Qt::FillRule::OddEvenFill);
 	selected_ = painter_->combinedTransform().inverted().map(QPoint(select_x_, select_y_));
 }
 
-double QtEngine::ScaleY(const BoundBox& bound_scaled)
-{
-	return pic_->height() * 0.95 / (bound_scaled.Top() - bound_scaled.Bottom()) * scaled_;
-}
-
-double QtEngine::GetScale(const BoundBox& box)
-{
-	return std::min(ScaleX(box), ScaleY(box));
-}
-
-double QtEngine::ScaleX(const BoundBox& bound_scaled)
-{
-	return pic_->width() * 0.95 / (bound_scaled.Right() - bound_scaled.Left()) * scaled_;
-}
-
 std::shared_ptr<QPainter> QtEngine::CreatePainter(QPaintDevice* pic)
 {
 	return std::make_shared<QPainter>(pic);
-}
-
-QRect QtEngine::GetPainterWindow(const BoundBox& box)
-{
-	const auto scale_x = ScaleX(box);
-	const auto scale_y = ScaleY(box);
-
-	if (scale_x < scale_y) {
-		return QRect(
-			box.Left(),
-			box.Top() + (box.Top() - box.Bottom()) * (scale_y / scale_x - 1) / 2 / scaled_,
-			(box.Right() - box.Left()) / scaled_,
-			(box.Bottom() - box.Top()) * scale_y / scale_x / scaled_
-		);
-	}
-
-	return QRect(
-		box.Left() - (box.Right() - box.Left()) * (scale_x / scale_y - 1) / 2 / scaled_,
-		box.Top(),
-		(box.Right() - box.Left()) * scale_x / scale_y / scaled_,
-		(box.Bottom() - box.Top()) / scaled_
-	);
-}
-
-QRect QtEngine::GetPainterViewport()
-{
-	return QRect(
-		pic_->width() * 0.025 + move_x,
-		pic_->height() * 0.025 + move_y,
-		pic_->width() * 0.95,
-		pic_->height() * 0.95
-	);
 }
 
 void QtEngine::EndRender() {
@@ -125,11 +77,11 @@ void QtEngine::BeginOutline() {
 void QtEngine::EndOutline() {
 	if (negative_) {
 		current_painter_->setBrush(QColor(255, 255, 255));
-		current_painter_->setPen(QPen(QColor(255, 255, 255, 0), 1 / scale_));
+		current_painter_->setPen(QPen(QColor(255, 255, 255, 0), trans_.TranslatePenWidth(1)));
 	}
 	else {
 		current_painter_->setBrush(QColor(255, 0, 0));
-		current_painter_->setPen(QPen(QColor(255, 0, 0, 0), 1 / scale_));
+		current_painter_->setPen(QPen(QColor(255, 0, 0, 0), trans_.TranslatePenWidth(1)));
 	}
 
 	if (path_.contains(selected_)) {
@@ -393,11 +345,11 @@ void QtEngine::DrawRectLine(double x1, double y1, double x2, double y2, double w
 
 	if (negative_) {
 		current_painter_->setBrush(QColor(255, 255, 255));
-		current_painter_->setPen(QPen(QColor(255, 255, 255, 0), 1 / scale_));
+		current_painter_->setPen(QPen(QColor(255, 255, 255, 0), trans_.TranslatePenWidth(1)));
 	}
 	else {
 		current_painter_->setBrush(QColor(255, 0, 0));
-		current_painter_->setPen(QPen(QColor(255, 0, 0, 0), 1 / scale_));
+		current_painter_->setPen(QPen(QColor(255, 0, 0, 0), trans_.TranslatePenWidth(1)));
 	}
 
 	if (path_.contains(selected_)) {
@@ -415,11 +367,11 @@ void QtEngine::ApertureErase(double left, double bottom, double top, double righ
 void QtEngine::ApertureFill() {
 	if (negative_) {
 		aperture_painter_->setBrush(QColor(255, 255, 255));
-		aperture_painter_->setPen(QPen(QColor(255, 255, 255, 0), 1 / scale_));
+		aperture_painter_->setPen(QPen(QColor(255, 255, 255, 0), trans_.TranslatePenWidth(1)));
 	}
 	else {
 		aperture_painter_->setBrush(QColor(255, 0, 0));
-		aperture_painter_->setPen(QPen(QColor(255, 0, 0, 0), 1 / scale_));
+		aperture_painter_->setPen(QPen(QColor(255, 0, 0, 0), trans_.TranslatePenWidth(1)));
 	}
 
 	if (path_.contains(selected_)) {
@@ -479,8 +431,8 @@ void QtEngine::PrepareCopyLayer(double left, double bottom, double right, double
 	copy_bottom_ = bottom;
 
 	copy_painter_ = nullptr;
-	auto width = (right - left) * scale_;
-	auto height = (top - bottom) * scale_;
+	auto width = trans_.TranslateLogicCoord(right - left);
+	auto height = trans_.TranslateLogicCoord(top - bottom);
 	if (width < 1) {
 		width = 1;
 	}
@@ -574,8 +526,8 @@ void QtEngine::NewAperture(double left, double bottom, double right, double top)
 
 	aperture_painter_ = nullptr;
 
-	auto width = (right - left) * scale_;
-	auto height = (top - bottom) * scale_;
+	auto width = trans_.TranslateLogicCoord(right - left);
+	auto height = trans_.TranslateLogicCoord(top - bottom);
 	if (width < 1) {
 		width = 1;
 	}
