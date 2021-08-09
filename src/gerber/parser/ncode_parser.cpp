@@ -12,3 +12,8 @@ bool NCodeParser::Run() {
 	printf("Line %d - Error: N Code not implemented\n", gerber_.gerber_file_.line_number_);
 	return false;
 }
+
+bool NCodeParser::EndOfFile()
+{
+	return false;
+}

@@ -9,7 +9,7 @@ class BoundBox {
 	double top_;
 
 public:
-	BoundBox(double left, double right, double top, double bottom);
+	BoundBox(double left = 1.0e8, double right = -1.0e8, double top = -1.0e8, double bottom = 1.0e8);
 
 	double Left() const;
 	double Right() const;
@@ -21,8 +21,10 @@ public:
 	double Height() const;
 
 	void UpdateBox(double l, double r, double t, double b);
+	void UpdateBox(const BoundBox& box);
 
 	void Scale(double times);
+	BoundBox Scaled(double times) const;
 
 	bool operator == (const BoundBox& another) const;
 };

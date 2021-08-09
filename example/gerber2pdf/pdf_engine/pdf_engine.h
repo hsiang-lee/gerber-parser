@@ -80,10 +80,10 @@ public:
 	void ApertureFill() override;
 	void ApertureStroke() override;
 	void ApertureClose() override;
-	void DrawApertureArc(std::shared_ptr<RenderCommand> render) override;
-	void DrawApertureLine(std::shared_ptr<RenderCommand> render) override;
-	void BeginApertureLine(std::shared_ptr<RenderCommand> render) override;
-	void DrawAperatureCircle(std::shared_ptr<RenderCommand> render) override;
+	void DrawApertureArc(double x, double y, double angle) override;
+	void DrawApertureLine(double x, double y) override;
+	void BeginApertureLine(double x, double y) override;
+	void DrawAperatureCircle(double x, double y, double w) override;
 	void DrawApertureRect(double x, double y, double w, double h) override;
 	void EndDrawAperture() override;
 	void PrepareDrawAperture() override;
@@ -93,10 +93,10 @@ public:
 	void Prepare2Render() override;
 
 	bool PrepareExistAperture(int code) override;
-	void BeginRender(const BoundBox& bound) override;
+	void BeginRender() override;
 	void EndRender() override;
 
-	int Flash(std::shared_ptr<RenderCommand> render) override;
+	int Flash(double x, double y) override;
 	void EndDrawNewAperture(int code) override;
 	void NewAperture(double left, double bottom, double right, double top) override;
 

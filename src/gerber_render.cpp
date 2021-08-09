@@ -91,7 +91,7 @@ int GerberRender::Draw(std::shared_ptr<RenderCommand> render)
 		break;
 
 	case RenderCommand::gcFlash:
-		if (auto ret = engine_->Flash(render))
+		if (auto ret = engine_->Flash(render->X, render->Y))
 			return ret;
 
 		break;
@@ -183,19 +183,19 @@ void GerberRender::DrawAperture(
 				break;
 
 			case RenderCommand::gcCircle:
-				engine_->DrawAperatureCircle(render);
+				engine_->DrawAperatureCircle(render->X, render->Y, render->W);
 				break;
 
 			case RenderCommand::gcBeginLine:
-				engine_->BeginApertureLine(render);
+				engine_->BeginApertureLine(render->X, render->Y);
 				break;
 
 			case RenderCommand::gcLine:
-				engine_->DrawApertureLine(render);
+				engine_->DrawApertureLine(render->X, render->Y);
 				break;
 
 			case RenderCommand::gcArc:
-				engine_->DrawApertureArc(render);
+				engine_->DrawApertureArc(render->X, render->Y, render->A);
 				break;
 
 			case RenderCommand::gcClose:
@@ -227,7 +227,7 @@ void GerberRender::DrawAperture(
 
 int GerberRender::RenderGerber(std::shared_ptr<Gerber> gerber)
 {
-	engine_->BeginRender(gerber->GetBBox());
+	engine_->BeginRender();
 
 	auto levels = gerber->Levels();
 	for (const auto& level : levels) {

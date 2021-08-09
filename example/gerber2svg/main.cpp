@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 	svg->setSize(QSize(500, 500));
 	svg->setViewBox(QRect(0, 0, 500, 500));
 
-	auto engine = std::make_unique<QtEngine>(svg.get());
+	auto engine = std::make_unique<QtEngine>(svg.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
 	GerberRender render(engine.get());
 	render.RenderGerber(gerber);
 

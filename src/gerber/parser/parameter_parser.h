@@ -14,6 +14,7 @@ public:
 	~ParameterParser();
 
 	bool Run() override;
+	bool EndOfFile() override;
 
 private:
 	bool ApertureDefinition();

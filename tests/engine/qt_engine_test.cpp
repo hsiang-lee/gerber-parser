@@ -28,9 +28,9 @@ TEST(QtEngineTest, TestBeginRenderDefault) {
 	QApplication app(argc, argv);
 
 	QPixmap pixmap(1000, 1000);
-	TestingQtEngine engine(&pixmap);
+	TestingQtEngine engine(&pixmap, BoundBox(-100.0, 150.0, 100.0, -150.0), BoundBox(0.025, 0.025, 0.025, 0.025));
 
-	engine.BeginRender(BoundBox(-100.0, 150.0, 100.0, -150.0));
+	engine.BeginRender();
 
 	EXPECT_EQ(engine.painter_->viewport(), QRect(25, 25, 950, 950));
 	EXPECT_EQ(engine.painter_->window(), QRect(-1000000, 1000000, 2500000, -2500000));

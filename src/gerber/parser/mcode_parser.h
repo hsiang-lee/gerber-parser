@@ -3,13 +3,14 @@
 
 class Gerber;
 
-class DCodeParser : public Parser {
+class MCodeParser : public Parser {
 public:
-	DCodeParser(Gerber& gerber);
+	MCodeParser(Gerber& gerber);
 
 	bool Run() override;
 	bool EndOfFile() override;
 
 private:
 	Gerber& gerber_;
+	bool end_of_file_{ false };
 };

@@ -51,12 +51,24 @@ void BoundBox::UpdateBox(double l, double r, double t, double b)
 	if (top_ < t) top_ = t;
 }
 
+void BoundBox::UpdateBox(const BoundBox& box)
+{
+	UpdateBox(box.left_, box.right_, box.top_, box.bottom_);
+}
+
 void BoundBox::Scale(double times)
 {
 	left_ *= times;
 	right_ *= times;
 	top_ *= times;
 	bottom_ *= times;
+}
+
+BoundBox BoundBox::Scaled(double times) const
+{
+	BoundBox tmp = *this;
+	tmp.Scale(times);
+	return tmp;
 }
 
 bool BoundBox::operator==(const BoundBox& another) const

@@ -16,22 +16,22 @@ extern bool gerber_warnings;
 
 
 class Parser;
+class XCodeParser;
+class YCodeParser;
+class ICodeParser;
+class JCodeParser;
 class GCodeParser;
 class DCodeParser;
 class NCodeParser;
+class MCodeParser;
+class StarParser;
 class ParameterParser;
 
 class Gerber {
 private:
 	GerberFile gerber_file_;
 	std::shared_ptr<GerberLevel> current_level_;
-
-	void Add(std::shared_ptr<GerberLevel> level);
-
-	// M Codes: Miscellaneous functions
-	bool MCode(bool& end_of_file);
-
-	bool LoadGerber(const std::string& file_name);
+	std::string file_name_;
 
 	// Parameters Variables and Structures:
 	struct FORMAT {
@@ -52,13 +52,22 @@ private:
 	std::vector<std::shared_ptr<GerberLevel>> levels_;
 
 	bool ParseGerber();
+	void Add(std::shared_ptr<GerberLevel> level);
+	bool LoadGerber(const std::string& file_name);
 
+	std::shared_ptr<Parser> GetParser(char code);
 	std::vector<std::shared_ptr<GerberAperture>> apertures_;
 	std::map<char, std::shared_ptr<Parser>> parsers_;
 
 	friend class GCodeParser;
+	friend class XCodeParser;
+	friend class YCodeParser;
+	friend class ICodeParser;
+	friend class JCodeParser;
 	friend class DCodeParser;
 	friend class NCodeParser;
+	friend class MCodeParser;
+	friend class StarParser;
 	friend class ParameterParser;
 
 public:
@@ -69,6 +78,7 @@ public:
 	BoundBox GetBBox() const;
 	GERBER_UNIT Unit() const;
 	std::string Name() const;
+	std::string FileName() const;
 
 	std::vector<std::shared_ptr<GerberLevel>> Levels() const;
 };

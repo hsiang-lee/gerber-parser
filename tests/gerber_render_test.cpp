@@ -11,11 +11,12 @@ TEST(GerbRenderTest, TestRenderFromGerber) {
 	char* argv[1];
 	QApplication app(argc, argv);
 
-	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QtEngine>(image.get());
-	GerberRender render(engine.get());
-
 	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
+
+	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
+	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+
+	GerberRender render(engine.get());
 	render.RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
@@ -32,11 +33,11 @@ TEST(GerbRenderTest, TestScale) {
 	char* argv[1];
 	QApplication app(argc, argv);
 
-	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QtEngine>(image.get());
-	GerberRender render(engine.get());
-
 	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
+
+	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
+	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+	GerberRender render(engine.get());
 
 	engine->Scale(1.2, 0.9, 0.8);
 	render.RenderGerber(gerber);
@@ -54,11 +55,11 @@ TEST(GerbRenderTest, TestMove) {
 	char* argv[1];
 	QApplication app(argc, argv);
 
-	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QtEngine>(image.get());
-	GerberRender render(engine.get());
-
 	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
+
+	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
+	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+	GerberRender render(engine.get());
 
 	engine->Move(400, 600);
 	render.RenderGerber(gerber);
@@ -76,11 +77,11 @@ TEST(GerbRenderTest, TestSelect) {
 	char* argv[1];
 	QApplication app(argc, argv);
 
-	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QtEngine>(image.get());
-	GerberRender render(engine.get());
-
 	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
+
+	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
+	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+	GerberRender render(engine.get());
 
 	engine->Select(2500, 2500);
 	render.RenderGerber(gerber);
@@ -97,12 +98,12 @@ TEST(GerbRenderTest, TestConvertStroke2Fill) {
 	char* argv[1];
 	QApplication app(argc, argv);
 
+	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
+
 	auto image = std::make_unique<QImage>(2000, 2000, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QtEngine>(image.get());
+	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
 	engine->convert_strokes2fills_ = true;
 	GerberRender render(engine.get());
-
-	auto gerber = std::make_shared<Gerber>(std::string(TestData) + "2301113563-f-gtl");
 
 	engine->Select(2500, 2500);
 	render.RenderGerber(gerber);

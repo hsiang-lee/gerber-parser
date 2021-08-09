@@ -3,9 +3,9 @@
 
 class Gerber;
 
-class DCodeParser : public Parser {
+class XCodeParser : public Parser {
 public:
-	DCodeParser(Gerber& gerber);
+	XCodeParser(Gerber& gerber);
 
 	bool Run() override;
 	bool EndOfFile() override;

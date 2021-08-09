@@ -11,14 +11,15 @@ class QPaintDevice;
 
 class QtEngine : public Engine {
 public:
-	QtEngine(QPaintDevice* device);
+	QtEngine(QPaintDevice* device, const BoundBox& bound_box, const BoundBox& offset);
 
+	void Resize();
 	void Scale(double delta, double center_x = 0.0, double center_y = 0.0);
 	void Select(int x, int y);
 	void Move(int delta_x, int delta_y);
 
 protected:
-	void BeginRender(const BoundBox& bound) override;
+	void BeginRender() override;
 	void EndRender() override;
 	void BeginDraw(bool negative) override;
 	void EndDraw() override;
@@ -43,10 +44,10 @@ protected:
 	void ApertureFill() override;
 	void ApertureStroke() override;
 	void ApertureClose() override;
-	void DrawApertureArc(std::shared_ptr<RenderCommand> render) override;
-	void DrawApertureLine(std::shared_ptr<RenderCommand> render) override;
-	void BeginApertureLine(std::shared_ptr<RenderCommand> render) override;
-	void DrawAperatureCircle(std::shared_ptr<RenderCommand> render) override;
+	void DrawApertureArc(double x, double y, double angle) override;
+	void DrawApertureLine(double x, double y) override;
+	void BeginApertureLine(double x, double y) override;
+	void DrawAperatureCircle(double x, double y, double w) override;
 	void DrawApertureRect(double x, double y, double w, double h) override;
 	void EndDrawAperture() override;
 	void PrepareDrawAperture() override;
@@ -54,7 +55,7 @@ protected:
 	void CopyLayer(int count_x, int count_y, double step_x, double step_y) override;
 	void Prepare2Render() override;
 	bool PrepareExistAperture(int code) override;
-	int Flash(std::shared_ptr<RenderCommand> render) override;
+	int Flash(double x, double y) override;
 	void EndDrawNewAperture(int code) override;
 	void NewAperture(double left, double bottom, double right, double top) override;
 

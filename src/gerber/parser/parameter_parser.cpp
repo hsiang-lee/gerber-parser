@@ -209,6 +209,11 @@ bool ParameterParser::Run() {
 	return false;
 }
 
+bool ParameterParser::EndOfFile()
+{
+	return false;
+}
+
 bool ParameterParser::ApertureDefinition() {
 	gerber_.start_of_level_ = false;
 

@@ -3,8 +3,16 @@
 #include <QPixmap>
 
 
-QtEngine::QtEngine(QPaintDevice* device) : pic_(device)
+QtEngine::QtEngine(QPaintDevice* device, const BoundBox& bound_box, const BoundBox& offset) :
+	pic_(device),
+	trans_(bound_box.Scaled(kTimes), offset)
 {
+	trans_.SetPhysicalSize(pic_->width(), pic_->height());
+}
+
+void QtEngine::Resize()
+{
+	trans_.SetPhysicalSize(pic_->width(), pic_->height());
 }
 
 void QtEngine::Scale(double delta, double center_x, double center_y)
@@ -27,13 +35,7 @@ void QtEngine::Move(int delta_x, int delta_y)
 	trans_.Move(delta_x, delta_y);
 }
 
-void QtEngine::BeginRender(const BoundBox& bound) {
-	auto bound_scaled = bound;
-	bound_scaled.Scale(kTimes);
-
-	trans_.bound_box_ = bound_scaled;
-	trans_.SetPhysicalSize(pic_->width(), pic_->height());
-
+void QtEngine::BeginRender() {
 	painter_ = CreatePainter(pic_);
 	painter_->fillRect(0, 0, pic_->width(), pic_->height(), QColor(255, 255, 255));
 	painter_->setWindow(trans_.GetPainterWindow());
@@ -117,8 +119,9 @@ void QtEngine::Stroke() {
 void QtEngine::Close() {}
 
 void QtEngine::DrawArcScaled(double x, double y, double degree) {
-	if (fabs(path_.currentPosition().x() - x) < 1e-15 && fabs(path_.currentPosition().y() - y) < 1e-15)
+	if (fabs(path_.currentPosition().x() - x) < 1e-15 && fabs(path_.currentPosition().y() - y) < 1e-15) {
 		return;
+	}
 
 	if (fabs(degree) > 45.001) { // Slightly large so that the circle has 4 segments
 		degree /= 2.0;
@@ -127,77 +130,75 @@ void QtEngine::DrawArcScaled(double x, double y, double degree) {
 		return;
 	}
 
-	auto x1 = path_.currentPosition().x() - x;
-	auto y1 = path_.currentPosition().y() - y;
-	double r;      // Radius
+	const auto delta_x = path_.currentPosition().x() - x;
+	const auto delta_y = path_.currentPosition().y() - y;
+	double radius = sqrt(delta_y * delta_y + delta_x * delta_x);
 
-	double b, t, t1, t2;
+	double t, t1, t2;
 	double e, de, dt, rb, xb, yb;
 
 	constexpr double kPi = 3.141592653589793;
-	degree *= kPi / 180.0;
-	b = degree / 2.0;
+	double b = degree * kPi / 180 / 2.0;
 
-	r = sqrt(y1 * y1 + x1 * x1);
-	double a1 = atan2(y1, x1);
+	double a1 = atan2(delta_y, delta_x);
 
-	double a4 = a1 + degree;
-	double x4 = r * cos(a4);
-	double y4 = r * sin(a4);
+	double a4 = a1 + degree * kPi / 180;
+	double x4 = radius * cos(a4);
+	double y4 = radius * sin(a4);
 
 	double a5 = a1 + b;
-	double x5 = r * cos(a5);
-	double y5 = r * sin(a5);
+	double x5 = radius * cos(a5);
+	double y5 = radius * sin(a5);
 
 	b = cos(b);
 	double x6 = x5 / b;
 	double y6 = y5 / b;
 
 	// Best extimate
-	t1 = 6 * x6 - 3 * x1 - 3 * (x4);
-	t2 = 6 * y6 - 3 * y1 - 3 * (y4);
+	t1 = 6 * x6 - 3 * delta_x - 3 * (x4);
+	t2 = 6 * y6 - 3 * delta_y - 3 * (y4);
 	if (fabs(t1) > fabs(t2)) {
-		t = (8 * x5 - 4 * x1 - 4 * (x4)) / t1;
+		t = (8 * x5 - 4 * delta_x - 4 * (x4)) / t1;
 	}
 	else {
-		t = (8 * y5 - 4 * y1 - 4 * (y4)) / t2;
+		t = (8 * y5 - 4 * delta_y - 4 * (y4)) / t2;
 	}
 
 	// Newton-Raphson to fit B(1/3) to the circle
-	r = r * r;
+	radius = radius * radius;
 
 	dt = 1e-3;
 	t2 = 1.0 / 3.0; // Fitting B(1/3) to the circle is close enough to the
 	t1 = 1.0 - t2;  // optimum solution.
 
-	double x2 = (1.0 - t) * x1 + t * x6;
-	double y2 = (1.0 - t) * y1 + t * y6;
+	double x2 = (1.0 - t) * delta_x + t * x6;
+	double y2 = (1.0 - t) * delta_y + t * y6;
 	double x3 = (1.0 - t) * (x4)+t * x6;
 	double y3 = (1.0 - t) * (y4)+t * y6;
-	xb = t1 * t1 * t1 * x1 + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
-	yb = t1 * t1 * t1 * y1 + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
+	xb = t1 * t1 * t1 * delta_x + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
+	yb = t1 * t1 * t1 * delta_y + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
 	rb = xb * xb + yb * yb;
-	e = rb - r;
+	e = rb - radius;
 	while (e > 1e-12) {
-		x2 = (1.0 - (t + dt)) * x1 + (t + dt) * x6;
-		y2 = (1.0 - (t + dt)) * y1 + (t + dt) * y6;
+		x2 = (1.0 - (t + dt)) * delta_x + (t + dt) * x6;
+		y2 = (1.0 - (t + dt)) * delta_y + (t + dt) * y6;
 		x3 = (1.0 - (t + dt)) * (x4)+(t + dt) * x6;
 		y3 = (1.0 - (t + dt)) * (y4)+(t + dt) * y6;
-		xb = t1 * t1 * t1 * x1 + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
-		yb = t1 * t1 * t1 * y1 + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
+		xb = t1 * t1 * t1 * delta_x + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
+		yb = t1 * t1 * t1 * delta_y + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
 		rb = xb * xb + yb * yb;
-		de = (rb - r - e) / dt;
+		de = (rb - radius - e) / dt;
 
 		t -= e / de; // Newton-Raphson
 
-		x2 = (1.0 - t) * x1 + t * x6;
-		y2 = (1.0 - t) * y1 + t * y6;
+		x2 = (1.0 - t) * delta_x + t * x6;
+		y2 = (1.0 - t) * delta_y + t * y6;
 		x3 = (1.0 - t) * (x4)+t * x6;
 		y3 = (1.0 - t) * (y4)+t * y6;
-		xb = t1 * t1 * t1 * x1 + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
-		yb = t1 * t1 * t1 * y1 + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
+		xb = t1 * t1 * t1 * delta_x + 3.0 * t1 * t1 * t2 * (x2)+3.0 * t1 * t2 * t2 * (x3)+t2 * t2 * t2 * (x4);
+		yb = t1 * t1 * t1 * delta_y + 3.0 * t1 * t1 * t2 * (y2)+3.0 * t1 * t2 * t2 * (y3)+t2 * t2 * t2 * (y4);
 		rb = xb * xb + yb * yb;
-		e = rb - r;
+		e = rb - radius;
 	}
 
 	path_.cubicTo(x2 + x, y2 + y, x3 + x, y3 + y, x4 + x, y4 + y);
@@ -389,20 +390,20 @@ void QtEngine::ApertureClose() {
 	ApertureFill();
 }
 
-void QtEngine::DrawApertureArc(std::shared_ptr<RenderCommand> render) {
-	DrawArc(render->X, render->Y, render->A);
+void QtEngine::DrawApertureArc(double x, double y, double angle) {
+	DrawArc(x, y, angle);
 }
 
-void QtEngine::DrawApertureLine(std::shared_ptr<RenderCommand> render) {
-	path_.lineTo(render->X * kTimes, render->Y * kTimes);
+void QtEngine::DrawApertureLine(double x, double y) {
+	path_.lineTo(x * kTimes, y * kTimes);
 }
 
-void QtEngine::BeginApertureLine(std::shared_ptr<RenderCommand> render) {
-	path_.moveTo(render->X * kTimes, render->Y * kTimes);
+void QtEngine::BeginApertureLine(double x, double y) {
+	path_.moveTo(x * kTimes, y * kTimes);
 }
 
-void QtEngine::DrawAperatureCircle(std::shared_ptr<RenderCommand> render) {
-	path_.addEllipse((render->X - render->W / 2.0) * kTimes, (render->Y - render->W / 2) * kTimes, render->W * kTimes, render->W * kTimes);
+void QtEngine::DrawAperatureCircle(double x, double y, double w) {
+	path_.addEllipse((x - w / 2.0) * kTimes, (y - w / 2) * kTimes, w * kTimes, w * kTimes);
 }
 
 void QtEngine::DrawApertureRect(double x, double y, double w, double h) {
@@ -486,11 +487,11 @@ bool QtEngine::PrepareExistAperture(int code) {
 	return false;
 }
 
-int QtEngine::Flash(std::shared_ptr<RenderCommand> render) {
+int QtEngine::Flash(double x, double y) {
 	current_painter_->drawPixmap(
 		QRectF(
-			render->X * kTimes - (aperture_right_ - aperture_left_) / 2,
-			render->Y * kTimes - (aperture_top_ - aperture_bottom_) / 2,
+			x * kTimes - (aperture_right_ - aperture_left_) / 2,
+			y * kTimes - (aperture_top_ - aperture_bottom_) / 2,
 			(aperture_right_ - aperture_left_),
 			(aperture_top_ - aperture_bottom_)
 		),

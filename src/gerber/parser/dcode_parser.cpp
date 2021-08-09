@@ -51,3 +51,8 @@ bool DCodeParser::Run() {
 
 	return false;
 }
+
+bool DCodeParser::EndOfFile()
+{
+	return false;
+}

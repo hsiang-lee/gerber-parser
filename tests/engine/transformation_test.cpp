@@ -3,16 +3,14 @@
 
 
 TEST(TransformationTest, TestGetScale) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-1, 1, 1, -1);
+	Transformation trans(BoundBox(-1, 1, 1, -1), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	EXPECT_DOUBLE_EQ(trans.TranslateLogicCoord(1.0), 47.5);
 }
 
 TEST(TransformationTest, TestGetPainterWindow) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	const auto window = trans.GetPainterWindow();
@@ -20,8 +18,7 @@ TEST(TransformationTest, TestGetPainterWindow) {
 }
 
 TEST(TransformationTest, TestGetPainterViewport) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	const auto viewport = trans.GetPainterViewport();
@@ -29,8 +26,7 @@ TEST(TransformationTest, TestGetPainterViewport) {
 }
 
 TEST(TransformationTest, TestScaleAtCenter) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	trans.Scale(1.0, 0.5, 0.5);
@@ -40,8 +36,7 @@ TEST(TransformationTest, TestScaleAtCenter) {
 }
 
 TEST(TransformationTest, TestScaleAtBottomRight) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	trans.Scale(1.0, 1.0, 1.0);
@@ -51,8 +46,7 @@ TEST(TransformationTest, TestScaleAtBottomRight) {
 }
 
 TEST(TransformationTest, TestScaleAtTopRight) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	trans.Scale(1.0, 1.0, 0);
@@ -63,8 +57,7 @@ TEST(TransformationTest, TestScaleAtTopRight) {
 
 
 TEST(TransformationTest, TestScaleWidthLargerThanHeight) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(200, 100);
 
 	trans.Scale(1.0, 0.5, 1.0);
@@ -74,8 +67,7 @@ TEST(TransformationTest, TestScaleWidthLargerThanHeight) {
 }
 
 TEST(TransformationTest, TestScaleHeightLargerThanWidth) {
-	Transformation trans;
-	trans.bound_box_ = BoundBox(-100, 100, 100, -100);
+	Transformation trans(BoundBox(-100, 100, 100, -100), BoundBox(0.025, 0.025, 0.025, 0.025));
 	trans.SetPhysicalSize(100, 200);
 
 	trans.Scale(1.0, 0.5, 1.0);

@@ -10,10 +10,10 @@ class GerberWidget : public QWidget {
 public:
 	GerberWidget() {
 		auto file = QFileDialog::getOpenFileName(this);
-
-		engine_ = std::make_unique<QtEngine>(this);
-		render_ = std::make_unique<GerberRender>(engine_.get());
 		gerber_ = std::make_shared<Gerber>(file.toLocal8Bit().toStdString());
+
+		engine_ = std::make_unique<QtEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+		render_ = std::make_unique<GerberRender>(engine_.get());
 	}
 
 protected:
@@ -50,6 +50,11 @@ protected:
 
 			update();
 		}
+	}
+
+	void resizeEvent(QResizeEvent* event) override {
+		engine_->Resize();
+		QWidget::resizeEvent(event);
 	}
 
 

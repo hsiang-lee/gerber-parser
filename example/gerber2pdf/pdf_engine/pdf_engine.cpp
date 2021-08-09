@@ -673,24 +673,24 @@ void PdfEngine::ApertureClose()
 	current_aperture_->Close();
 }
 
-void PdfEngine::DrawApertureArc(std::shared_ptr<RenderCommand> render)
+void PdfEngine::DrawApertureArc(double x, double y, double angle)
 {
-	current_aperture_->Arc(render->X, render->Y, render->A);
+	current_aperture_->Arc(x, y, angle);
 }
 
-void PdfEngine::DrawApertureLine(std::shared_ptr<RenderCommand> render)
+void PdfEngine::DrawApertureLine(double x, double y)
 {
-	current_aperture_->Line(render->X, render->Y);
+	current_aperture_->Line(x, y);
 }
 
-void PdfEngine::BeginApertureLine(std::shared_ptr<RenderCommand> render)
+void PdfEngine::BeginApertureLine(double x, double y)
 {
-	current_aperture_->BeginLine(render->X, render->Y);
+	current_aperture_->BeginLine(x, y);
 }
 
-void PdfEngine::DrawAperatureCircle(std::shared_ptr<RenderCommand> render)
+void PdfEngine::DrawAperatureCircle(double x, double y, double w)
 {
-	current_aperture_->Circle(render->X, render->Y, render->W / 2.0);
+	current_aperture_->Circle(x, y, w / 2.0);
 }
 
 void PdfEngine::DrawApertureRect(double x, double y, double w, double h)
@@ -712,11 +712,11 @@ void PdfEngine::PrepareDrawAperture()
 	current_aperture_->LineJoin(pdfContents::jsRound);
 }
 
-int PdfEngine::Flash(std::shared_ptr<RenderCommand> render)
+int PdfEngine::Flash(double x, double y)
 {
 	if (current_aperture_) {
 		current_pdf_form_->Push();
-		current_pdf_form_->Translate(render->X, render->Y);
+		current_pdf_form_->Translate(x, y);
 		current_pdf_form_->Form(current_aperture_);
 		current_pdf_form_->Pop();
 	}
@@ -758,7 +758,7 @@ bool PdfEngine::PrepareExistAperture(int code)
 	return false;
 }
 
-void PdfEngine::BeginRender(const BoundBox& bound)
+void PdfEngine::BeginRender()
 {
 	apertures_.clear();
 }

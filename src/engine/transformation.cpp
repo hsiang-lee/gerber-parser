@@ -1,20 +1,25 @@
 #include "transformation.h"
 
 
-void Transformation::Move(int delta_x, int delta_y)
+
+Transformation::Transformation(const BoundBox& box, const BoundBox& offset) :
+	bound_box_(box),
+	offset_(offset)
 {
-	move_x_ += delta_x;
-	move_y_ += delta_y;
 }
 
-bool Transformation::Scale(double delta, double center_x, double center_y)
-{
-	old_scaled_ = scaled_;
+void Transformation::Move(int delta_x, int delta_y) {
+	move_.first += delta_x;
+	move_.second += delta_y;
+}
 
+bool Transformation::Scale(double delta, double center_x, double center_y) {
 	if (scaled_ + delta >= 0.1 && scaled_ + delta <= 20) {
+		left_top_.first = GetLeft(center_x, delta);
+		left_top_.second = GetTop(center_y, delta);
+
 		scaled_ += delta;
-		center_x_ = center_x;
-		center_y_ = center_y;
+		with_scale_ = true;
 
 		return true;
 	}
@@ -22,35 +27,29 @@ bool Transformation::Scale(double delta, double center_x, double center_y)
 	return false;
 }
 
-void Transformation::SetPhysicalSize(int width, int height)
-{
-	physical_width_ = width;
-	physical_height_ = height;
+void Transformation::SetPhysicalSize(int width, int height) {
+	physical_.first = width;
+	physical_.second = height;
 
-	if (!inited_) {
-		old_left_ = LogicLeft();
-		old_top_ = LogicTop();
-		inited_ = true;
+	if (!with_scale_) {
+		left_top_.first = LogicLeft();
+		left_top_.second = LogicTop();
 	}
 }
 
-double Transformation::TranslatePenWidth(double width) const
-{
+double Transformation::TranslatePenWidth(double width) const {
 	return width / GetScaleRatio();
 }
 
-double Transformation::TranslateLogicCoord(double coord) const
-{
+double Transformation::TranslateLogicCoord(double coord) const {
 	return coord * GetScaleRatio();
 }
 
-double Transformation::ScaleY() const
-{
-	return physical_height_ * 0.95 / bound_box_.Height() * scaled_;
+double Transformation::ScaleY() const {
+	return physical_.second * 0.95 / bound_box_.Height() * scaled_;
 }
 
-double Transformation::LogicLeft() const
-{
+double Transformation::LogicLeft() const {
 	const auto scale_x = ScaleX();
 	const auto scale_y = ScaleY();
 	if (scale_x < scale_y) {
@@ -60,8 +59,7 @@ double Transformation::LogicLeft() const
 	return bound_box_.Left() - (bound_box_.Width() * (scale_x / scale_y - 1) / 2);
 }
 
-double Transformation::LogicTop() const
-{
+double Transformation::LogicTop() const {
 	const auto scale_x = ScaleX();
 	const auto scale_y = ScaleY();
 	if (scale_x < scale_y) {
@@ -71,85 +69,72 @@ double Transformation::LogicTop() const
 	return bound_box_.Top();
 }
 
-double Transformation::LogicWidth() const
-{
+double Transformation::LogicWidth() const {
 	return bound_box_.Width() * WidthRatio();
 }
 
-double Transformation::WidthRatio() const
-{
+double Transformation::WidthRatio() const {
 	if (!WScaleLargerThanHeightScale()) {
 		return 1.0;
 	}
 
-	return physical_width_ / physical_height_ * bound_box_.Height() / bound_box_.Width();
+	return physical_.first / physical_.second * bound_box_.Height() / bound_box_.Width();
 }
 
-double Transformation::HeightRatio() const
-{
+double Transformation::HeightRatio() const {
 	if (WScaleLargerThanHeightScale()) {
 		return 1.0;
 	}
 
-	return physical_height_ / physical_width_ * bound_box_.Width() / bound_box_.Height();
+	return physical_.second / physical_.first * bound_box_.Width() / bound_box_.Height();
 }
 
-bool Transformation::WScaleLargerThanHeightScale() const
-{
+bool Transformation::WScaleLargerThanHeightScale() const {
 	return ScaleX() >= ScaleY();
 }
 
-double Transformation::GetLeft() const
-{
+double Transformation::GetLeft(double center_x, double scale_delta) const {
 	if (WScaleLargerThanHeightScale()) {
-		const auto old_width = LogicWidth() / old_scaled_;
-		const auto width = LogicWidth() / scaled_;
-		return old_left_ + (old_width - width) * center_x_;
+		const auto old_width = LogicWidth() / scaled_;
+		const auto width = LogicWidth() / (scaled_ + scale_delta);
+		return left_top_.first + (old_width - width) * center_x;
 	}
 
-	return old_left_ + bound_box_.Width() * (1.0 / old_scaled_ - 1.0 / scaled_) * center_x_;
+	return left_top_.first + bound_box_.Width() * (1.0 / scaled_ - 1.0 / (scaled_ + scale_delta)) * center_x;
 }
 
-double Transformation::GetTop() const
-{
+double Transformation::GetTop(double center_y, double scale_delta) const {
 	if (WScaleLargerThanHeightScale()) {
-		return old_top_ - bound_box_.Height() * (1.0 / old_scaled_ - 1.0 / scaled_) * center_y_;
+		return left_top_.second - bound_box_.Height() * (1.0 / scaled_ - 1.0 / (scaled_ + scale_delta)) * center_y;
 	}
 
-	const auto old_height = LogicHeight() / old_scaled_;
-	const auto height = LogicHeight() / scaled_;
-	return old_top_ - (old_height - height) * center_y_;
+	const auto old_height = LogicHeight() / scaled_;
+	const auto height = LogicHeight() / (scaled_ + scale_delta);
+	return left_top_.second - (old_height - height) * center_y;
 }
 
-double Transformation::LogicHeight() const
-{
+double Transformation::LogicHeight() const {
 	return bound_box_.Height() * HeightRatio();
 }
 
-double Transformation::GetScaleRatio() const
-{
+double Transformation::GetScaleRatio() const {
 	return std::min(ScaleX(), ScaleY());
 }
 
-double Transformation::ScaleX() const
-{
-	return physical_width_ * 0.95 / bound_box_.Width() * scaled_;
+double Transformation::ScaleX() const {
+	return physical_.first * 0.95 / bound_box_.Width() * scaled_;
 }
 
-QRect Transformation::GetPainterWindow()
-{
-	old_left_ = GetLeft();
-	old_top_ = GetTop();
-	return QRect(old_left_, old_top_, LogicWidth() / scaled_, -LogicHeight() / scaled_);
+QRect Transformation::GetPainterWindow() {
+	return QRect(left_top_.first, left_top_.second, LogicWidth() / scaled_, -LogicHeight() / scaled_);
 }
 
-QRect Transformation::GetPainterViewport() const
-{
+QRect Transformation::GetPainterViewport() const {
 	return QRect(
-		physical_width_ * 0.025 + move_x_,
-		physical_height_ * 0.025 + move_y_,
-		physical_width_ * 0.95,
-		physical_height_ * 0.95
+		physical_.first * offset_.Left() + move_.first,
+		physical_.second * offset_.Top() + move_.second,
+		physical_.first * (1 - offset_.Left() - offset_.Right()),
+		physical_.second * (1 - offset_.Top() - offset_.Bottom())
 	);
 }
 

@@ -33,10 +33,10 @@ public:
 	virtual void ApertureFill() = 0;
 	virtual void ApertureStroke() = 0;
 	virtual void ApertureClose() = 0;
-	virtual void DrawApertureArc(std::shared_ptr<RenderCommand> render) = 0;
-	virtual void DrawApertureLine(std::shared_ptr<RenderCommand> render) = 0;
-	virtual void BeginApertureLine(std::shared_ptr<RenderCommand> render) = 0;
-	virtual void DrawAperatureCircle(std::shared_ptr<RenderCommand> render) = 0;
+	virtual void DrawApertureArc(double x, double y, double angle) = 0;
+	virtual void DrawApertureLine(double x, double y) = 0;
+	virtual void BeginApertureLine(double x, double y) = 0;
+	virtual void DrawAperatureCircle(double x, double y, double w) = 0;
 	virtual void DrawApertureRect(double x, double y, double w, double h) = 0;
 	virtual void EndDrawAperture() = 0;
 	virtual void PrepareDrawAperture() = 0;
@@ -46,10 +46,10 @@ public:
 	virtual void Prepare2Render() = 0;
 
 	virtual bool PrepareExistAperture(int code) = 0;
-	virtual void BeginRender(const BoundBox& bound) = 0;
+	virtual void BeginRender() = 0;
 	virtual void EndRender() = 0;
 
-	virtual int Flash(std::shared_ptr<RenderCommand> render) = 0;
+	virtual int Flash(double x, double y) = 0;
 	virtual void EndDrawNewAperture(int code) = 0;
 	virtual void NewAperture(double left, double bottom, double right, double top) = 0;
 

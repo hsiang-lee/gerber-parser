@@ -125,3 +125,8 @@ bool GCodeParser::Run() {
 
 	return false;
 }
+
+bool GCodeParser::EndOfFile()
+{
+	return false;
+}
