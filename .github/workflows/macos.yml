@@ -1,6 +1,8 @@
 name: Make on MacOS
 
 on:
+  push:
+    branches: [master]
   pull_request:
     branches: [ master ]
 
