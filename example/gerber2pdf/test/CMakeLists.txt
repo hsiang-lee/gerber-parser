@@ -34,7 +34,7 @@ target_link_libraries(
 	${GTEST_BOTH_LIBRARIES}
 	gtest
 	gtest_main
-	gerber_render
+	gerber_renderer
 )
 target_compile_definitions(TestGerber2pdf PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/../../../tests/test_data/")
 

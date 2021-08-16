@@ -15,7 +15,7 @@
 //==============================================================================
 
 #include "pdf_engine/pdf_engine.h"
-#include "gerber_render.h"
+#include "gerber_renderer.h"
 
 
 using namespace std;

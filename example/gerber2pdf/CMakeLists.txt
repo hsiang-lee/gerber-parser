@@ -5,7 +5,7 @@ file(GLOB Tools ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp ${CMAKE_CURRENT_SOURCE_D
 file(GLOB_RECURSE Pdf ${CMAKE_CURRENT_SOURCE_DIR}/pdf/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/pdf/*.h)
 
 add_executable(gerber2pdf ${Main} ${PdfEngine} ${Pdf} ${Tools} ${Deflate})
-target_link_libraries(gerber2pdf PRIVATE gerber_render gflags)
+target_link_libraries(gerber2pdf PRIVATE gerber_renderer gflags)
 target_include_directories(gerber2pdf PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Source} ${PdfEngine} ${Pdf} ${Tools} ${Deflate})

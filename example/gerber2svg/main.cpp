@@ -4,7 +4,7 @@
 #include <QBitmap>
 #include <QSvgGenerator>
 
-#include "gerber_render.h"
+#include "gerber_renderer.h"
 #include "engine/qt_engine.h"
 
 #include <gflags/gflags.h>

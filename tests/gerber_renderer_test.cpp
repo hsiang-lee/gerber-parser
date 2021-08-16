@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "engine/qt_engine.h"
-#include "gerber_render.h"
+#include "gerber_renderer.h"
 #include <QImage>
 #include <QApplication>
 

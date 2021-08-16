@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 #include <QFileDialog>
 
-#include "gerber_render.h"
+#include "gerber_renderer.h"
 #include "engine/qt_engine.h"
 
 class GerberWidget : public QWidget {
