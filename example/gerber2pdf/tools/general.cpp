@@ -18,7 +18,6 @@ void SetupTerminal() {
 
 	HANDLE TerminalHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (TerminalHandle == INVALID_HANDLE_VALUE) {
-		error("Invalid terminal handle");
 		return;
 	}
 
@@ -31,13 +30,11 @@ void SetupTerminal() {
 	}
 	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 	if (!SetConsoleMode(TerminalHandle, dwMode)) {
-		error("Unable to set terminal mode");
 		return;
 	}
 
 	// Set the console encoding to UTF-8
 	if (!SetConsoleOutputCP(CP_UTF8)) {
-		error("Unable to set terminal to UTF-8");
 		return;
 	}
 

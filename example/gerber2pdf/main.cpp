@@ -33,10 +33,6 @@ int ParseArgs(std::string& output_file_name, PdfEngine& engine)
 	else if (page_size == "letter") {
 		engine.page_size_ = PdfEngine::PS_Letter;
 	}
-	else {
-		printf("Error: Only \"extents\", \"A3\", \"A4\" and \"letter\"\n"
-			"       page sizes are supported\n");
-	}
 
 	std::string file_names = FLAGS_gerber_files;
 	std::vector<std::string> files;

@@ -107,7 +107,6 @@ int pdfNumber::GetOutput(char* Buffer) {
 	if (Value == NAN ||
 		Value == INFINITY ||
 		Value == -INFINITY) {
-		printf("Warning: Undefined number\n");
 		Buffer[0] = '0';
 		return 1;
 	}

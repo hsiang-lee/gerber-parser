@@ -121,50 +121,6 @@ using _word = uint16_t;
 #define ANSI_BG_BRIGHT_WHITE   "\e[107m"
 
 
-#if defined(DEBUG)
-#define debug(...) do {                                          \
-    printf(ANSI_FG_GREEN "Debug: " ANSI_RESET __VA_ARGS__);        \
-    printf(ANSI_FG_BRIGHT_BLACK " [%s +%d \"%s(...)\"]\n"          \
-           ANSI_RESET, __FILE__, __LINE__, __func__);              \
-    fflush(stdout);                                                \
-  }while(0)
-#else
-#define debug(...)
-#endif
-
-#define info(...) do {                                  \
-  printf(ANSI_FG_CYAN "Info: " ANSI_RESET __VA_ARGS__); \
-  printf(ANSI_FG_BRIGHT_BLACK " [%s +%d \"%s(...)\"]\n" \
-         ANSI_RESET, __FILE__, __LINE__, __func__);     \
-  fflush(stdout);                                       \
-}while(0)
-
-#define warning(...) do {                                    \
-  printf(ANSI_FG_YELLOW "Warning: " ANSI_RESET __VA_ARGS__); \
-  printf(ANSI_FG_BRIGHT_BLACK " [%s +%d \"%s(...)\"]\n"      \
-         ANSI_RESET, __FILE__, __LINE__, __func__);          \
-  fflush(stdout);                                            \
-}while(0)
-
-#define error(...) do {                                        \
-  printf(ANSI_FG_BRIGHT_RED "Error: " ANSI_RESET __VA_ARGS__); \
-  printf(ANSI_FG_BRIGHT_BLACK " [%s +%d \"%s(...)\"]\n"        \
-         ANSI_RESET, __FILE__, __LINE__, __func__);            \
-  fflush(stdout);                                              \
-}while(0)
-
-#define assert(condition, ...) do {                       \
-  if(!(condition)){                                       \
-    printf(ANSI_FG_BRIGHT_RED "Failed assertion: ");      \
-    printf(ANSI_RESET "%s", #condition);                  \
-    printf(ANSI_FG_BRIGHT_BLACK " [%s +%d \"%s(...)\"]\n" \
-           ANSI_RESET, __FILE__, __LINE__, __func__);     \
-    fflush(stdout);                                       \
-    __VA_ARGS__;                                          \
-  }                                                       \
-}while(0)
-
-
 // Setup the Windows terminal to handle ANSI escape sequences,
 // use UTF-8 encoding, have a longer history, etc.
 void SetupTerminal();

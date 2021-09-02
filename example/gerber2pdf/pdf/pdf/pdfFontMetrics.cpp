@@ -543,11 +543,9 @@ bool pdfFontMetrics::GetFontMetrics() {
 	double d;
 
 	if (!Parser->GetKey(String)) {
-		printf("Error: Key expected\n");
 		return false;
 	}
 	if (Compare(String, "StartFontMetrics")) {
-		printf("Error: \"StartFontMetrics\" expected\n");
 		return false;
 	}
 
@@ -561,7 +559,6 @@ bool pdfFontMetrics::GetFontMetrics() {
 		}
 		else if (!Compare(String, "FontName")) {
 			if (!Parser->GetString(String)) {
-				printf("Metrics Error: Font Name expected\n");
 				return false;
 			}
 			for (l = 0; String[l]; l++);
@@ -576,22 +573,18 @@ bool pdfFontMetrics::GetFontMetrics() {
 		}
 		else if (!Compare(String, "FontBBox")) {
 			if (!Parser->GetNumber(&d)) {
-				printf("Metrics Error: Number expected\n");
 				return false;
 			}
 			Box.Left = d;
 			if (!Parser->GetNumber(&d)) {
-				printf("Metrics Error: Number expected\n");
 				return false;
 			}
 			Box.Bottom = d;
 			if (!Parser->GetNumber(&d)) {
-				printf("Metrics Error: Number expected\n");
 				return false;
 			}
 			Box.Right = d;
 			if (!Parser->GetNumber(&d)) {
-				printf("Metrics Error: Number expected\n");
 				return false;
 			}
 			Box.Top = d;
@@ -600,7 +593,6 @@ bool pdfFontMetrics::GetFontMetrics() {
 		}
 		else if (!Compare(String, "StartCharMetrics")) {
 			if (!GetCharMetrics()) {
-				printf("Metrics Error: Char Metrics Error\n");
 				return false;
 			}
 
@@ -614,7 +606,6 @@ bool pdfFontMetrics::GetFontMetrics() {
 		}
 	}
 
-	printf("Metrics Error: \"EndFontMetrics\" expected\n");
 	return false;
 }
 
@@ -728,7 +719,6 @@ bool pdfFontMetrics::GetKernData() {
 		}
 	}
 
-	printf("Kerning Error: \"EndKernData\" expected\n");
 	return false;
 }
 
@@ -752,16 +742,8 @@ void pdfFontMetrics::AddKerning(
 		Temp->Name[n] = 0;
 		Temp->Offset = Offset;
 		if (!Insert(Metric, Temp)) {
-			//   printf("Duplicate Kerning: %s -> %s\n", Name1, Name2);
 			delete Temp;
 		}
-	}
-	else {
-		//  printf("Name1 not found: %s -> %s\n", Name1, Name2);
-	}
-
-	if (Code(Name2) < 0) {
-		//  printf("Name2 not found: %s -> %s\n", Name1, Name2);
 	}
 }
 
@@ -784,19 +766,15 @@ bool pdfFontMetrics::GetKernPairs() {
 		}
 		else if (!Compare(Key, "KPX")) {
 			if (!Parser->GetName(Name1)) {
-				printf("Kerning Error: Name expected\n");
 				return false;
 			}
 			if (!Parser->GetName(Name2)) {
-				printf("Kerning Error: Name expected\n");
 				return false;
 			}
 			if (!Parser->GetNumber(&d)) {
-				printf("Kerning Error: Number expected\n");
 				return false;
 			}
 			if (!Parser->GetEndOfLine()) {
-				printf("Kerning Error: End-of-line expected\n");
 				return false;
 			}
 			AddKerning(Name1, Name2, d);
@@ -807,7 +785,6 @@ bool pdfFontMetrics::GetKernPairs() {
 		}
 	}
 
-	printf("Kerning Error: \"EndKernPairs\" expected\n");
 	return false;
 }
 

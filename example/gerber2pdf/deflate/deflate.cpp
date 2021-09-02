@@ -1514,7 +1514,6 @@ unsigned char* Deflate::Inflate(unsigned char* Buffer, unsigned* Length) {
 	// FLevel = (Buffer[Index++] >> 6) & 0x03;
 
 	if (FDict) {
-		printf("Error: Uses dictionary\n"); // TODO: Future Feature
 		return 0;
 		// DictID = (Buffer[Index  ] << 24) |
 		//          (Buffer[Index+1] << 16) |

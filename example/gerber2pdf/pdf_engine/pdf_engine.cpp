@@ -154,8 +154,6 @@ int PdfEngine::Run(const std::string& file_name, const std::string& title) {
 	current_layer = NewLayer(file_name, convert_strokes2fills_, light_);
 	current_layer->title.assign(title);
 
-	printf("\nInfo: Converting %s\n", file_name);
-
 	auto gerber = std::make_shared<Gerber>(file_name);
 
 	if (!gerber->Name().empty()) {
@@ -443,12 +441,7 @@ void PdfEngine::Finish(const std::string& outpu_file_name) {
 		pdf_->Catalogue.SetOutlines(&outlines_);
 
 		pdf_->Author.Set("gerberrender");
-
-		printf("\nInfo: Writing %s\n", outpu_file_name.c_str());
 		pdf_->WritePDF(outpu_file_name);
-	}
-	else {
-		printf("Info: No pages to write\n");
 	}
 }
 
@@ -721,7 +714,6 @@ int PdfEngine::Flash(double x, double y)
 		current_pdf_form_->Pop();
 	}
 	else {
-		printf("Error: No Aperture selected\n");
 		current_pdf_form_->Pop();
 		return 4;
 	}

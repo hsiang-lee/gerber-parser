@@ -325,7 +325,6 @@ pdfContents* pdfType3Font::GetGlyph() {
 
 		}
 		else { // Ignore others
-			printf("Warning: Unknown path operator %s\n", Key);
 			if (!Parser.Ignore(Key)) return 0;
 		}
 	}
@@ -347,7 +346,6 @@ pdfContents** pdfType3Font::GetGlyphs(unsigned* GlyphCount) {
 
 	while (Parser.GetKey(Key)) {
 		if (!Compare(Key, "EndFontGlyphs")) {
-			if ((int)(*GlyphCount) < Count - 1) printf("Error: Too few glyph declarations");
 			return Glyphs;
 
 		}
@@ -356,7 +354,6 @@ pdfContents** pdfType3Font::GetGlyphs(unsigned* GlyphCount) {
 				Glyphs[(*GlyphCount)++] = GetGlyph();
 			}
 			else {
-				printf("Error: Too many glyph declarations\n");
 				Parser.GetEndOfLine();
 			}
 
@@ -366,7 +363,6 @@ pdfContents** pdfType3Font::GetGlyphs(unsigned* GlyphCount) {
 		}
 	}
 
-	printf("Error: \"EndFontGlyphs\" expected\n");
 	*GlyphCount = 0;
 	return 0;
 }
@@ -380,7 +376,6 @@ pdfContents** pdfType3Font::GetFontGlyphs(unsigned* GlyphCount) {
 
 		}
 		else { // Ignore others
-			printf("Warning: No glyphs to load\n");
 			if (!Parser.Ignore(String)) return 0;
 		}
 	}
