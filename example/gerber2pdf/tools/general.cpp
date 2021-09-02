@@ -53,33 +53,6 @@ void SetupTerminal() {
 }
 
 
-#ifdef WINVER
-static char ErrorString[0x1000];
-
-const char* GetErrorString(int Code) {
-	ErrorString[0] = 0;
-
-	FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, 0, Code, 0, ErrorString, 0x1000, 0);
-
-	int n = strlen(ErrorString);
-	for (n = strlen(ErrorString) - 1; n >= 0; n) {
-		switch (ErrorString[n]) {
-		case ' ':
-		case '\t':
-		case '\r':
-		case '\n': ErrorString[n] = 0; break;
-		default: return ErrorString;
-		}
-	}
-	return ErrorString;
-}
-#else
-const char* GetErrorString(int Code) {
-	return strerror(Code);
-}
-#endif
-
-
 #ifndef WINVER
 uint32_t GetTickCount() {
 	struct timespec now;

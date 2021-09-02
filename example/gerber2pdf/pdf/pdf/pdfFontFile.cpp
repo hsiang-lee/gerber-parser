@@ -85,9 +85,6 @@ bool pdfFontFile::LoadPFB(const char* FileName) {
 		return true;
 
 	}
-	else {
-		error("%s", GetErrorString(GetLastError()));
-	}
 
 	return false;
 }

@@ -41,9 +41,6 @@ bool afmParser::Open(const char* FileName) {
 		return b;
 
 	}
-	else {
-		error("%s", GetErrorString(GetLastError()));
-	}
 
 	return false;
 }

@@ -169,9 +169,5 @@ using _word = uint16_t;
 // use UTF-8 encoding, have a longer history, etc.
 void SetupTerminal();
 
-// Static allocation: do not free
-const char* GetErrorString(int code_);
-
-
 #endif
 

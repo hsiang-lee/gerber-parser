@@ -191,9 +191,6 @@ void Pdf::WritePDF(const std::string& FileName) {
 		FilePointer += File.Write("\n%%EOF\n", 7);
 		File.Close();
 	}
-	else {
-		error("%s", GetErrorString(GetLastError()));
-	}
 
 	delete[] Buffer;
 }

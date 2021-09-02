@@ -212,9 +212,6 @@ bool pdfPNG::LoadFromFile(const char* Filename) {
 		return true;
 
 	}
-	else {
-		error("%s", GetErrorString(GetLastError()));
-	}
 
 	return false;
 }
