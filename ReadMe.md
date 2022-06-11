@@ -1,6 +1,8 @@
-![Gerber Render](./logo/logo.png)
+![Gerber Renderer](./logo/logo.png)
 
-# GerberRender
+[简体中文](./ReadMe_simple_chinese.md)
+
+# GerberRenderer
 
 [![MacOS](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml)
 [![Ubuntu](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml)
@@ -8,7 +10,7 @@
 
 
 
-RenderRender 是一个开源的、支持跨平台编译、简单易用的Gerber文件渲染库，采用标准c++编写，支持rs274x标准。渲染引擎使用Qt编写，支持渲染Gerber文件到Qt支持的图像导出格式:
+GerberRenderer is an open source, cross-platform compilation, easy-to-use Gerber file rendering library, written in standard C++, and supports the rs274x standard. The rendering engine is written in Qt and supports rendering Gerber files to the image export format supported by Qt:
 
 
 Format|Description|Qt's support
@@ -24,37 +26,38 @@ PPM|Portable Pixmap|Read/write
 XBM|X11 Bitmap|Read/write
 XPM|X11 Pixmap|Read/write
 
-也支持直接渲染到QWidget窗口上。
+also supports rendering directly to the QWidget window.
 
-另外，Qt还提供了QSvgGenerator和QPdfWriter，它们也继承自QPaintDevice。理论上也可以渲染成sgv和pdf导出，不过目前没有直接支持。
-除了渲染和导出静态的图像，GerberRender库也支持一些交互式的操作。比如移动图像的位置，缩放图像和选中某一点高亮显示。这些功能可以用于交互式Gerber显示，参考example/gerber_viewer。也可用于较大图像的分片段渲染和导出，example/gerber2image提供了示例。对于分辨率较高的图像，要导出成一张图像会受到诸多限制，example/gerber2image通过分段导出，导出成多张图像，每张分辨率最高20000，合起来构成了完整的图像。
+In addition, Qt also provides QSvgGenerator and QPdfWriter, which inherits from QPaintDevice. Theoretically, it can also be rendered into sgv and pdf to export, but there is no direct support currently.
 
-
-
-# 支持平台
-Gerber Render采用标准C++编写，依赖的Qt5、glog、gflags都支持跨平台编译。目前已测试过在Windows和Mac上正常编译过，Ubuntu上还存在一些编译问题。
+In addition to rendering and exporting static images, the GerberRenderer library also supports some interactive operations. For example, move the position of the image, zoom the image and highlight a certain point. These functions can be used for interactive Gerber display, refer to example/gerber_viewer. It can also be used for segmented rendering and export of larger images, example/gerber2image provides an example. For images with higher resolution, exporting into one image will be subject to many restrictions. Example/gerber2image is exported into multiple images through segmented export, each with a maximum resolution of 20000, which together form a complete image.
 
 
 
-# 渲染样图
+# Supported platform
+Gerber Render is written in standard C++, and the dependent Qt5, glog, and gflags all support cross-platform compilation. It has been tested to compile normally on Linux, Mac and Windows.
+
+
+
+# Sample image
 ![gerber image](./logo/gerber.png)
 
 
 
-# 如何构建？
+# How to build?
 
-## 依赖库：
-- Qt5(没测过其他版本，不能确定支不支持，看Qt的兼容性)
-- glog(用于记录日志)
-- gflags(用于example中的示例程序解析cui参数，如果关闭“BUILD_EXAMPLE”选项则不需要这个依赖)
-- googletest(用于测试，如果关闭选项“BUILD_TESTS”则不需要这个依赖)
-其中Qt5需要外部安装，CMake时指定Qt安装路径，或通过CMake-GUI设置Qt安装路径，或者机器上设置了Qt的环境变量，CMake能自动找到。
-glog、gflags和googletest已通过git的submodule自包含，无需外部提供。
+## Dependent libraries：
+- Qt(Higher version may also supported, but not tested)
+- glog(Used for logging)
+- gflags(The sample program used to parse the cui parameter, if you turn off the "BUILD_EXAMPLE" option, this dependency is not needed)
+- googletest(For unit test, this dependency is not needed if the option "BUILD_TESTS" is turned off)
+Qt5 needs to be installed externally. Specify the Qt installation path when CMake, or set the Qt installation path through CMake-GUI, or set the environment variables of Qt on the machine.
+glog, gflags, and googletest have been self-contained through git submodules and do not need to be provided externally.
 
 
-## 克隆仓库：
+## Clone：
 ```
-git clone https://github.com/hsiang-lee/gerber_render
+git clone https://github.com/hsiang-lee/gerber_renderer
 git submodule update --recursive --init
 ```
 
@@ -64,32 +67,35 @@ git submodule update --recursive --init
 cd gerber_render
 mkdir build
 cd build
-cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=C:/Qt/Qt5.14.1/5.14.1/msvc2017_64/lib/cmake/Qt5
+cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=path/of/Qt
 ```
 
 
-## 构建
+## Build:
+Linux(Ubuntu) or Mac:
+```make```
+
+Windows:
 ```nmake```
 
 
 
-# 如何使用？
+# How to use？
 ```
-auto gerber = std::make_shared<Gerber>(gerber_file_path);//构建一个Gerber，这里会解析gerber文件。
+auto gerber = std::make_shared<Gerber>(gerber_file_path);//Construct a Gerber object，gerber file will be parsed here。
 
-auto image = std::make_unique<QBitmap>(1920， 1280);//创建一张二值位图
-auto engine = std::make_unique<QtEngine>(image.get());//构建一个QtEngine
-GerberRender render(engine.get());//构建一个GerberRender
-render.RenderGerber(gerber);//渲染gerber文件，结果会渲染到上面创建的二值位图上
+auto image = std::make_unique<QBitmap>(1920， 1280);//Create a QBitmap(for export bitmap image).Other images can also be exported, eg: QPixmap or QImage. 
+auto engine = std::make_unique<QtEngine>(image.get());//Construct a QtEngine
+GerberRender render(engine.get());//Construct a GerberRender
+render.RenderGerber(gerber);//Render the gerber file to a bitmap image created above
 
-image->save(path_you_want_to_save_image);//保存图像
+image->save(path_you_want_to_save_image);//Save the image rendered to file.
 ```
 
 
 
-# 附带工具
-Gerber Render也附带了一些简单的工具，在example目录下。CMake时设置BUILD_EXAMPLES=ON打开构建example下的工具。
-* gerber_viewer	一个简单的gerber预览工具，可以缩放，拖动，选中元素(存在问题，尚未完全支持)
-* gerber2image	一个导出gerber文件到二值位图的工具，提供cui接口，通过“--help”选项可以查看帮助
-* gerber2pdf	一个导出gerber文件到pdf的工具，提供cui接口
-* gerber2svg	一个导出gerber文件到svg图像的工具，提供cui接口，通过“--help”选项可以查看帮助
+# Tools
+GerberRenderer also includes some simple tools, which are in the example directory. When CMake, set BUILD_EXAMPLES=ON to build these tools.
+* gerber_viewer	A simple gerber preview tool that can zoom, drag, and select elements (Not fully supported yet)
+* gerber2image	A tool for exporting gerber files to binary bitmaps, providing a cui interface, and you can get helps from the "--help" option
+* gerber2svg	A tool for exporting gerber files to svg images, providing a cui interface, and you can get helps from the "--help" option
