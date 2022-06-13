@@ -4,9 +4,9 @@
 
 # GerberRenderer
 
-[![MacOS](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml)
-[![Ubuntu](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml)
-[![Windows](https://github.com/hsiang-lee/gerber_render/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/windows.yml)
+[![MacOS](https://github.com/hsiang-lee/gerber-parser/actions/workflows/macos.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/macos.yml)
+[![Ubuntu](https://github.com/hsiang-lee/gerber-parser/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/ubuntu.yml)
+[![Windows](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml)
 
 
 
@@ -84,7 +84,7 @@ Windows:
 ```
 auto gerber = std::make_shared<Gerber>(gerber_file_path);//Construct a Gerber object，gerber file will be parsed here。
 
-auto image = std::make_unique<QBitmap>(1920， 1280);//Create a QBitmap(for export bitmap image).Other images can also be exported, eg: QPixmap or QImage. 
+auto image = std::make_unique<QBitmap>(1920， 1280);//Create a QBitmap(for export bitmap image).Other images can also be exported, eg: QPixmap or QImage.
 auto engine = std::make_unique<QtEngine>(image.get());//Construct a QtEngine
 GerberRender render(engine.get());//Construct a GerberRender
 render.RenderGerber(gerber);//Render the gerber file to a bitmap image created above
