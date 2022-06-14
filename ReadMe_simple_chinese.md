@@ -4,9 +4,9 @@
 
 # GerberRender
 
-[![MacOS](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/macos.yml)
-[![Ubuntu](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/ubuntu.yml)
-[![Windows](https://github.com/hsiang-lee/gerber_render/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber_render/actions/workflows/windows.yml)
+[![MacOS](https://github.com/hsiang-lee/gerber-parser/actions/workflows/macos.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/macos.yml)
+[![Ubuntu](https://github.com/hsiang-lee/gerber-parser/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/ubuntu.yml)
+[![Windows](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml)
 
 
 
