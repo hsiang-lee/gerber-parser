@@ -1,9 +1,9 @@
 [submodule "3rdparty/gflags"]
 	path = 3rdparty/gflags
-	url = https://github.com/hsiang-lee/gflags
+	url = https://github.com/gflags/gflags
 [submodule "3rdparty/glog"]
 	path = 3rdparty/glog
-	url = https://github.com/hsiang-lee/glog
+	url = https://github.com/google/glog
 [submodule "3rdparty/googletest"]
 	path = 3rdparty/googletest
-	url = https://github.com/hsiang-lee/googletest
+	url = https://github.com/google/googletest
