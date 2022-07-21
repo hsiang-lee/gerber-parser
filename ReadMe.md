@@ -92,7 +92,7 @@ image->save(path_you_want_to_save_image);//Save the image rendered to file.
 ```
 
 ## Tools
-GerberRenderer also includes some simple tools, which are in the example directory. When CMake, set BUILD_EXAMPLES=ON to build these tools.
+GerberRenderer also includes some simple tools, which are in the example directory. When using cmake, set BUILD_EXAMPLES=ON to build these tools.
 * gerber_viewer	A simple gerber preview tool that can zoom, drag, and select elements (Not fully supported yet)
 * gerber2image	A tool for exporting gerber files to binary bitmaps, providing a cui interface, and you can get helps from the "--help" option
 * gerber2svg	A tool for exporting gerber files to svg images, providing a cui interface, and you can get helps from the "--help" option
