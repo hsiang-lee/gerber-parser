@@ -1,14 +1,16 @@
 #include "star_parser.h"
-#include "gerber.h"
+#include "gerber_parser.h"
+#include "gerber/plotter.h"
 
-StarParser::StarParser(Gerber& gerber) :gerber_(gerber)
+
+StarParser::StarParser(GerberParser& gerber) :gerber_parser_(gerber)
 {
 }
 
 bool StarParser::Run()
 {
-	if (gerber_.current_level_) {
-		gerber_.current_level_->Do(gerber_.gerber_file_.line_number_);
+	if (gerber_parser_.current_level_) {
+		gerber_parser_.plotter_->Do(gerber_parser_.gerber_file_->line_number_);
 	}
 
 	return true;

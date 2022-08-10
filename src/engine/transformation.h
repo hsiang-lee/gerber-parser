@@ -38,11 +38,11 @@ private:
 	double scaled_{ 1.0 };
 	bool with_scale_{ false };
 
-	std::pair<double, double> left_top_;
-	std::pair<double, double> move_;
-	std::pair<double, double> physical_;
+	std::pair<double, double> left_top_{ 0.0,0.0 };
+	std::pair<double, double> move_{ 0.0,0.0 };
+	std::pair<double, double> physical_{ 0.0,0.0 };
 
 	BoundBox bound_box_{ 0.0, 0.0, 0.0, 0.0 };
-	BoundBox offset_;
+	BoundBox offset_{ 0.0, 0.0, 0.0, 0.0 };
 };
 

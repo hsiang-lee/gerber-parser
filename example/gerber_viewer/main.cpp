@@ -3,22 +3,21 @@
 #include <QMouseEvent>
 #include <QFileDialog>
 
-#include "gerber_renderer.h"
+#include "gerber/gerber_parser.h"
 #include "engine/qt_engine.h"
 
 class GerberWidget : public QWidget {
 public:
 	GerberWidget() {
 		auto file = QFileDialog::getOpenFileName(this);
-		gerber_ = std::make_shared<Gerber>(file.toLocal8Bit().toStdString());
-
+		auto parser = std::make_unique<GerberParser>(file.toLocal8Bit().toStdString());;
+		gerber_ = parser->GetGerber();
 		engine_ = std::make_unique<QtEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
-		render_ = std::make_unique<GerberRender>(engine_.get());
 	}
 
 protected:
 	void paintEvent(QPaintEvent* e) override {
-		render_->RenderGerber(gerber_);
+		engine_->RenderGerber(gerber_);
 	}
 
 	void wheelEvent(QWheelEvent* e) override {
@@ -28,29 +27,29 @@ protected:
 		update();
 	}
 
-	void mousePressEvent(QMouseEvent* e) override {
-		pressed_ = true;
-		start_x_ = e->x();
-		start_y_ = e->y();
-	}
+	//void mousePressEvent(QMouseEvent* e) override {
+	//	pressed_ = true;
+	//	start_x_ = e->x();
+	//	start_y_ = e->y();
+	//}
 
-	void mouseReleaseEvent(QMouseEvent* e) override {
-		pressed_ = false;
+	//void mouseReleaseEvent(QMouseEvent* e) override {
+	//	pressed_ = false;
 
-		engine_->Select(e->x(), e->y());
-		update();
-	}
+	//	engine_->Select(e->x(), e->y());
+	//	update();
+	//}
 
-	void mouseMoveEvent(QMouseEvent* e) override {
-		if (pressed_) {
-			engine_->Move(e->x() - start_x_, e->y() - start_y_);
+	//void mouseMoveEvent(QMouseEvent* e) override {
+	//	if (pressed_) {
+	//		engine_->Move(e->x() - start_x_, e->y() - start_y_);
 
-			start_x_ = e->x();
-			start_y_ = e->y();
+	//		start_x_ = e->x();
+	//		start_y_ = e->y();
 
-			update();
-		}
-	}
+	//		update();
+	//	}
+	//}
 
 	void resizeEvent(QResizeEvent* event) override {
 		engine_->Resize();
@@ -60,10 +59,8 @@ protected:
 
 private:
 	std::unique_ptr<QtEngine> engine_;
-	std::unique_ptr<GerberRender> render_;
 	std::shared_ptr<Gerber> gerber_;
 
-	bool pressed_{ false };
 	int start_x_{ 0 };
 	int start_y_{ 0 };
 };

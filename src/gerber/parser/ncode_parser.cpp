@@ -1,15 +1,16 @@
 #include "ncode_parser.h"
-#include "gerber.h"
+#include "gerber/gerber_parser.h"
+
+#include <iostream>
 
 
-
-NCodeParser::NCodeParser(Gerber& gerber) :gerber_(gerber) {
+NCodeParser::NCodeParser(GerberParser& gerber) :gerber_parser_(gerber) {
 
 }
 
 bool NCodeParser::Run() {
-	gerber_.start_of_level_ = false;
-	printf("Line %d - Error: N Code not implemented\n", gerber_.gerber_file_.line_number_);
+	gerber_parser_.start_of_level_ = false;
+	std::cout << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Error: N Code not implemented" << std::endl;
 	return false;
 }
 

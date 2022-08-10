@@ -1,34 +1,26 @@
 #include <gtest/gtest.h>
-#include "gerber/gerber.h"
-#include "gerber/gerber_enums.h"
+#include "gerber/gerber_parser.h"
+#include "gerber/gerber_level.h"
 
 
 TEST(GerberTest, TestParseFile1) {
-	Gerber gerber(std::string(TestData) + "2301113563-e-gbs");
-	EXPECT_EQ(gerber.Unit(), GERBER_UNIT::guMillimeters);
-	EXPECT_EQ(gerber.GetBBox(), BoundBox(-40.710000000000001, 198.31, 36.710000000000001, -36.710000000000001));
-	EXPECT_EQ(gerber.Name(), "");
-	EXPECT_FALSE(gerber.IsNegative());
+	GerberParser parser(std::string(TestData) + "2301113563-f-avi/2301113563-e-gbs");
+	auto gerber = parser.GetGerber();
+	EXPECT_EQ(gerber->Unit(), UnitType::Type::guMillimeters);
+	EXPECT_EQ(gerber->GetBBox(), BoundBox(-40.710000000000001, 198.31, 36.710000000000001, -36.710000000000001));
+	EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
 
-	auto levels = gerber.Levels();
+	auto levels = gerber->Levels();
 	EXPECT_EQ(levels.size(), 4);
-	EXPECT_EQ((*(++levels.begin()))->name_, "2301113563-e-gbs.sub2");
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->StepX, 12.800000000000001);
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->StepY, 12.800000000000001);
-	EXPECT_EQ((*(++levels.begin()))->CountX, 6);
-	EXPECT_EQ((*(++levels.begin()))->CountY, 5);
-	EXPECT_EQ((*(++levels.begin()))->bound_box_, BoundBox(43.344889999999999, 50.255110000000002, -22.14489, -29.055109999999996));
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->X, 47.954920000000001);
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->Y, -27.655099999999997);
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->I, 0.0);
-	EXPECT_DOUBLE_EQ((*(++levels.begin()))->J, 0.0);
-	EXPECT_FALSE((*(++levels.begin()))->negative_);
-	EXPECT_FALSE((*(++levels.begin()))->relative_);
-	EXPECT_FALSE((*(++levels.begin()))->incremental_);
-	EXPECT_TRUE((*(++levels.begin()))->multi_quadrant_);
-	EXPECT_EQ((*(++levels.begin()))->interpolation_, GERBER_INTERPOLATION::giLinear);
-	EXPECT_EQ((*(++levels.begin()))->exposure_, GERBER_EXPOSURE::geOff);
-	EXPECT_EQ((*(++levels.begin()))->units_, GERBER_UNIT::guMillimeters);
+	EXPECT_EQ((*(++levels.begin()))->GetName(), "2301113563-e-gbs.sub2");
+	EXPECT_DOUBLE_EQ((*(++levels.begin()))->step_x_, 12.800000000000001);
+	EXPECT_DOUBLE_EQ((*(++levels.begin()))->step_y_, 12.800000000000001);
+	EXPECT_EQ((*(++levels.begin()))->count_x_, 6);
+	EXPECT_EQ((*(++levels.begin()))->count_y_, 5);
+	EXPECT_EQ((*(++levels.begin()))->GetBoundBox(), BoundBox(43.344889999999999, 50.255110000000002, -22.14489, -29.055109999999996));
+	EXPECT_FALSE((*(++levels.begin()))->IsNegative());
+	EXPECT_EQ((*(++levels.begin()))->GetUnit(), UnitType::Type::guMillimeters);
 	EXPECT_EQ((*(++levels.begin()))->RenderCommands().size(), 367);
 
 	auto renders = (*(++levels.begin()))->RenderCommands();
@@ -36,37 +28,59 @@ TEST(GerberTest, TestParseFile1) {
 	++iter;
 	++iter;
 	++iter;
-	EXPECT_EQ((*iter)->command_, RenderCommand::GerberCommand::gcLine);
+	EXPECT_EQ((*iter)->command_, RenderCommand::Command::cLine);
 	EXPECT_DOUBLE_EQ((*iter)->X, 43.714999999999996);
 	EXPECT_DOUBLE_EQ((*iter)->Y, -28.337990000000001);
 }
 
 TEST(GerberTest, TestParseFile2) {
-	Gerber gerber(std::string(TestData) + "lth_1-3.gbr");
-	EXPECT_EQ(gerber.Unit(), GERBER_UNIT::guMillimeters);
-	EXPECT_EQ(gerber.GetBBox(), BoundBox(-32.044300000000000, 243.56430000000003, 210.78607000000000, -21.606069999999999));
-	EXPECT_EQ(gerber.Name(), "");
-	EXPECT_FALSE(gerber.IsNegative());
+	GerberParser parser(std::string(TestData) + "gerber_files/sigb.gbr");
+	auto gerber = parser.GetGerber();
+	EXPECT_EQ(gerber->Unit(), UnitType::Type::guMillimeters);
+	EXPECT_EQ(gerber->GetBBox(), BoundBox(-33.390000000000001, 244.91000000000000, 212.24000000000001, -23.059999999999999));
+	EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
 
-	auto levels = gerber.Levels();
+	auto levels = gerber->Levels();
+	EXPECT_EQ(levels.size(), 3);
+	EXPECT_EQ(levels.front()->GetName(), "sigb_scpt.gbr");
+	EXPECT_DOUBLE_EQ(levels.front()->step_x_, 0.0);
+	EXPECT_DOUBLE_EQ(levels.front()->step_y_, 0.0);
+	EXPECT_EQ(levels.front()->count_x_, 1);
+	EXPECT_EQ(levels.front()->count_y_, 1);
+	EXPECT_EQ(levels.front()->GetBoundBox(), BoundBox(-33.390000000000001, 244.91000000000000, 212.24000000000001, -23.059999999999999));
+	EXPECT_FALSE(levels.front()->IsNegative());
+	EXPECT_EQ(levels.front()->GetUnit(), UnitType::Type::guMillimeters);
+	EXPECT_EQ(levels.front()->RenderCommands().size(), 375396);
+
+	auto renders = levels.front()->RenderCommands();
+	auto iter = renders.begin();
+	++iter;
+	++iter;
+	++iter;
+	EXPECT_EQ((*iter)->command_, RenderCommand::Command::cBeginLine);
+	EXPECT_DOUBLE_EQ((*iter)->X, -0.45768999999999993);
+	EXPECT_DOUBLE_EQ((*iter)->Y, 50.990940000000002);
+}
+
+TEST(GerberTest, TestParseFile3) {
+	GerberParser parser(std::string(TestData) + "gerber_files/lth_1-3.gbr");
+	auto gerber = parser.GetGerber();
+	EXPECT_EQ(gerber->Unit(), UnitType::Type::guMillimeters);
+	EXPECT_EQ(gerber->GetBBox(), BoundBox(-32.044300000000000, 243.56430000000003, 210.78607000000000, -21.606069999999999));
+	EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
+
+	auto levels = gerber->Levels();
 	EXPECT_EQ(levels.size(), 1);
-	EXPECT_EQ(levels.front()->name_, "lth_1-3_scpt.gbr");
-	EXPECT_DOUBLE_EQ(levels.front()->StepX, 0.0);
-	EXPECT_DOUBLE_EQ(levels.front()->StepY, 0.0);
-	EXPECT_EQ(levels.front()->CountX, 1);
-	EXPECT_EQ(levels.front()->CountY, 1);
-	EXPECT_EQ(levels.front()->bound_box_, BoundBox(-32.044300000000000, 243.56430000000003, 210.78607000000000, -21.606069999999999));
-	EXPECT_DOUBLE_EQ(levels.front()->X, 50.605729999999994);
-	EXPECT_DOUBLE_EQ(levels.front()->Y, 202.39965999999998);
-	EXPECT_DOUBLE_EQ(levels.front()->I, 0.0);
-	EXPECT_DOUBLE_EQ(levels.front()->J, 0.0);
-	EXPECT_FALSE(levels.front()->negative_);
-	EXPECT_FALSE(levels.front()->relative_);
-	EXPECT_FALSE(levels.front()->incremental_);
-	EXPECT_TRUE(levels.front()->multi_quadrant_);
-	EXPECT_EQ(levels.front()->interpolation_, GERBER_INTERPOLATION::giLinear);
-	EXPECT_EQ(levels.front()->exposure_, GERBER_EXPOSURE::geOff);
-	EXPECT_EQ(levels.front()->units_, GERBER_UNIT::guMillimeters);
+	EXPECT_EQ(levels.front()->GetName(), "lth_1-3_scpt.gbr");
+	EXPECT_DOUBLE_EQ(levels.front()->step_x_, 0.0);
+	EXPECT_DOUBLE_EQ(levels.front()->step_y_, 0.0);
+	EXPECT_EQ(levels.front()->count_x_, 1);
+	EXPECT_EQ(levels.front()->count_y_, 1);
+	EXPECT_EQ(levels.front()->GetBoundBox(), BoundBox(-32.044300000000000, 243.56430000000003, 210.78607000000000, -21.606069999999999));
+	EXPECT_FALSE(levels.front()->IsNegative());
+	EXPECT_EQ(levels.front()->GetUnit(), UnitType::Type::guMillimeters);
 	EXPECT_EQ(levels.front()->RenderCommands().size(), 3934);
 
 	auto renders = levels.front()->RenderCommands();
@@ -74,45 +88,67 @@ TEST(GerberTest, TestParseFile2) {
 	++iter;
 	++iter;
 	++iter;
-	EXPECT_EQ((*iter)->command_, RenderCommand::GerberCommand::gcFlash);
+	EXPECT_EQ((*iter)->command_, RenderCommand::Command::cFlash);
 	EXPECT_DOUBLE_EQ((*iter)->X, -3.7799999999999998);
 	EXPECT_DOUBLE_EQ((*iter)->Y, 58.826800000000006);
 }
 
-TEST(GerberTest, TestParseFile3) {
-	Gerber gerber(std::string(TestData) + "susb.gbr");
-	EXPECT_EQ(gerber.Unit(), GERBER_UNIT::guMillimeters);
-	EXPECT_EQ(gerber.GetBBox(), BoundBox(-30.780000000000001, 242.30000000000001, 205.45999999999998, -16.280000000000001));
-	EXPECT_EQ(gerber.Name(), "");
-	EXPECT_FALSE(gerber.IsNegative());
+TEST(GerberTest, TestParseFile4) {
+	GerberParser parser(std::string(TestData) + "gerber_files/111.gbr");
+	auto gerber = parser.GetGerber();
+	EXPECT_EQ(gerber->Unit(), UnitType::guInches);
+	EXPECT_EQ(gerber->GetBBox(), BoundBox(-6.7393807645321662, 94.005399999999995, 148.53805699999998, -3.3578800000000006));
+	EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
 
-	auto levels = gerber.Levels();
-	EXPECT_EQ(levels.size(), 1);
-	EXPECT_EQ(levels.front()->name_, "susb_scpt.gbr");
-	EXPECT_DOUBLE_EQ(levels.front()->StepX, 0.0);
-	EXPECT_DOUBLE_EQ(levels.front()->StepY, 0.0);
-	EXPECT_EQ(levels.front()->CountX, 1);
-	EXPECT_EQ(levels.front()->CountY, 1);
-	EXPECT_EQ(levels.front()->bound_box_, BoundBox(-30.780000000000001, 242.30000000000001, 205.45999999999998, -16.280000000000001));
-	EXPECT_DOUBLE_EQ(levels.front()->X, 200.02000000000001);
-	EXPECT_DOUBLE_EQ(levels.front()->Y, 205.45999999999998);
-	EXPECT_DOUBLE_EQ(levels.front()->I, 0.0);
-	EXPECT_DOUBLE_EQ(levels.front()->J, 0.0);
-	EXPECT_FALSE(levels.front()->negative_);
-	EXPECT_FALSE(levels.front()->relative_);
-	EXPECT_FALSE(levels.front()->incremental_);
-	EXPECT_TRUE(levels.front()->multi_quadrant_);
-	EXPECT_EQ(levels.front()->interpolation_, GERBER_INTERPOLATION::giClockwiseCircular);
-	EXPECT_EQ(levels.front()->exposure_, GERBER_EXPOSURE::geOff);
-	EXPECT_EQ(levels.front()->units_, GERBER_UNIT::guMillimeters);
-	EXPECT_EQ(levels.front()->RenderCommands().size(), 576);
+	auto levels = gerber->Levels();
+	EXPECT_EQ(levels.size(), 3);
+	EXPECT_EQ(levels.front()->GetName(), "c272775-a-gbl");
+	EXPECT_DOUBLE_EQ(levels.front()->step_x_, 0.0);
+	EXPECT_DOUBLE_EQ(levels.front()->step_y_, 0.0);
+	EXPECT_EQ(levels.front()->count_x_, 1);
+	EXPECT_EQ(levels.front()->count_y_, 1);
+	EXPECT_EQ(levels.front()->GetBoundBox(), BoundBox(-6.7393807645321662, 94.005399999999995, 148.53805699999998, -2.7390598000000002));
+	EXPECT_FALSE(levels.front()->IsNegative());
+	EXPECT_EQ(levels.front()->GetUnit(), UnitType::Type::guInches);
+	EXPECT_EQ(levels.front()->RenderCommands().size(), 184249);
 
 	auto renders = levels.front()->RenderCommands();
 	auto iter = renders.begin();
 	++iter;
 	++iter;
 	++iter;
-	EXPECT_EQ((*iter)->command_, RenderCommand::GerberCommand::gcArc);
-	EXPECT_DOUBLE_EQ((*iter)->X, -23.668299999999999);
-	EXPECT_DOUBLE_EQ((*iter)->Y, 1.0);
+	EXPECT_EQ((*iter)->command_, RenderCommand::Command::cFlash);
+	EXPECT_DOUBLE_EQ((*iter)->X, 73.449179999999984);
+	EXPECT_DOUBLE_EQ((*iter)->Y, 2.2504399999999993);
+}
+
+TEST(GerberTest, TestParseFile5) {
+	GerberParser parser(std::string(TestData) + "gerber_files/HJ.324V1.GTS");
+	auto gerber = parser.GetGerber();
+	EXPECT_EQ(gerber->Unit(), UnitType::guInches);
+	EXPECT_EQ(gerber->GetBBox(), BoundBox(1.3982699999999999, 120.65076199999999, 98.830891999999992, 1.3677899999999998));
+	EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
+
+	auto levels = gerber->Levels();
+	EXPECT_EQ(levels.size(), 1);
+	EXPECT_EQ(levels.front()->GetName(), "");
+	EXPECT_DOUBLE_EQ(levels.front()->step_x_, 0.0);
+	EXPECT_DOUBLE_EQ(levels.front()->step_y_, 0.0);
+	EXPECT_EQ(levels.front()->count_x_, 1);
+	EXPECT_EQ(levels.front()->count_y_, 1);
+	EXPECT_EQ(levels.front()->GetBoundBox(), BoundBox(1.3982699999999999, 120.65076199999999, 98.830891999999992, 1.3677899999999998));
+	EXPECT_FALSE(levels.front()->IsNegative());
+	EXPECT_EQ(levels.front()->GetUnit(), UnitType::Type::guInches);
+	EXPECT_EQ(levels.front()->RenderCommands().size(), 885);
+
+	auto renders = levels.front()->RenderCommands();
+	auto iter = renders.begin();
+	++iter;
+	++iter;
+	++iter;
+	EXPECT_EQ((*iter)->command_, RenderCommand::Command::cFlash);
+	EXPECT_DOUBLE_EQ((*iter)->X, 100.125276);
+	EXPECT_DOUBLE_EQ((*iter)->Y, 76.000102000000012);
 }

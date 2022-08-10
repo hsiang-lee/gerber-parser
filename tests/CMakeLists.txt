@@ -36,7 +36,7 @@ target_link_libraries(
 	Qt5::Gui
 	glog::glog
 )
-target_compile_definitions(TestGerberRenderer PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/test_data/")
+target_compile_definitions(TestGerberRenderer PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/test_data/gerber/")
 
 source_group(TREE ${PROJECT_SOURCE_DIR}/tests FILES ${TestSrc})
 source_group(TREE ${PROJECT_SOURCE_DIR}/src FILES ${SourceFiles})

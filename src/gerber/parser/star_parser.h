@@ -1,15 +1,15 @@
 #pragma once
 #include "parser.h"
 
-class Gerber;
+class GerberParser;
 
 class StarParser : public Parser {
 public:
-	StarParser(Gerber& gerber);
+	StarParser(GerberParser& gerber);
 
 	bool Run() override;
 	bool EndOfFile() override;
 
 private:
-	Gerber& gerber_;
+	GerberParser& gerber_parser_;
 };

@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include "engine/qt_engine.h"
-#include <QPixmap>
 #include <QPainter>
 #include <QApplication>
 

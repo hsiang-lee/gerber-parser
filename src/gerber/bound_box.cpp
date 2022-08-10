@@ -1,5 +1,9 @@
 #include "bound_box.h"
 
+
+constexpr double kTwo = 2.0;
+
+
 BoundBox::BoundBox(double left, double right, double top, double bottom) :
 	left_(left),
 	right_(right),
@@ -30,7 +34,7 @@ double BoundBox::Bottom() const
 
 std::pair<double, double> BoundBox::Center() const
 {
-	return std::pair<double, double>((left_ + right_) / 2.0, (top_ + bottom_) / 2.0);
+	return { (left_ + right_) / kTwo, (top_ + bottom_) / kTwo };
 }
 
 double BoundBox::Width() const
@@ -45,10 +49,21 @@ double BoundBox::Height() const
 
 void BoundBox::UpdateBox(double l, double r, double t, double b)
 {
-	if (left_ > l) left_ = l;
-	if (bottom_ > b) bottom_ = b;
-	if (right_ < r) right_ = r;
-	if (top_ < t) top_ = t;
+	if (left_ > l) {
+		left_ = l;
+	}
+
+	if (bottom_ > b) {
+		bottom_ = b;
+	}
+
+	if (right_ < r) {
+		right_ = r;
+	}
+
+	if (top_ < t) {
+		top_ = t;
+	}
 }
 
 void BoundBox::UpdateBox(const BoundBox& box)

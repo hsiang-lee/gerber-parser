@@ -1,40 +1,34 @@
 #include "gerber_file.h"
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <algorithm>
 #include <glog/logging.h>
 
 
-bool GerberFile::Load(const std::string& file_name)
+GerberFile::GerberFile(const std::vector<char>& data)
 {
-	std::ifstream file(file_name, std::ios::in);
-	if (!file) {
-		std::cout << "failed to open gerber file." << std::endl;
-		return false;
-	}
-
-	buffer_ = { std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
-	index_ = 0;
+	buffer_ = data;
+	pointer_ = 0;
 	line_number_ = 0;
-
-	return true;
 }
 
 bool GerberFile::EndOfFile()
 {
-	return index_ >= buffer_.size();
+	SkipWhiteSpace();
+	return pointer_ >= buffer_.size();
+}
+
+bool GerberFile::MoreThanLastOne() const
+{
+	return pointer_ < buffer_.size() - 1;
 }
 
 bool GerberFile::SkipWhiteSpace() {
-	while (!EndOfFile()) {
-		switch (buffer_[index_]) {
+	while (pointer_ < buffer_.size()) {
+		switch (buffer_[pointer_]) {
 		case '\n':
 			line_number_++;
 		case ' ':
 		case '\t':
 		case '\r':
-			index_++;
+			pointer_++;
 			break;
 
 		default:
@@ -47,15 +41,15 @@ bool GerberFile::SkipWhiteSpace() {
 
 char GerberFile::GetChar()
 {
-	return buffer_[index_++];
+	return buffer_[pointer_++];
 }
 
 char GerberFile::PeekChar() {
-	return buffer_[index_];
+	return buffer_[pointer_];
 }
 
 char GerberFile::PeekNextChar() {
-	return buffer_[index_ + 1];
+	return buffer_[pointer_ + 1];
 }
 
 bool GerberFile::QueryCharUntilNotWhiteSpace(char c)
@@ -64,7 +58,7 @@ bool GerberFile::QueryCharUntilNotWhiteSpace(char c)
 		return false;
 	}
 
-	++index_;
+	++pointer_;
 	return true;
 }
 
@@ -75,65 +69,57 @@ bool GerberFile::QueryCharUntilEnd(char c)
 			return true;
 		}
 
-		++index_;
+		++pointer_;
 	}
 
 	return false;
 }
 
 bool GerberFile::GetInteger(int& integer) {
-	bool     sign = false;
-	unsigned i = index_;
+	unsigned i = pointer_;
 
 	SkipWhiteSpace();
 
+	bool negative = GetSign();
 	integer = 0;
-
-	if (index_ < buffer_.size() && buffer_[index_] == '-') {
-		sign = true;
-		index_++;
-	}
-	else if (index_ < buffer_.size() && buffer_[index_] == '+') {
-		index_++;
-	}
-
-	while (index_ < buffer_.size()) {
-		if (buffer_[index_] >= '0' && buffer_[index_] <= '9') {
-			integer *= 10;
-			integer += buffer_[index_] - '0';
-			index_++;
+	while (!EndOfFile()) {
+		const char cur_char = buffer_[pointer_];
+		if (IsNumber(cur_char)) {
+			integer *= 10;// NOLINT
+			integer += cur_char - '0';
+			pointer_++;
 		}
 		else {
-			if (sign) integer *= -1;
-			return (index_ > i);
+			if (negative) {
+				integer *= -1;
+			}
+
+			return (pointer_ > i);
 		}
 	}
 
-	index_ = i;
+	pointer_ = i;
 	return false;
 }
 
+bool GerberFile::IsNumber(char cur_char)
+{
+	return cur_char >= '0' && cur_char <= '9';
+}
+
 bool GerberFile::GetFloat(double& number) {
-	int       integer = 0;
-	bool      sign = false;
-	double    scale = 0.1;
-	unsigned i = index_;
+	unsigned i = pointer_;
 
 	SkipWhiteSpace();
 
-	if (index_ < buffer_.size() && buffer_[index_] == '-') {
-		sign = true;
-		index_++;
-	}
-	else if (index_ < buffer_.size() && buffer_[index_] == '+') {
-		index_++;
-	}
-
-	while (index_ < buffer_.size()) {
-		if (buffer_[index_] >= '0' && buffer_[index_] <= '9') {
-			integer *= 10;
-			integer += buffer_[index_] - '0';
-			index_++;
+	bool negative = GetSign();
+	int integer = 0;
+	while (!EndOfFile()) {
+		auto cur_char = buffer_[pointer_];
+		if (IsNumber(cur_char)) {
+			integer *= 10;// NOLINT
+			integer += cur_char - '0';
+			pointer_++;
 		}
 		else {
 			break;
@@ -141,14 +127,16 @@ bool GerberFile::GetFloat(double& number) {
 	}
 
 	number = integer;
+	if (!EndOfFile() && buffer_[pointer_] == '.') {
+		pointer_++;
 
-	if (index_ < buffer_.size() && buffer_[index_] == '.') {
-		index_++;
-		while (index_ < buffer_.size()) {
-			if (buffer_[index_] >= '0' && buffer_[index_] <= '9') {
-				number += (buffer_[index_] - '0') * scale;
-				scale *= 0.1;
-				index_++;
+		double scale = 0.1;// NOLINT
+		while (!EndOfFile()) {
+			auto cur_char = buffer_[pointer_];
+			if (IsNumber(cur_char)) {
+				number += (cur_char - '0') * scale;
+				scale *= 0.1;// NOLINT
+				pointer_++;
 			}
 			else {
 				break;
@@ -156,56 +144,74 @@ bool GerberFile::GetFloat(double& number) {
 		}
 	}
 
-	if (index_ < buffer_.size()) {
-		if (sign)
+	if (!EndOfFile()) {
+		if (negative) {
 			number *= -1.0;
+		}
 
-		return (index_ > i);
+		return (pointer_ > i);
+	}
+
+	return false;
+}
+
+bool GerberFile::GetSign()
+{
+	if (EndOfFile()) {
+		return false;
+	}
+
+	if (buffer_[pointer_] == '-') {
+		pointer_++;
+		return true;
+	}
+
+	if (buffer_[pointer_] == '+') {
+		pointer_++;
 	}
 
 	return false;
 }
 
 bool GerberFile::GetCoordinate(double& number, int integer, int decimal, bool omit_trailing_zeroes) {
-	int      j;
-	int      n = 0;
-	bool     sign = false;
-	unsigned i = index_;
+	unsigned i = pointer_;
 
 	SkipWhiteSpace();
 
+	auto sign = GetSign();
 	number = 0;
-
-	if (!EndOfFile() && buffer_[index_] == '-') {
-		sign = true;
-		index_++;
-	}
-	else if (!EndOfFile() && buffer_[index_] == '+') {
-		index_++;
-	}
-
+	int n = 0;
 	while (!EndOfFile()) {
-		if (buffer_[index_] >= '0' && buffer_[index_] <= '9') {
-			number *= 10;
-			number += buffer_[index_] - '0';
-			index_++;
+		auto cur_char = buffer_[pointer_];
+		if (IsNumber(cur_char)) {
+			number *= 10;// NOLINT
+			number += cur_char - '0';
+			pointer_++;
 			n++;
 		}
-		else if (buffer_[index_] == '.') {
-			index_ = i;
+		else if (cur_char == '.') {
+			pointer_ = i;
 			return GetFloat(number);
 		}
 		else {
-			if (sign) number *= -1;
+			if (sign) {
+				number *= -1;
+			}
+
 			if (omit_trailing_zeroes) {
-				for (j = 0; j < (integer + decimal - n); j++) {
-					number *= 10;
+				for (int j = 0; j < (integer + decimal - n); j++) {
+					number *= 10;// NOLINT
 				}
 			}
-			for (j = 0; j < decimal; j++) number /= 10;
-			if (!n) {
+
+			for (int j = 0; j < decimal; j++) {
+				number /= 10;// NOLINT
+			}
+
+			if (n == 0) {
 				LOG(WARNING) << "Line " << line_number_ << " - Warning: Ignoring ill-formed coordinate";
 			}
+
 			return true;
 		}
 	}

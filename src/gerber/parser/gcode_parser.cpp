@@ -1,125 +1,110 @@
 #include "gcode_parser.h"
+#include "gerber_parser.h"
+#include "gerber/plotter.h"
 #include "gerber/gerber_level.h"
-#include "gerber.h"
 
 #include <glog/logging.h>
 
 
-GCodeParser::GCodeParser(Gerber& gerber) :gerber_(gerber) {
+GCodeParser::GCodeParser(GerberParser& gerber) :gerber_parser_(gerber) {
+
 }
 
 bool GCodeParser::Run() {
-	std::shared_ptr<GerberLevel> level;
+	gerber_parser_.start_of_level_ = false;
 
-	gerber_.start_of_level_ = false;
-
-	int code;
-	if (!gerber_.gerber_file_.GetInteger(code)) {
+	int code = 0;
+	if (!gerber_parser_.gerber_file_->GetInteger(code)) {
 		return false;
 	}
 
-	if (!gerber_.current_level_ && code != 4) {
-		level = std::make_shared<GerberLevel>(gerber_.current_level_, gerber_.units_);
-		gerber_.Add(level);
+	if (code != 4) {
+		gerber_parser_.PrepareLevel();
 	}
 
 	switch (code) {
 	case 0: // Move
-		gerber_.current_level_->exposure_ = geOff;
-		gerber_.current_level_->interpolation_ = giLinear;
+		gerber_parser_.plotter_->SetExposure(geOff);
+		gerber_parser_.plotter_->SetInterpolation(giLinear);
 		return true;
 
 	case 1: // Linear interpolation 1X scale
-		gerber_.current_level_->interpolation_ = giLinear;
+		gerber_parser_.plotter_->SetInterpolation(giLinear);
 		return true;
 
 	case 2: // Clockwise circular
-		gerber_.current_level_->interpolation_ = giClockwiseCircular;
+		gerber_parser_.plotter_->SetInterpolation(giClockwiseCircular);
 		return true;
 
 	case 3: // Counterclockwise circular
-		gerber_.current_level_->interpolation_ = giCounterclockwiseCircular;
+		gerber_parser_.plotter_->SetInterpolation(giCounterclockwiseCircular);
 		return true;
 
 	case 4: // Ignore block
-		while (!gerber_.gerber_file_.EndOfFile() && gerber_.gerber_file_.GetChar() != '*');
-		gerber_.gerber_file_.index_++;
-		return !gerber_.gerber_file_.EndOfFile();
+		while (!gerber_parser_.gerber_file_->EndOfFile() && gerber_parser_.gerber_file_->GetChar() != '*');
+		gerber_parser_.gerber_file_->pointer_++;
+		return !gerber_parser_.gerber_file_->EndOfFile();
 
-	case 10: // Linear interpolation 10X scale
-		gerber_.current_level_->interpolation_ = giLinear10X;
+	case 10: // NOLINT
+		gerber_parser_.plotter_->SetInterpolation(giLinear10X);
 		return true;
 
-	case 11: // Linear interpolation 0.1X scale
-		gerber_.current_level_->interpolation_ = giLinear0_1X;
+	case 11: // NOLINT
+		gerber_parser_.plotter_->SetInterpolation(giLinear0_1X);
 		return true;
 
-	case 12: // Linear interpolation 0.01X scale
-		gerber_.current_level_->interpolation_ = giLinear0_01X;
+	case 12: // NOLINT
+		gerber_parser_.plotter_->SetInterpolation(giLinear0_01X);
 		return true;
 
-	case 36: // Turn on Outline Area Fill
-		gerber_.current_level_->OutlineBegin(gerber_.gerber_file_.line_number_);
+	case 36: // NOLINT
+		gerber_parser_.plotter_->OutlineBegin(gerber_parser_.gerber_file_->line_number_);
 		return true;
 
-	case 37: // Turn off Outline Area Fill
-		gerber_.current_level_->OutlineEnd(gerber_.gerber_file_.line_number_);
+	case 37: // NOLINT
+		gerber_parser_.plotter_->OutlineEnd(gerber_parser_.gerber_file_->line_number_);
 		return true;
 
-	case 54: // Tool prepare
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G54";
-		}
-		gerber_.current_level_->exposure_ = geOff;
+	case 54: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G54";
+		gerber_parser_.plotter_->SetExposure(geOff);
 		return true;
 
-	case 55: // Flash prepare
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G55";
-		}
-		gerber_.current_level_->exposure_ = geOff;
+	case 55: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G55";
+		gerber_parser_.plotter_->SetExposure(geOff);
 		return true;
 
-	case 70: // Specify inches
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G70";
-		}
-		gerber_.units_ = guInches;
-		gerber_.current_level_->units_ = guInches;
+	case 70: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G70";
+		gerber_parser_.gerber_->unit_ = UnitType::guInches;
+		gerber_parser_.current_level_->SetUnit(UnitType::guInches);
 		return true;
 
-	case 71: // Specify millimeters
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G71";
-		}
-		gerber_.units_ = guMillimeters;
-		gerber_.current_level_->units_ = guMillimeters;
+	case 71: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G71";
+		gerber_parser_.gerber_->unit_ = UnitType::guMillimeters;
+		gerber_parser_.current_level_->SetUnit(UnitType::guMillimeters);
 		return true;
 
-	case 74: // Disable 360 deg circular interpolation
-		gerber_.current_level_->multi_quadrant_ = false;
+	case 74: // NOLINT
+		gerber_parser_.plotter_->multi_quadrant_ = false;
 		return true;
 
-	case 75: // Enable 360 deg circular interpolation
-		gerber_.current_level_->multi_quadrant_ = true;
+	case 75: // NOLINT
+		gerber_parser_.plotter_->multi_quadrant_ = true;
 		return true;
 
-	case 90: // Specify absolute format
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G90";
-		}
-		gerber_.current_level_->incremental_ = false;
+	case 90: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G90";
 		return true;
 
-	case 91: // Specify incremental format
-		if (gerber_warnings) {
-			LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Warning: Deprecated code: G91";
-		}
-
+	case 91: // NOLINT
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Warning: Deprecated code: G91";
 		return true;
 
 	default:
-		LOG(WARNING) << "Line " << gerber_.gerber_file_.line_number_ << " - Error: Unknown G Code: " << code;
+		LOG(WARNING) << "Line " << gerber_parser_.gerber_file_->line_number_ << " - Error: Unknown G Code: " << code;
 		break;
 	}
 

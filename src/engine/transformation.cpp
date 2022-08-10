@@ -14,7 +14,7 @@ void Transformation::Move(int delta_x, int delta_y) {
 }
 
 bool Transformation::Scale(double delta, double center_x, double center_y) {
-	if (scaled_ + delta >= 0.1 && scaled_ + delta <= 20) {
+	if (scaled_ + delta >= 0.1 && scaled_ + delta <= 20) {// NOLINT
 		left_top_.first = GetLeft(center_x, delta);
 		left_top_.second = GetTop(center_y, delta);
 

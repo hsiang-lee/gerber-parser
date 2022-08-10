@@ -1,10 +1,5 @@
 #pragma once
 
-enum GERBER_UNIT {
-	guInches,
-	guMillimeters
-};
-
 enum GERBER_INTERPOLATION {
 	giLinear,
 	giLinear10X,

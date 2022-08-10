@@ -1,23 +1,21 @@
 #include "ycode_parser.h"
-#include "gerber.h"
+#include "gerber_parser.h"
+#include "gerber/plotter.h"
 
 
-YCodeParser::YCodeParser(Gerber& gerber) : gerber_(gerber)
+YCodeParser::YCodeParser(GerberParser& gerber) : gerber_parser_(gerber)
 {
 }
 
 bool YCodeParser::Run()
 {
-	double d;
-	if (!gerber_.gerber_file_.GetCoordinate(d, gerber_.format_.YInteger, gerber_.format_.YDecimal, gerber_.format_.omit_trailing_zeroes_)) {
+	double d = 0.0;
+	if (!gerber_parser_.gerber_file_->GetCoordinate(d, gerber_parser_.format_.YInteger, gerber_parser_.format_.YDecimal, gerber_parser_.format_.omit_trailing_zeroes_)) {
 		return false;
 	}
 
-	if (!gerber_.current_level_) {
-		gerber_.Add(std::make_shared<GerberLevel>(nullptr, gerber_.units_));
-	}
-
-	gerber_.current_level_->Y = d;
+	gerber_parser_.PrepareEmptyLevel();
+	gerber_parser_.plotter_->y_ = d;
 	return true;
 }
 

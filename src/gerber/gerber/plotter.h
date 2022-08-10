@@ -1,69 +1,50 @@
 #pragma once
 #include <memory>
+#include "gerber/gerber_enums.h"
 
 class GerberLevel;
-class GerberAperture;
+class Aperture;
 
 class Plotter {
 public:
-	Plotter(GerberLevel& level);
+	Plotter(GerberLevel& level, std::shared_ptr<Plotter> old_plotter);
+	~Plotter() = default;
 
 	void OutlineBegin(unsigned line_number);
 	void OutlineEnd(unsigned line_number);
-	void Do(unsigned LineNumber);
-	void ApertureSelect(std::shared_ptr<GerberAperture> aperture_, unsigned LineNumber);
+	void Do(unsigned line_number);
+	void ApertureSelect(const std::shared_ptr<Aperture>& aperture, unsigned line_number);
 
-	void SetInPath(bool in_path) {
-		in_path_ = in_path;
+	void SetExposure(GERBER_EXPOSURE exposure) {
+		exposure_ = exposure;
 	}
 
-	bool IsInPath() const {
-		return in_path_;
+	void SetInterpolation(GERBER_INTERPOLATION interpolation) {
+		interpolation_ = interpolation;
 	}
 
-	void SetPreX(double pre_x) {
-		preX = pre_x;
-	}
-
-	double GetPreX() const {
-		return preX;
-	}
-
-	void SetPreY(double pre_y) {
-		preY = pre_y;
-	}
-
-	double GetPreY() const {
-		return preY;
-	}
-
-	std::shared_ptr<GerberAperture> GetCurrentAperture() const {
-		return current_aperture;
-	}
-
-	void SetCurrentApeture(std::shared_ptr<GerberAperture> aperture) {
-		current_aperture = aperture;
-	}
+	double x_, y_, i_, j_;
+	bool multi_quadrant_;
 
 private:
-	void Move(unsigned LineNumber);
+	void Move(unsigned line_number);
 	void Line();
 	void Arc();
 	void Flash();
 
-	double Get_mm(double Number);
 	double GetAngle(
 		double x1, double y1, // Start, relative to center
 		double x2, double y2  // End, relative to center
 	);
 
 	GerberLevel& level_;
+	GERBER_EXPOSURE exposure_{ geOff };
+	GERBER_INTERPOLATION interpolation_{ giLinear };
 
-	bool outline_fill_{ false };
+	bool drawing_line_{ false };
+	bool drawing_outline_{ false };
+	double pre_x_{ 0.0 }, pre_y_{ 0.0 };
+	double first_x_{ 0.0 }, first_y_{ 0.0 };
 
-	bool in_path_{ false };
-	double preX{ 0.0 }, preY{ 0.0 };
-	double firstX{ 0.0 }, firstY{ 0.0 };
-
-	std::shared_ptr<GerberAperture> current_aperture;
+	std::shared_ptr<Aperture> current_aperture_;
 };

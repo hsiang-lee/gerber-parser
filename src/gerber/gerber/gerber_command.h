@@ -1,44 +1,105 @@
 #pragma once
 #include <memory>
 
-class GerberAperture;
+class Aperture;
 
 class RenderCommand {
 public:
-	enum GerberCommand {
+	enum Command {
 		// Begin Path
-		gcRectangle,
-		gcCircle,
-		gcBeginLine,
+		cRectangle,
+		cCircle,
+		cBeginLine,
 
 		// Continue Path
-		gcLine,
-		gcArc,
+		cLine,
+		cArc,
 
 		// Close Path
-		gcClose,
+		cClose,
 
 		// Render Path
-		gcStroke,
-		gcFill,
-		gcErase, // Used for "exposure off" aperture primitives
+		cStroke,
+		cFill,
+		cErase, // Used for "exposure off" aperture primitives
 
 		// Other
-		gcBeginOutline, // The aperture does not matter
-		gcEndOutline,   // The aperture matters again
-		gcApertureSelect,
-		gcFlash
+		cBeginOutline, // The aperture does not matter
+		cEndOutline,   // The aperture matters again
+		cApertureSelect,
+		cFlash
 	};
 
+	RenderCommand(Command cmd);
 
-	RenderCommand(GerberCommand cmd);
+	Command command_;
+	std::shared_ptr<Aperture> aperture_; // Used for gcApertureSelect
 
-	GerberCommand command_;
-
+//protected:
 	double X, Y, W, H, A; // W and H used for D, Dx and Dy; A in degrees
-	struct {
-		double X, Y;
-	} End;
+	std::pair<double, double> end_;
+};
 
-	std::shared_ptr<GerberAperture> aperture_; // Used for gcApertureSelect
+class ApertureSelectCommand : public RenderCommand {
+public:
+	ApertureSelectCommand(std::shared_ptr<Aperture> aperture);
+};
+
+class RectangleCommand : public RenderCommand {
+public:
+	RectangleCommand();
+};
+
+class CircleCommand : public RenderCommand {
+public:
+	CircleCommand(double x, double y, double diameter);
+};
+
+class BeginLineCommand : public RenderCommand {
+public:
+	BeginLineCommand(double x, double y);
+};
+
+class LineCommand : public RenderCommand {
+public:
+	LineCommand(double x, double y);
+};
+
+class ArcCommand : public RenderCommand {
+public:
+	ArcCommand(double x, double y, double angle);
+};
+
+class CloseCommand : public RenderCommand {
+public:
+	CloseCommand();
+};
+
+class StrokeCommand : public RenderCommand {
+public:
+	StrokeCommand();
+};
+class FillCommand : public RenderCommand {
+public:
+	FillCommand();
+};
+
+class EraseCommand : public RenderCommand {
+public:
+	EraseCommand();
+};
+
+class BeginOutlineCommand : public RenderCommand {
+public:
+	BeginOutlineCommand();
+};
+
+class EndOutlineCommand : public RenderCommand {
+public:
+	EndOutlineCommand();
+};
+
+class FlashCommand : public RenderCommand {
+public:
+	FlashCommand(double x, double y);
 };
