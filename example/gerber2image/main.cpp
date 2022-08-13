@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QPixmap>
 
+#include "gerber/gerber/gerber.h"
 #include "gerber/gerber_parser.h"
 #include "engine/qt_engine.h"
 

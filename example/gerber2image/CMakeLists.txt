@@ -1,3 +1,4 @@
+find_package(Qt5 COMPONENTS Core)
 set(CMAKE_AUTORCC ON)
 
 file(GLOB Source ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
