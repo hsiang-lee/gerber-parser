@@ -405,3 +405,24 @@ TEST(GerberRendererTest, TestRenderGerberFile15) {
 	EXPECT_FALSE(gerber->IsNegative());
 	EXPECT_EQ(gerber->Name(), "");
 }
+
+TEST(GerberRendererTest, TestRenderGerberFile16) {
+    int argc = 0;
+    char* argv[1];
+    QApplication app(argc, argv);
+
+    auto parser = std::make_shared<GerberParser>(std::string(TestData) + "BOTTOM.art");
+    auto gerber = parser->GetGerber();
+
+    auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
+    auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+    engine->RenderGerber(gerber);
+
+    //image->save(QString(TestData) + "results/BOTTOM.art.bmp");
+
+    QImage expected(QString(TestData) + "results/BOTTOM.art.bmp");
+    EXPECT_EQ(*image, expected);
+
+    EXPECT_FALSE(gerber->IsNegative());
+    EXPECT_EQ(gerber->Name(), "");
+}

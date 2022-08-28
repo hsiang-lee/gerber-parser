@@ -28,13 +28,12 @@ target_include_directories(
 )
 target_link_libraries(
 	TestGerberRenderer PRIVATE
+	glog::glog
 	gtest
-	gmock
-	gmock_main
+	gtest_main
 	Qt5::Core
 	Qt5::Widgets
 	Qt5::Gui
-	glog::glog
 )
 target_compile_definitions(TestGerberRenderer PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/test_data/gerber/")
 
