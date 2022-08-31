@@ -82,7 +82,7 @@ bool GerberFile::GetInteger(int& integer) {
 
 	bool negative = GetSign();
 	integer = 0;
-	while (!EndOfFile()) {
+	while (pointer_ < buffer_.size()) {
 		const char cur_char = buffer_[pointer_];
 		if (IsNumber(cur_char)) {
 			integer *= 10;// NOLINT
