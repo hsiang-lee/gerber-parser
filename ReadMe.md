@@ -116,4 +116,4 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 Copyright © 2022 [leehsiang](https://github.com/hsiang-lee).<br />
-This project is [GPL-3.0 license](https://github.com/hsiang-lee/gerber-parser/blob/master/LICENSE) licensed.
+This project is [MIT license](https://github.com/hsiang-lee/gerber-parser/blob/master/LICENSE) licensed.
