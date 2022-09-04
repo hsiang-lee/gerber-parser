@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>gerber_exporter.png</file>
+    </qresource>
+</RCC>
