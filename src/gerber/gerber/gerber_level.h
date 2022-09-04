@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include <QPixmap>
+#include <QRectF>
 #include <QPainterPath>
 
 #include "bound_box.h"
@@ -27,7 +29,8 @@ public:
 	enum Type {
 		kNormal,
 		kStroke,
-		kRectLine
+		kRectLine,
+        kApertureMacro
 	};
 
 	Primitive() {
@@ -41,6 +44,10 @@ public:
 	QPainterPath path_;
 	Type type_;
 	double line_width_;
+    
+    QRectF dst_;
+    QRectF src_;
+    QPixmap pic_;
 };
 
 
@@ -141,6 +148,7 @@ public:
 	bool IsCopyLayer() const;
 
 	void NewPrimitive(Primitive::Type type, double line_width);
+    void NewPrimitive(const QRectF& dst, const QPixmap& pic, const QRectF& src);
 	std::vector<std::shared_ptr<Primitive>> GetPrimitives() const;
 
 	std::string GetName() const;

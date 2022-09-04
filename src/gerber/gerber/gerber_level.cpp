@@ -550,16 +550,17 @@ void GerberLevel::EndDrawNewAperture(int code, const std::vector<std::unique_ptr
 }
 
 int GerberLevel::Flash(double x, double y) {
-	engine_->current_painter_->drawPixmap(
-		QRectF(
-			x * kTimes - engine_->aperture_img_.aperture_->bound_box_.Width() * kTimes / 2,
-			y * kTimes - engine_->aperture_img_.aperture_->bound_box_.Height() * kTimes / 2,
-			engine_->aperture_img_.aperture_->bound_box_.Width() * kTimes,
-			engine_->aperture_img_.aperture_->bound_box_.Height() * kTimes
-		),
-		*engine_->aperture_img_.pixmap_,
-		engine_->aperture_img_.pixmap_->rect()
-	);
+    NewPrimitive(Primitive::kNormal, 1.0);
+    NewPrimitive(QRectF(
+                        x * kTimes + engine_->aperture_img_.aperture_->bound_box_.Left()* kTimes,
+                        y * kTimes + engine_->aperture_img_.aperture_->bound_box_.Bottom() * kTimes,
+                        engine_->aperture_img_.aperture_->bound_box_.Width() * kTimes,
+                        engine_->aperture_img_.aperture_->bound_box_.Height() * kTimes
+                ),
+                *engine_->aperture_img_.pixmap_,
+                QRectF(0.0, 0.0, engine_->aperture_img_.pixmap_->width(), engine_->aperture_img_.pixmap_->height())
+    );
+    
 	return 0;
 }
 
@@ -798,6 +799,18 @@ void GerberLevel::NewPrimitive(Primitive::Type type, double line_width)
 	primitive_ = std::make_unique<Primitive>();
 }
 
+void GerberLevel::NewPrimitive(const QRectF& dst, const QPixmap& pic, const QRectF& src){
+    if (primitive_) {
+        primitive_->type_ = Primitive::kApertureMacro;
+        primitive_->dst_ = dst;
+        primitive_->src_ = src;
+        primitive_->pic_ = pic;
+        primitives_.emplace_back(std::move(primitive_));
+    }
+
+    primitive_ = std::make_unique<Primitive>();
+}
+
 std::vector<std::shared_ptr<Primitive>> GerberLevel::GetPrimitives() const
 {
 	return primitives_;
@@ -828,8 +841,8 @@ void GerberLevel::NewAperture(std::shared_ptr<Aperture> aperture) {
 		height = 1;
 	}
 
-	engine_->aperture_img_ = QtEngine::ApertureImg(aperture, std::make_shared<QPixmap>(width, height));
+	engine_->aperture_img_ = QtEngine::ApertureImg(aperture, std::make_shared<QPixmap>(width * 10, height * 10));
 	engine_->aperture_img_.pixmap_->fill(QColor(255, 255, 255, 0));
 	engine_->aperture_painter_ = std::make_shared<QPainter>(engine_->aperture_img_.pixmap_.get());
-	engine_->aperture_painter_->setWindow(left, top, right - left, bottom - top);
+	engine_->aperture_painter_->setWindow(left, bottom, right - left, top - bottom);
 }

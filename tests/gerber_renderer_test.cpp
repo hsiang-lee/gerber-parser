@@ -6,7 +6,6 @@
 #include <QImage>
 #include <QApplication>
 
-
 TEST(GerberRendererTest, TestRenderFromGerber) {
 	int argc = 0;
 	char* argv[1];

@@ -153,6 +153,9 @@ void QtEngine::EndDraw(std::shared_ptr<GerberLevel> level) {
 			PreparePenAndBrush(level->IsNegative());
 			current_painter_->drawPath(each->GetPath());
 		}
+        else if (each->type_ == Primitive::kApertureMacro) {
+            current_painter_->drawPixmap(each->dst_, each->pic_, each->src_);
+        }
 	}
 
 	current_painter_ = nullptr;
