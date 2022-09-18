@@ -19,9 +19,6 @@
 
 
 GerberParser::GerberParser(const std::string& file_name) : file_name_(file_name) {
-    google::SetLogDestination(google::INFO, "./log");
-    google::SetStderrLogging(google::GLOG_ERROR);
-    
 	Init();
 	LoadGerber(file_name);
 }
