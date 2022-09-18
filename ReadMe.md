@@ -43,7 +43,7 @@ In addition to rendering and exporting static images, the GerberParser library a
 GerberParser is written in standard C++, and the dependent Qt5, glog, and gflags all support cross-platform compilation. It has been tested to compile normally on Linux, Mac and Windows.
 
 ### Sample image
-![gerber image](./logo/gerber.png)
+![gerber image](./img/gerber.png)
 
 ### 🏠 [Homepage](https://github.com/hsiang-lee/gerber-parser)
 
