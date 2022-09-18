@@ -39,7 +39,7 @@ GerberParser采用标准C++编写，依赖的Qt5、glog、gflags都支持跨平�
 
 
 # 渲染样图
-![gerber image](./logo/gerber.png)
+![gerber image](./img/gerber.png)
 
 
 
