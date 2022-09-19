@@ -115,8 +115,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 Give a ⭐️ if this project helped you!
 
 You could also donate to support the author. Thank you very much!
-![alipay](./img/alipay.jpeg)
-![wechatpay](./img/wechatpay.jpeg)
+![alipay](./img/alipay.jpeg)![wechatpay](./img/wechatpay.jpeg)
 
 ## 📝 License
 
