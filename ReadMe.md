@@ -116,7 +116,7 @@ Give a ⭐️ if this project helped you!
 
 You could also donate to support the author. Thank you very much!
 <center class="half">
-    <img src="./img/alipay.jpeg" height="208"/><img src="./img/wechatpay.jpeg" height="208"/>
+    <img src="./img/alipay.jpeg" height="300"/><img src="./img/wechatpay.jpeg" height="300"/>
 </center>
 
 ## 📝 License
