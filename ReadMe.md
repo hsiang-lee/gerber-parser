@@ -2,7 +2,7 @@
 
 ![GerberParser](./img/logo.png)
 
-[简体中文](./ReadMe_simple_chinese.md)
+[English](./ReadMe_English.md)
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-v1.0-blue.svg?cacheSeconds=2592000" />
@@ -18,7 +18,7 @@
 [![Windows](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml)
 </p>
 
-GerberParser is an open source, cross-platform compilation, easy-to-use gerber file rendering library, written in standard C++, and supports the rs274x standard. The rendering engine is written in Qt and supports rendering Gerber files to the image export format supported by Qt:
+GerberParser是一个gerber文件解析库。它采用标准c++编写，支持rs274x标准。良好支持跨平台编译，目前在MacOS、Linux和Windows上编译、测试通过。它使用Qt绘图引擎来绘制，支持直接绘制到Qt的Widget上，也支持绘制到图像上。Qt支持的图像格式都支持，包括BMP、GIF、JPEG、PNG等。下面是一个支持的图像格式的列表。
 
 Format|Description|Qt's support
 ---|:--:|---:
@@ -33,32 +33,25 @@ PPM|Portable Pixmap|Read/write
 XBM|X11 Bitmap|Read/write
 XPM|X11 Pixmap|Read/write
 
-also supports rendering directly to the QWidget window.
+另外，Qt也提供了QSvgGenerator和QPDFWriter，这两个类都继承自QPainterDevice。通过Qt的这些支持，你也可以将gerber文件绘制到svg格式的图像或pdf格式的文件中。
 
-In addition, Qt also provides QSvgGenerator and QPdfWriter, which inherits from QPaintDevice. Theoretically, it can also be rendered into sgv and pdf to export, but there is no direct support currently.
+仓库example目录下提供了两个demo程序。一个用来将gerber文件导出成图像文件。支持超高分辨率的导出，对于低分辨率的会导出成一个文件，对于高分辨率(分辨率高到超出了限制)的，会自动切割，导出成多个片段。另外一个是gerber_viewer，它是一个交互式的界面程序，用来预览gerber文件，支持简单的放大缩小的交互。如果你想编译example程序，请在CMake时加上"BUILD_EXAMPLES"的选项。
 
-In addition to rendering and exporting static images, the GerberParser library also supports some interactive operations. For example, move the position of the image, zoom the image and highlight a certain point. These functions can be used for interactive Gerber display, refer to example/gerber_viewer. It can also be used for segmented rendering and export of larger images, example/gerber2image provides an example. For images with higher resolution, exporting into one image will be subject to many restrictions. Example/gerber2image is exported into multiple images through segmented export, each with a maximum resolution of 20000, which together form a complete image.
-
-### Supported platform
-GerberParser is written in standard C++, and the dependent Qt5, glog, and gflags all support cross-platform compilation. It has been tested to compile normally on Linux, Mac and Windows.
-
-### Sample image
+### 渲染样图
 ![gerber image](./img/gerber.png)
-
-### 🏠 [Homepage](https://github.com/hsiang-lee/gerber-parser)
 
 ### ✨ [Demo](https://github.com/hsiang-lee/gerber-parser/tree/master/example)
 
-## Install
-### Dependent libraries：
-- Qt(Higher version may also supported, but not tested)
-- glog(Used for logging)
-- gflags(The sample program used to parse the cui parameter, if you turn off the "BUILD_EXAMPLE" option, this dependency is not needed)
-- googletest(For unit test, this dependency is not needed if the option "BUILD_TESTS" is turned off)
-Qt5 needs to be installed externally. Specify the Qt installation path when CMake, or set the Qt installation path through CMake-GUI, or set the environment variables of Qt on the machine.
-glog, gflags, and googletest have been self-contained through git submodules and do not need to be provided externally.
+## 安装
+### 依赖的第三方库：
+- Qt(我使用的是5.12的版本，其他版本理论上也支持，不过没有测试过)
+- glog(用于记录日志)
+- gflags(示例程序中使用，用来解析参数)
+- googletest(用于单元测试，默认是关闭的)
+Qt5需要另外安装，在CMake时需要制定Qt的路径(如果Qt的路径已经加入好环境变量里了，CMake应该能自己找到)
+glog, gflags, and googletest已经添加到git的submodule中了。第一次拉代码时，执行"git submodule update --init --recursive"会自动拉取子模块的代码。
 
-### Clone：
+### 克隆代码：
 ```
 git clone https://github.com/hsiang-lee/gerber-parser
 git submodule update --recursive --init
@@ -69,17 +62,17 @@ git submodule update --recursive --init
 cd gerber-parser
 mkdir build
 cd build
-cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=path/of/Qt
+cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=path/of/Qt
 ```
 
-### Build:
+### 构建:
 Linux(Ubuntu) or Mac:
 ```make```
 
 Windows:
 ```nmake```
 
-## Usage
+## 使用示例
 ```
 auto parser = std::make_shared<GerberParser>(gerber_file_path);
 auto gerber = parser->GetGerber();
@@ -91,30 +84,24 @@ engin->RenderGerber(gerber);//Render the gerber file to a bitmap image created a
 
 image->save(path_you_want_to_save_image);//Save the image rendered to file.
 ```
+也可参考example中的代码。
 
-## Tools
-GerberParser also includes some simple tools, which are in the example directory. When using cmake, set BUILD_EXAMPLES=ON to build these tools.
-* gerber_viewer	A simple gerber preview tool that can zoom, drag, and select elements (Not fully supported yet)
-* gerber2image	A tool for exporting gerber files to binary bitmaps, providing a cui interface, and you can get helps from the "--help" option
-* gerber2svg	A tool for exporting gerber files to svg images, providing a cui interface, and you can get helps from the "--help" option
-
-## Author
+## 关于作者
 
 👤 **leehsiang**
 
 * Website: https://www.cnblogs.com/leehsiang
-* Wechat: lee_hsiang
 * Github: [@hsiang-lee](https://github.com/hsiang-lee)
+* Wechat: ![lee_hsiang](./img/wechat.jpeg)
 
-## 🤝 Contributing
+## 🤝 贡献代码
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/hsiang-lee/gerber-parser/issues). You can also take a look at the [contributing guide](https://github.com/hsiang-lee/gerber-parser).
+欢迎提交issue或功能请求 <br />Feel free to check [issues page](https://github.com/hsiang-lee/gerber-parser/issues). You can also take a look at the [contributing guide](https://github.com/hsiang-lee/gerber-parser).
 
-## Show your support
+## 支持作者
 
-Give a ⭐️ if this project helped you!
-
-You could also donate to support the author. Thank you very much!
+记得点赞，给星⭐️ 哟~
+您也可以请作者喝杯奶茶，哈哈哈~
 <center class="half">
     <img src="./img/alipay.jpeg" height="400"/><img src="./img/wechatpay.jpeg" height="400"/>
 </center>
