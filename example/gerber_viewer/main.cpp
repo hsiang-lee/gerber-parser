@@ -2,6 +2,9 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QMessageBox>
+
+#include <exception>
 
 #include "gerber_parser/gerber_file.h"
 #include "gerber_parser/gerber.h"
@@ -13,8 +16,16 @@ public:
 	GerberWidget() {
 		auto file = QFileDialog::getOpenFileName(this);
 		auto parser = std::make_unique<GerberParser>(file.toLocal8Bit().toStdString());;
-		gerber_ = parser->GetGerber();
-		engine_ = std::make_unique<QtEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+		
+		try {
+			gerber_ = parser->GetGerber();
+            engine_ = std::make_unique<QtEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+		}
+		catch (const std::exception& e) {
+            gerber_ = std::make_shared<Gerber>();
+            engine_ = std::make_unique<QtEngine>(this, BoundBox(0, 0, 1.0, 1.0), BoundBox(0.025, 0.025, 0.025, 0.025));
+			QMessageBox::warning(this, "Message", e.what(), QMessageBox::Ok);
+		}
 	}
 
 protected:

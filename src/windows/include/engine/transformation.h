@@ -1,6 +1,6 @@
 #pragma once
 #include <QRect>
-#include "bound_box.h"
+#include "gerber_parser/bound_box.h"
 
 
 class Transformation {

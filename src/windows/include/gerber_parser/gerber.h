@@ -20,7 +20,7 @@ public:
 	static double Get_mm(double number, Type unit);
 };
 
-class Gerber {
+class GerberApi Gerber {
 public:
 	Gerber() {
 		unit_ = UnitType::guInches;

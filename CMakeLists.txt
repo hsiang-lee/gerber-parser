@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(gerber_parser C CXX)
+project(gerber-parser C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 option(BUILD_TESTS OFF)
