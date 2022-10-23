@@ -53,6 +53,7 @@ endif()
 add_library(gerber_parser SHARED IMPORTED)
 
 set_target_properties(gerber_parser PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "GerberApi="
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/ubuntu/include"
 )
 

@@ -12,7 +12,7 @@ class Aperture;
 class GerberLevel;
 class GerberFile;
 
-class GerberParser {
+class GerberApi GerberParser {
 private:
 	std::string file_name_;
 	std::unique_ptr<GerberFile> gerber_file_;

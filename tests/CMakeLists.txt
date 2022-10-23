@@ -14,7 +14,6 @@ add_executable(TestGerberRenderer ${TestSrc})
 target_link_libraries(
 	TestGerberRenderer PRIVATE
 	gerber_parser
-	glog::glog
 	gtest
 	gtest_main
 	Qt5::Core

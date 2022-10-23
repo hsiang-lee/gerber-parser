@@ -6,9 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_TESTS OFF)
 option(BUILD_EXAMPLES OFF)
 
-add_subdirectory(3rdparty/glog)
-target_compile_definitions(glog PRIVATE "HAVE_SNPRINTF")
-
 if (WIN32)
 	message(STATUS "Now is windows")
 	set(gerber-parser_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/windows/cmake)
@@ -50,8 +47,6 @@ if(CLANG_TIDY)
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src/gerber"
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src/engine"
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src"
-		-I "${PROJECT_BINARY_DIR}/3rdparty/glog"
-		-I "${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/glog/src"
 		-I "${Qt5Widgets_INCLUDE_DIRS}"
     )
 

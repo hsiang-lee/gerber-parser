@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-class GerberFile {
+class GerberApi GerberFile {
 public:
 	GerberFile(const std::vector<char>& data);
 

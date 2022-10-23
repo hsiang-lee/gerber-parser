@@ -24,7 +24,7 @@ class GerberApi Gerber {
 public:
 	Gerber() {
 		unit_ = UnitType::guInches;
-		apertures_.resize(1000);// NOLINT
+		apertures_.resize(3000);// NOLINT
 	}
 
 	bool negative_{ false };

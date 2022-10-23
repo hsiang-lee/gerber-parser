@@ -2,7 +2,7 @@
 #include <utility>
 
 
-class BoundBox {
+class GerberApi BoundBox {
 	double left_;
 	double bottom_;
 	double right_;
