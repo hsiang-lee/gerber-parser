@@ -101,10 +101,12 @@ image->save(path_you_want_to_save_image);//Save the image rendered to file.
 ## 支持作者
 
 记得点赞，给星⭐️ 哟~
-您也可以请作者喝杯奶茶，哈哈哈~
-<center class="half">
-    <img src="./img/alipay.jpeg" height="400"/><img src="./img/wechatpay.jpeg" height="400"/>
-</center>
+
+### &#8627; Stargazers
+[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://github.com/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/stargazers)
+
+### &#8627; Forkers
+[![Forkers repo roster for @hsiang-lee/gerber-parser](https://github.com/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/network/members)
 
 ## 📝 License
 
