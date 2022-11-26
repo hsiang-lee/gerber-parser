@@ -115,10 +115,11 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-You could also donate to support the author. Thank you very much!
-<center class="half">
-    <img src="./img/alipay.jpeg" height="400"/><img src="./img/wechatpay.jpeg" height="400"/>
-</center>
+### &#8627; Stargazers
+[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://github.com/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/stargazers)
+
+### &#8627; Forkers
+[![Forkers repo roster for @hsiang-lee/gerber-parser](https://github.com/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/network/members)
 
 ## 📝 License
 
