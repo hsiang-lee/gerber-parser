@@ -116,10 +116,10 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 Give a ⭐️ if this project helped you!
 
 ### Stargazers
-[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/stars/hsiang-lee/gerber-parser)](https://github.com/nastyox/Repo-Roster/stargazers)
+[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/stars/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/stargazers)
 
 ### Forkers
-[![Forkers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/forks/hsiang-lee/gerber-parser)](https://github.com/nastyox/Repo-Roster/network/members)
+[![Forkers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/forks/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/network/members)
 
 ## 📝 License
 

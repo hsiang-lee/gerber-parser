@@ -103,10 +103,10 @@ image->save(path_you_want_to_save_image);//Save the image rendered to file.
 记得点赞，给星⭐️ 哟~
 
 ### Stargazers
-[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/stars/hsiang-lee/gerber-parser)](https://github.com/nastyox/Repo-Roster/stargazers)
+[![Stargazers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/stars/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/stargazers)
 
 ### Forkers
-[![Forkers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/forks/hsiang-lee/gerber-parser)](https://github.com/nastyox/Repo-Roster/network/members)
+[![Forkers repo roster for @hsiang-lee/gerber-parser](https://reporoster.com/forks/hsiang-lee/gerber-parser)](https://github.com/hsiang-lee/gerber-parser/network/members)
 
 ## 📝 License
 
