@@ -71,6 +71,8 @@ private:
 	ApertureImg aperture_img_;
 
 	friend class GerberLevel;
+	friend class RenderCommand;
+    friend class ArcCommand;
 
 	bool outline_path_{ false };
 	bool convert_strokes2fills_{ false };
