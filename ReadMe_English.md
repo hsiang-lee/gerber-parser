@@ -86,7 +86,7 @@ auto gerber = parser->GetGerber();
 //Construct a Gerber object，gerber file will be parsed here。
 
 auto image = std::make_unique<QBitmap>(1920， 1280);//Create a QBitmap(for export bitmap image).Other images can also be exported, eg: QPixmap or QImage.
-auto engine = std::make_unique<QtEngine>(image.get());//Construct a QtEngine
+auto engine = std::make_unique<QPainterEngine>(image.get());//Construct a QtEngine
 engin->RenderGerber(gerber);//Render the gerber file to a bitmap image created above
 
 image->save(path_you_want_to_save_image);//Save the image rendered to file.
