@@ -2,18 +2,19 @@
 #include <QFileDialog>
 #include <QPixmap>
 
-#include "gerber_parser/bound_box.h"
+#include "gerber_parser/box.h"
 #include "gerber_parser/gerber_file.h"
 #include "gerber_parser/gerber.h"
 #include "gerber_parser/gerber_parser.h"
-#include "engine/qt_engine.h"
+#include "engine/qpainter_engine.h"
 
 #include <gflags/gflags.h>
 
 DEFINE_string(gerber_file, "", "The path of gerber file you want to export.");
 DEFINE_double(um_pixel, 5, "How much um/pixel.Default value is 5um/pixel");
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
 	gflags::SetUsageMessage("Usage: gerber2image --gerber_file=\"path/to/gerber/file\" --um_pixel=5");
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
 
@@ -26,25 +27,29 @@ int main(int argc, char* argv[]) {
 
 	int width_img = 0;
 	int height_img = 0;
-	if (width_pixel > height_pixel) {
+	if (width_pixel > height_pixel)
+	{
 		height_img = 20000 * height_pixel / width_pixel;
 		width_img = 20000;
 	}
-	else {
+	else
+	{
 		width_img = 20000 * width_pixel / height_pixel;
 		height_img = 20000;
 	}
 
 	auto image = std::make_unique<QPixmap>(width_img * 1.05, height_img * 1.05);
-	auto engine = std::make_unique<QtEngine>(image.get(), gerber->GetBBox(), BoundBox(0.0, 0.0, 0.0, 0.0));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.0, 0.0, 0.0, 0.0));
 
 	int height_scale = (height_pixel - 1) / height_img + 1;
 	int width_scale = (width_pixel - 1) / width_img + 1;
 
 	engine->Scale(std::max(width_scale, height_scale) - 1);
 
-	for (int i = 0; i < height_scale; ++i) {
-		for (int j = 0; j < width_scale; ++j) {
+	for (int i = 0; i < height_scale; ++i)
+	{
+		for (int j = 0; j < width_scale; ++j)
+		{
 			engine->RenderGerber(gerber);
 
 			auto image_file = QString(FLAGS_gerber_file.c_str()) + '_' + QString("%1").arg(i) + '_' + QString("%1").arg(j) + ".jpg";
