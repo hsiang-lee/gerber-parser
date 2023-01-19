@@ -13,7 +13,7 @@ file(GLOB_RECURSE
 add_executable(TestGerberRenderer ${TestSrc})
 target_link_libraries(
 	TestGerberRenderer PRIVATE
-	gerber_parser
+	gerber_engine
 	gtest
 	gtest_main
 	Qt5::Core

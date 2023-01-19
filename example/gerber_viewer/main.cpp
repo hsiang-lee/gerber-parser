@@ -5,10 +5,9 @@
 #include <QMessageBox>
 #include <QGraphicsView>
 
-#include "engine/qgraphics_scene_engine.h"
-#include "gerber_parser/gerber_file.h"
+#include "engines/qgraphics_scene_engine.h"
 #include "gerber_parser/gerber_parser.h"
-#include "gerber_parser/gerber.h"
+#include "gerber/gerber.h"
 
 class GerberWidget : public QGraphicsView
 {
