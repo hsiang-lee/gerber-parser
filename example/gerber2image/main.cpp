@@ -2,11 +2,10 @@
 #include <QFileDialog>
 #include <QPixmap>
 
-#include "gerber_parser/box.h"
-#include "gerber_parser/gerber_file.h"
-#include "gerber_parser/gerber.h"
+#include "gerber_parser/bound_box.h"
+#include "gerber/gerber.h"
 #include "gerber_parser/gerber_parser.h"
-#include "engine/qpainter_engine.h"
+#include "engines/qpainter_engine.h"
 
 #include <gflags/gflags.h>
 

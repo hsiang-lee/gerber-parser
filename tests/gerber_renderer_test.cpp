@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
-#include "engine/qpainter_engine.h"
-#include "gerber_parser/gerber.h"
-#include "gerber_parser/gerber_file.h"
+#include "engines/qpainter_engine.h"
+#include "gerber/gerber.h"
 #include "gerber_parser/gerber_parser.h"
 
 #include <QImage>
 #include <QApplication>
 
-TEST(GerberRendererTest, TestRenderFromGerber) {
+TEST(GerberRendererTest, TestRenderFromGerber)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113563-f-avi/2301113563-f-gtl");
@@ -19,7 +19,7 @@ TEST(GerberRendererTest, TestRenderFromGerber) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
+	// image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113563-f-gtl.bmp");
 	EXPECT_EQ(*image, expected);
@@ -28,9 +28,10 @@ TEST(GerberRendererTest, TestRenderFromGerber) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestScale) {
+TEST(GerberRendererTest, TestScale)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113563-f-avi/2301113563-f-gtl");
@@ -41,7 +42,7 @@ TEST(GerberRendererTest, TestScale) {
 	engine->Scale(1.2, 0.9, 0.8);
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
+	// image->save(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
 	EXPECT_EQ(*image, expected);
@@ -49,9 +50,10 @@ TEST(GerberRendererTest, TestScale) {
 	EXPECT_FALSE(gerber->IsNegative());
 }
 
-TEST(GerberRendererTest, TestMove) {
+TEST(GerberRendererTest, TestMove)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113563-f-avi/2301113563-f-gtl");
@@ -63,7 +65,7 @@ TEST(GerberRendererTest, TestMove) {
 	engine->Move(400, 600);
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
+	// image->save(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
 	EXPECT_EQ(*image, expected);
@@ -71,9 +73,10 @@ TEST(GerberRendererTest, TestMove) {
 	EXPECT_EQ(gerber->GetBBox(), BoundBox(-42.900000000000006, 200.50000000000000, 38.700000000000003, -38.700000000000003));
 }
 
-TEST(GerberRendererTest, TestConvertStroke2Fill) {
+TEST(GerberRendererTest, TestConvertStroke2Fill)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113563-f-avi/2301113563-f-gtl");
@@ -85,15 +88,16 @@ TEST(GerberRendererTest, TestConvertStroke2Fill) {
 
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113563-f-gtl_stroke2fill.bmp");
+	// image->save(QString(TestData) + "results/2301113563-f-gtl_stroke2fill.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113563-f-gtl_stroke2fill.bmp");
 	EXPECT_EQ(*image, expected);
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile1) {
+TEST(GerberRendererTest, TestRenderGerberFile1)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987c.dat");
@@ -103,7 +107,7 @@ TEST(GerberRendererTest, TestRenderGerberFile1) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987c.dat.bmp");
+	// image->save(QString(TestData) + "results/2301113987c.dat.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987c.dat.bmp");
 	EXPECT_EQ(*image, expected);
@@ -112,9 +116,10 @@ TEST(GerberRendererTest, TestRenderGerberFile1) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile2) {
+TEST(GerberRendererTest, TestRenderGerberFile2)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987c.rout");
@@ -124,7 +129,7 @@ TEST(GerberRendererTest, TestRenderGerberFile2) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987c.rout.bmp");
+	// image->save(QString(TestData) + "results/2301113987c.rout.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987c.rout.bmp");
 	EXPECT_EQ(*image, expected);
@@ -133,9 +138,10 @@ TEST(GerberRendererTest, TestRenderGerberFile2) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile3) {
+TEST(GerberRendererTest, TestRenderGerberFile3)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987-c-gbl");
@@ -145,7 +151,7 @@ TEST(GerberRendererTest, TestRenderGerberFile3) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987-c-gbl.bmp");
+	// image->save(QString(TestData) + "results/2301113987-c-gbl.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987-c-gbl.bmp");
 	EXPECT_EQ(*image, expected);
@@ -154,9 +160,10 @@ TEST(GerberRendererTest, TestRenderGerberFile3) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile4) {
+TEST(GerberRendererTest, TestRenderGerberFile4)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987-c-gbs");
@@ -166,7 +173,7 @@ TEST(GerberRendererTest, TestRenderGerberFile4) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987-c-gbs.bmp");
+	// image->save(QString(TestData) + "results/2301113987-c-gbs.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987-c-gbs.bmp");
 	EXPECT_EQ(*image, expected);
@@ -175,9 +182,10 @@ TEST(GerberRendererTest, TestRenderGerberFile4) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile5) {
+TEST(GerberRendererTest, TestRenderGerberFile5)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987-c-gtl");
@@ -187,7 +195,7 @@ TEST(GerberRendererTest, TestRenderGerberFile5) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987-c-gtl.bmp");
+	// image->save(QString(TestData) + "results/2301113987-c-gtl.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987-c-gtl.bmp");
 	EXPECT_EQ(*image, expected);
@@ -196,9 +204,10 @@ TEST(GerberRendererTest, TestRenderGerberFile5) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile6) {
+TEST(GerberRendererTest, TestRenderGerberFile6)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301113987-c-avi/2301113987-c-gts");
@@ -208,7 +217,7 @@ TEST(GerberRendererTest, TestRenderGerberFile6) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301113987-c-gts.bmp");
+	// image->save(QString(TestData) + "results/2301113987-c-gts.bmp");
 
 	QImage expected(QString(TestData) + "results/2301113987-c-gts.bmp");
 	EXPECT_EQ(*image, expected);
@@ -217,9 +226,10 @@ TEST(GerberRendererTest, TestRenderGerberFile6) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile7) {
+TEST(GerberRendererTest, TestRenderGerberFile7)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633.rout");
@@ -229,7 +239,7 @@ TEST(GerberRendererTest, TestRenderGerberFile7) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633.rout.bmp");
+	// image->save(QString(TestData) + "results/2301115633.rout.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633.rout.bmp");
 	EXPECT_EQ(*image, expected);
@@ -238,9 +248,10 @@ TEST(GerberRendererTest, TestRenderGerberFile7) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile8) {
+TEST(GerberRendererTest, TestRenderGerberFile8)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633lg.dat");
@@ -250,7 +261,7 @@ TEST(GerberRendererTest, TestRenderGerberFile8) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633lg.dat.bmp");
+	// image->save(QString(TestData) + "results/2301115633lg.dat.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633lg.dat.bmp");
 	EXPECT_EQ(*image, expected);
@@ -259,9 +270,10 @@ TEST(GerberRendererTest, TestRenderGerberFile8) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile9) {
+TEST(GerberRendererTest, TestRenderGerberFile9)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633lg.ld12");
@@ -271,7 +283,7 @@ TEST(GerberRendererTest, TestRenderGerberFile9) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633lg.ld12.bmp");
+	// image->save(QString(TestData) + "results/2301115633lg.ld12.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633lg.ld12.bmp");
 	EXPECT_EQ(*image, expected);
@@ -280,9 +292,10 @@ TEST(GerberRendererTest, TestRenderGerberFile9) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile10) {
+TEST(GerberRendererTest, TestRenderGerberFile10)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633lg.ld21");
@@ -292,7 +305,7 @@ TEST(GerberRendererTest, TestRenderGerberFile10) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633lg.ld21.bmp");
+	// image->save(QString(TestData) + "results/2301115633lg.ld21.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633lg.ld21.bmp");
 	EXPECT_EQ(*image, expected);
@@ -301,9 +314,10 @@ TEST(GerberRendererTest, TestRenderGerberFile10) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile11) {
+TEST(GerberRendererTest, TestRenderGerberFile11)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633-lg-gbl");
@@ -313,7 +327,7 @@ TEST(GerberRendererTest, TestRenderGerberFile11) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633-lg-gbl.bmp");
+	// image->save(QString(TestData) + "results/2301115633-lg-gbl.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633-lg-gbl.bmp");
 	EXPECT_EQ(*image, expected);
@@ -322,9 +336,10 @@ TEST(GerberRendererTest, TestRenderGerberFile11) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile12) {
+TEST(GerberRendererTest, TestRenderGerberFile12)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633-lg-gbs");
@@ -334,7 +349,7 @@ TEST(GerberRendererTest, TestRenderGerberFile12) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633-lg-gbs.bmp");
+	// image->save(QString(TestData) + "results/2301115633-lg-gbs.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633-lg-gbs.bmp");
 	EXPECT_EQ(*image, expected);
@@ -343,9 +358,10 @@ TEST(GerberRendererTest, TestRenderGerberFile12) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile13) {
+TEST(GerberRendererTest, TestRenderGerberFile13)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633-lg-gtl");
@@ -355,7 +371,7 @@ TEST(GerberRendererTest, TestRenderGerberFile13) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633-lg-gtl.bmp");
+	// image->save(QString(TestData) + "results/2301115633-lg-gtl.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633-lg-gtl.bmp");
 	EXPECT_EQ(*image, expected);
@@ -364,9 +380,10 @@ TEST(GerberRendererTest, TestRenderGerberFile13) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile14) {
+TEST(GerberRendererTest, TestRenderGerberFile14)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "2301115633-lg-avi/2301115633-lg-gts");
@@ -376,7 +393,7 @@ TEST(GerberRendererTest, TestRenderGerberFile14) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/2301115633-lg-gts.bmp");
+	// image->save(QString(TestData) + "results/2301115633-lg-gts.bmp");
 
 	QImage expected(QString(TestData) + "results/2301115633-lg-gts.bmp");
 	EXPECT_EQ(*image, expected);
@@ -385,9 +402,10 @@ TEST(GerberRendererTest, TestRenderGerberFile14) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile15) {
+TEST(GerberRendererTest, TestRenderGerberFile15)
+{
 	int argc = 0;
-	char* argv[1];
+	char *argv[1];
 	QApplication app(argc, argv);
 
 	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "gerber_files/hj.324v1.gts");
@@ -397,7 +415,7 @@ TEST(GerberRendererTest, TestRenderGerberFile15) {
 	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
 	engine->RenderGerber(gerber);
 
-	//image->save(QString(TestData) + "results/hj.324v1.gts.bmp");
+	// image->save(QString(TestData) + "results/hj.324v1.gts.bmp");
 
 	QImage expected(QString(TestData) + "results/hj.324v1.gts.bmp");
 	EXPECT_EQ(*image, expected);
@@ -406,23 +424,24 @@ TEST(GerberRendererTest, TestRenderGerberFile15) {
 	EXPECT_EQ(gerber->Name(), "");
 }
 
-TEST(GerberRendererTest, TestRenderGerberFile16) {
-    int argc = 0;
-    char* argv[1];
-    QApplication app(argc, argv);
+TEST(GerberRendererTest, TestRenderGerberFile16)
+{
+	int argc = 0;
+	char *argv[1];
+	QApplication app(argc, argv);
 
-    auto parser = std::make_shared<GerberParser>(std::string(TestData) + "BOTTOM.art");
-    auto gerber = parser->GetGerber();
+	auto parser = std::make_shared<GerberParser>(std::string(TestData) + "BOTTOM.art");
+	auto gerber = parser->GetGerber();
 
-    auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-    auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
-    engine->RenderGerber(gerber);
+	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	engine->RenderGerber(gerber);
 
-    //image->save(QString(TestData) + "results/BOTTOM.art.bmp");
+	// image->save(QString(TestData) + "results/BOTTOM.art.bmp");
 
-    QImage expected(QString(TestData) + "results/BOTTOM.art.bmp");
-    EXPECT_EQ(*image, expected);
+	QImage expected(QString(TestData) + "results/BOTTOM.art.bmp");
+	EXPECT_EQ(*image, expected);
 
-    EXPECT_FALSE(gerber->IsNegative());
-    EXPECT_EQ(gerber->Name(), "");
+	EXPECT_FALSE(gerber->IsNegative());
+	EXPECT_EQ(gerber->Name(), "");
 }
