@@ -17,7 +17,7 @@ class QPainter;
 class QPixmap;
 class QPaintDevice;
 
-class GerberApi QPainterEngine : public Engine
+class QPainterEngine : public Engine
 {
 public:
     QPainterEngine(QPaintDevice *device, const BoundBox &bound_box, const BoundBox &offset);

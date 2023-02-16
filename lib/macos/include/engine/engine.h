@@ -1,9 +1,16 @@
 #pragma once
+#include <map>
 #include <memory>
 
 class Aperture;
+class Gerber;
+class GerberLevel;
+class Primitive;
 
 class BoundBox;
+class QPainter;
+class QPixmap;
+class QPaintDevice;
 
 class GerberApi Engine {
  public:

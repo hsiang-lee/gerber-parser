@@ -8,8 +8,7 @@
 
 class Primitive;
 
-class Aperture
-{
+class GerberApi Aperture {
 protected:
     std::vector<std::shared_ptr<Primitive>> primitives_{};
     std::shared_ptr<Primitive> outline_;
