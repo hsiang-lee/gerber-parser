@@ -18,7 +18,7 @@ class QPixmap;
 class QPaintDevice;
 class QGraphicsScene;
 
-class GerberApi QGraphicsSceneEngine : public Engine
+class QGraphicsSceneEngine : public Engine
 {
 public:
     QGraphicsSceneEngine(const BoundBox &bound_box, const BoundBox &offset);

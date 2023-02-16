@@ -12,8 +12,8 @@ set_target_properties(gerber_parser PROPERTIES
   IMPORTED_SONAME_RELEASE "libgerber_parser.so"
   )
 
-list(APPEND _IMPORT_CHECK_TARGETS gerber_parser )
-list(APPEND _IMPORT_CHECK_FILES_FOR_gerber_parser "${_IMPORT_PREFIX}/ubuntu/lib/libgerber_parser.so" )
+list(APPEND _cmake_import_check_targets gerber_parser )
+list(APPEND _cmake_import_check_files_for_gerber_parser "${_IMPORT_PREFIX}/ubuntu/lib/libgerber_parser.so" )
 
 # Commands beyond this point should not need to know the version.
 set(CMAKE_IMPORT_FILE_VERSION)

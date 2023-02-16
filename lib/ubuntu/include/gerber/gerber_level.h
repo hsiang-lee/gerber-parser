@@ -11,7 +11,7 @@ class Plotter;
 class Engine;
 class Primitive;
 
-class GerberLevel {
+class GerberApi GerberLevel {
  private:
   std::vector<std::shared_ptr<Primitive>> primitives_{};
   void Add(const std::shared_ptr<Primitive> &primitive);
