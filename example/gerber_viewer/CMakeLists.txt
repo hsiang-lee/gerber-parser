@@ -1,9 +1,9 @@
-find_package(Qt6 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
 
 file(GLOB Source ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 add_executable(gerber_viewer ${Source})
-target_link_libraries(gerber_viewer PRIVATE gerber_engine Qt6::OpenGL)
+target_link_libraries(gerber_viewer PRIVATE gerber_engine Qt5::OpenGL)
 
 if(WIN32)
 target_link_options(gerber_viewer PRIVATE "/ENTRY:mainCRTStartup" "/SUBSYSTEM:WINDOWS")
