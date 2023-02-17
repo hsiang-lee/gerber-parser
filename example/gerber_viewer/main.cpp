@@ -9,7 +9,7 @@
 #include "gerber_parser/gerber_parser.h"
 #include "gerber/gerber.h"
 
-class GerberWidget : public QGraphicsView
+class GerberWidget : public QWidget
 {
 public:
     GerberWidget()
@@ -31,6 +31,14 @@ public:
         }
     }
 
+protected:
+    void paintEvent(QPaintEvent* e) override { engine_->RenderGerber(gerber_); }
+
+    void resizeEvent(QResizeEvent* event) override {
+        engine_->Resize();
+        QWidget::resizeEvent(event);
+    }
+
 private:
     std::unique_ptr<QPainterEngine> engine_;
     std::shared_ptr<Gerber> gerber_;
@@ -43,9 +51,6 @@ int main(int argc, char *argv[])
     GerberWidget wnd;
     wnd.showMaximized();
     wnd.show();
-
-    auto s = std::min(wnd.width() / wnd.sceneRect().width(), wnd.height() / wnd.sceneRect().height());
-    wnd.scale(s, s);
 
     return app.exec();
 }
