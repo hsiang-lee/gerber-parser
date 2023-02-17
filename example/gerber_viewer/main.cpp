@@ -5,7 +5,7 @@
 #include <QMessageBox>
 #include <QGraphicsView>
 
-#include "engines/qgraphics_scene_engine.h"
+#include "engines/qpainter_engine.h"
 #include "gerber_parser/gerber_parser.h"
 #include "gerber/gerber.h"
 
@@ -20,20 +20,19 @@ public:
         try
         {
             gerber_ = parser->GetGerber();
-            engine_ = std::make_unique<QGraphicsSceneEngine>(gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+            engine_ = std::make_unique<QPainterEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
             engine_->RenderGerber(gerber_);
-            setScene(engine_->scene());
         }
         catch (const std::exception &e)
         {
             gerber_ = std::make_shared<Gerber>();
-            engine_ = std::make_unique<QGraphicsSceneEngine>(BoundBox(0, 0, 1.0, 1.0), BoundBox(0.025, 0.025, 0.025, 0.025));
+            engine_ = std::make_unique<QPainterEngine>(this, BoundBox(0, 0, 1.0, 1.0), BoundBox(0.025, 0.025, 0.025, 0.025));
             QMessageBox::warning(this, "Message", e.what(), QMessageBox::Ok);
         }
     }
 
 private:
-    std::unique_ptr<QGraphicsSceneEngine> engine_;
+    std::unique_ptr<QPainterEngine> engine_;
     std::shared_ptr<Gerber> gerber_;
 };
 
