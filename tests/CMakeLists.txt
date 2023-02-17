@@ -16,9 +16,6 @@ target_link_libraries(
 	gerber_engine
 	gtest
 	gtest_main
-	Qt5::Core
-	Qt5::Widgets
-	Qt5::Gui
 )
 target_compile_definitions(TestGerberRenderer PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/test_data/gerber/")
 
