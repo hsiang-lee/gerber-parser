@@ -18,24 +18,9 @@
 [![Windows](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml/badge.svg)](https://github.com/hsiang-lee/gerber-parser/actions/workflows/windows.yml)
 </p>
 
-GerberParser是一个gerber文件解析库。它采用标准c++编写，支持rs274x标准。良好支持跨平台编译，目前在MacOS、Linux和Windows上编译、测试通过。它使用Qt绘图引擎来绘制，支持直接绘制到Qt的Widget上，也支持绘制到图像上。Qt支持的图像格式都支持，包括BMP、GIF、JPEG、PNG等。下面是一个支持的图像格式的列表。
+GerberParser是一个gerber文件解析库。采用标准c++编写，支持rs274x标准。gerber文件解析部分提供预编译好的动态链接库，包含Windows,Macos和Linux三大平台的。如果你需要其他平台或环境下的库，请联系作者(联系方式见后文)。图像渲染部分默认提供Qt版本。你可以直接绘制到Qt的QWidget上，也可以绘制到Qt的图像上，然后导出成图片文件。Qt支持的图像格式都支持，包括BMP、GIF、JPEG、PNG等，利用QSvgGenerator和QPDFWriter，你也可以将gerber文件绘制到svg格式的图像或pdf格式的文件中，具体请查阅Qt的文档。
 
-Format|Description|Qt's support
----|:--:|---:
-BMP|Windows Bitmap|Read/write
-GIF|Graphic Interchange Format (optional)|Read
-JPG|Joint Photographic Experts Group|Read/write
-JPEG|Joint Photographic Experts Group|Read/write
-PNG|Portable Network Graphics|Read/write
-PBM|Portable Bitmap|Read
-PGM|Portable Graymap|Read
-PPM|Portable Pixmap|Read/write
-XBM|X11 Bitmap|Read/write
-XPM|X11 Pixmap|Read/write
-
-另外，Qt也提供了QSvgGenerator和QPDFWriter，这两个类都继承自QPainterDevice。通过Qt的这些支持，你也可以将gerber文件绘制到svg格式的图像或pdf格式的文件中。
-
-仓库example目录下提供了两个demo程序。一个用来将gerber文件导出成图像文件。支持超高分辨率的导出，对于低分辨率的会导出成一个文件，对于高分辨率(分辨率高到超出了限制)的，会自动切割，导出成多个片段。另外一个是gerber_viewer，它是一个交互式的界面程序，用来预览gerber文件，支持简单的放大缩小的交互。如果你想编译example程序，请在CMake时加上"BUILD_EXAMPLES"的选项。
+仓库example目录下提供了两个示例程序。一个用来将gerber文件导出成图像文件，支持超高分辨率的导出，对于低分辨率的会导出成一个文件，对于高分辨率(分辨率高到超出了限制)的，会自动切割，导出成多个片段。另外一个是gerber_viewer，它是一个交互式的界面程序，用来预览gerber文件，支持简单的放大缩小的交互。如果你想编译example程序，请在CMake时设置"BUILD_EXAMPLES"的选项。
 
 ### 渲染样图
 ![gerber image](./img/gerber.png)
@@ -43,21 +28,18 @@ XPM|X11 Pixmap|Read/write
 ### ✨ [Demo](https://github.com/hsiang-lee/gerber-parser/tree/master/example)
 
 ## 安装
-### 依赖的第三方库：
-- Qt(我使用的是5.12的版本，其他版本理论上也支持，不过没有测试过)
-- glog(用于记录日志)
-- gflags(示例程序中使用，用来解析参数)
-- googletest(用于单元测试，默认是关闭的)
-Qt5需要另外安装，在CMake时需要制定Qt的路径(如果Qt的路径已经加入好环境变量里了，CMake应该能自己找到)
-glog, gflags, and googletest已经添加到git的submodule中了。第一次拉代码时，执行"git submodule update --init --recursive"会自动拉取子模块的代码。
+### 依赖库
+Qt，请在你的电脑上预先安装Qt库,请到Qt官网下载安装。目前默认使用的是Qt5，Qt6经验证也是正常支持的。如果你使用Qt6，请将CMakeLists.txt中的Qt5改成Qt6。
+
 
 ### 克隆代码：
 ```
-git clone https://github.com/hsiang-lee/gerber-parser
-git submodule update --recursive --init
+git clone https://github.com/hsiang-lee/gerber-parser //克隆代码仓库到本地
+git submodule update --recursive --init //拉取子模块，会自动拉取依赖的第三方库gfalg、gtest等
 ```
 
-### CMake:
+### CMake: 
+你可以使用下面的命令来cmake。或者你也可以使用cmake gui程序来cmake，cmake时如果找不到Qt，请手动设置Qt的路径。
 ```
 cd gerber-parser
 mkdir build
@@ -66,6 +48,7 @@ cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_TES
 ```
 
 ### 构建:
+如果你在终端中编译，使用下面的命令即可。或者你也可以使用IDE来编译(visual studio，vs code，xCode等)。
 Linux(Ubuntu) or Mac:
 ```make```
 
@@ -86,10 +69,14 @@ image->save(path_you_want_to_save_image);//Save the image rendered to file.
 ```
 也可参考example中的代码。
 
+## 授权
+使用gerber-parser需要获取license授权。未获取license的版本可以使用，但会出现随机错误，并且运行效率较低。获取授权请联系作者，可以获取试用版授权，或永久授权。
+
 ## 关于作者
 
 👤 **leehsiang**
 
+* email: leehsiang@hotmail.com
 * Website: https://www.cnblogs.com/leehsiang
 * Github: [@hsiang-lee](https://github.com/hsiang-lee)
 * Wechat: ![lee_hsiang](./img/wechat.jpeg)
