@@ -123,5 +123,6 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
+gerber-parser is protected by license. Please contact the author to get a license.
 Copyright © 2022 [leehsiang](https://github.com/hsiang-lee).<br />
 This project is [MIT license](https://github.com/hsiang-lee/gerber-parser/blob/master/LICENSE) licensed.
