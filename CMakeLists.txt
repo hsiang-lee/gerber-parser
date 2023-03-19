@@ -25,6 +25,7 @@ if(BUILD_EXAMPLES)
 	
 	add_subdirectory(example/gerber2image)
 	add_subdirectory(example/gerber_viewer)
+	add_subdirectory(example/gerber_viewer_qgraphics)
 endif()
 
 if(BUILD_TESTS)
