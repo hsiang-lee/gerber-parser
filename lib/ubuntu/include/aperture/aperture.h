@@ -8,7 +8,8 @@
 
 class Primitive;
 
-class GerberApi Aperture {
+class GerberApi Aperture
+{
 protected:
     std::vector<std::shared_ptr<Primitive>> primitives_{};
     std::shared_ptr<Primitive> outline_;
@@ -34,6 +35,17 @@ public:
     ~Aperture();
 
     int Code() const;
+
+    enum ApertureType
+    {
+        tCircle,
+        tMacro,
+        tObround,
+        tPolygon,
+        tRectangle
+    };
+
+    virtual ApertureType Type() const = 0;
 
     // Used to determine if it is a basic shape or not
     virtual bool SolidCircle() = 0;
