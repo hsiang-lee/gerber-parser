@@ -1,6 +1,6 @@
 #include "qpainter_engine.h"
 #include "aperture/aperture.h"
-#include "gerber/gerber_level.h"
+#include "gerber/gerber_layer.h"
 #include "gerber/gerber_primitive.h"
 
 #include <QPainter>
@@ -61,33 +61,33 @@ int QPainterEngine::RenderGerber(const std::shared_ptr<Gerber> &gerber)
 {
   BeginRender();
 
-  auto levels = gerber->Levels();
-  for (const auto &level : levels)
+  auto layers = gerber->layers_;
+  for (const auto &layer : layers)
   {
-    negative_ = level->IsNegative();
+    negative_ = layer->IsNegative();
 
     int ret = 0;
-    if (level->IsCopyLayer())
+    if (layer->IsCopyLayer())
     {
-      const auto step_x = kTimes * level->step_x_;
-      const auto step_y = kTimes * level->step_y_;
+      const auto step_x = kTimes * layer->step_x_;
+      const auto step_y = kTimes * layer->step_y_;
 
       current_painter_->save();
-      for (int y = 0; y < level->count_y_; ++y)
+      for (int y = 0; y < layer->count_y_; ++y)
       {
-        for (int x = 0; x < level->count_x_; ++x)
+        for (int x = 0; x < layer->count_x_; ++x)
         {
-          ret = level->Draw(this);
+          ret = layer->Draw(this);
           current_painter_->translate(step_x, 0);
         }
 
-        current_painter_->translate(-step_x * level->count_x_, step_y);
+        current_painter_->translate(-step_x * layer->count_x_, step_y);
       }
       current_painter_->restore();
     }
     else
     {
-      ret = level->Draw(this);
+      ret = layer->Draw(this);
     }
 
     if (ret)
