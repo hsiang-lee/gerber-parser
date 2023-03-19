@@ -7,7 +7,7 @@
 #include "gerber_parser/bound_box.h"
 
 class Aperture;
-class GerberLevel;
+class GerberLayer;
 
 class UnitType {
  public:
@@ -29,13 +29,11 @@ class GerberApi Gerber {
   UnitType::Type unit_{UnitType::guMillimeters};
   UnitType::Type Unit() const;
 
-  std::vector<std::shared_ptr<GerberLevel>> levels_;
-  std::vector<std::shared_ptr<GerberLevel>> Levels() const;
-
   BoundBox GetBBox() const;
 
   std::string name_;
   std::string Name() const;
 
+  std::vector<std::shared_ptr<GerberLayer>> layers_;
   std::vector<std::shared_ptr<Aperture>> apertures_;
 };
