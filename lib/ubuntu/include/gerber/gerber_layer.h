@@ -11,7 +11,7 @@ class Plotter;
 class Engine;
 class Primitive;
 
-class GerberApi GerberLevel {
+class GerberApi GerberLayer {
  private:
   std::vector<std::shared_ptr<Primitive>> primitives_{};
   void Add(const std::shared_ptr<Primitive> &primitive);
@@ -27,9 +27,9 @@ class GerberApi GerberLevel {
   void ConvertStrokesToFills();
 
  public:
-  GerberLevel(const std::shared_ptr<GerberLevel> &previous_level,
+  GerberLayer(const std::shared_ptr<GerberLayer> &previous_layer,
               UnitType::Type units);
-  ~GerberLevel();
+  ~GerberLayer();
 
   double GetRight() const;
   double GetTop() const;

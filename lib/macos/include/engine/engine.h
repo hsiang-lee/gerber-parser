@@ -4,7 +4,7 @@
 
 class Aperture;
 class Gerber;
-class GerberLevel;
+class GerberLayer;
 class Primitive;
 
 class BoundBox;
