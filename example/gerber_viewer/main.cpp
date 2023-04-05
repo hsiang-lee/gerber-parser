@@ -21,7 +21,7 @@ public:
         {
             gerber_ = parser->GetGerber();
             engine_ = std::make_unique<QPainterEngine>(this, gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
-            engine_->RenderGerber(gerber_);
+            //engine_->RenderGerber(gerber_);
         }
         catch (const std::exception &e)
         {
@@ -32,7 +32,10 @@ public:
     }
 
 protected:
-    void paintEvent(QPaintEvent* e) override { engine_->RenderGerber(gerber_); }
+    void paintEvent(QPaintEvent* e) override {
+        engine_->RenderGerber(gerber_);
+        e->accept();
+    }
 
     void resizeEvent(QResizeEvent* event) override {
         engine_->Resize();
