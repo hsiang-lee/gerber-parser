@@ -54,6 +54,7 @@ std::shared_ptr<QPainter> QPainterEngine::CreatePainter(QPaintDevice *pic)
 void QPainterEngine::EndRender()
 {
   painter_ = nullptr;
+  current_painter_ = nullptr;
   count_ = 0;
 }
 
