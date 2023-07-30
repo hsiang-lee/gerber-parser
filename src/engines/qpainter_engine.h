@@ -5,6 +5,7 @@
 #include "engine/engine.h"
 #include "transformation.h"
 
+#include <QColor>
 #include <QPainterPath>
 
 class Aperture;
@@ -20,13 +21,22 @@ class QPaintDevice;
 class QPainterEngine : public Engine
 {
 public:
-    QPainterEngine(QPaintDevice *device, const BoundBox &bound_box, const BoundBox &offset);
+    QPainterEngine(QPaintDevice *device, const BoundBox &bound_box, double offset);
 
     void Resize();
-    void Scale(double delta, double center_x = 0.0, double center_y = 0.0);
+    void Rotate(int angle);
+    void Scale(double delta, double center_x = -999999, double center_y = -999999);
     void Move(int delta_x, int delta_y);
     void SetConvertStroke2Fills(bool value);
+    void Reset();
 
+    void SetSelectRect(const QRect& rect);
+
+    QPoint Dev2Logic(const QPoint& dev_pos);
+    QRect Dev2Logic(const QRect& rect);
+    QRect PainterWindow();
+
+    void DrawBackground(const QColor& color = QColor(255, 255, 255));
     int RenderGerber(const std::shared_ptr<Gerber> &);
 
     void BeginRender();
@@ -66,7 +76,13 @@ private:
 
     static constexpr int kTimes = 10000;
 
+    int rotation_{ 0 };
+    double scale_{ 1.0 };
+    QPoint scale_center_{0, 0};
     Transformation trans_;
+
+    QPoint movement_;
+    QRect select_rect_;
 
     std::map<int, std::shared_ptr<QPixmap>> aperture_imgs_;
 
