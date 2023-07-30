@@ -49,7 +49,6 @@ class GerberApi GerberLayer {
   void SetNegative(bool);
 
   BoundBox GetBBox() const;
-
   std::vector<std::shared_ptr<Primitive>> Primitives() const;
 
   int Draw(Engine *engine);

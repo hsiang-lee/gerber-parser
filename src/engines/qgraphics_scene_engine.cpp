@@ -1,13 +1,12 @@
 #include "qgraphics_scene_engine.h"
 #include "gerber/gerber_layer.h"
 #include "aperture/aperture.h"
-#include "gerber/gerber_primitive.h"
 
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
-QGraphicsSceneEngine::QGraphicsSceneEngine(const BoundBox &bound_box, const BoundBox &offset) : trans_(bound_box.Scaled(kTimes), offset)
+QGraphicsSceneEngine::QGraphicsSceneEngine(const BoundBox &bound_box, double offset) : trans_(bound_box.Scaled(kTimes), offset)
 {
     scene_ = new QGraphicsScene;
 }
@@ -18,15 +17,11 @@ void QGraphicsSceneEngine::Resize()
 
 void QGraphicsSceneEngine::Scale(double delta, double center_x, double center_y)
 {
-    if (trans_.Scale(delta, center_x, center_y))
-    {
-        aperture_imgs_.clear();
-    }
+    aperture_imgs_.clear();
 }
 
 void QGraphicsSceneEngine::Move(int delta_x, int delta_y)
 {
-    trans_.Move(delta_x, delta_y);
 }
 
 void QGraphicsSceneEngine::SetConvertStroke2Fills(bool value)
@@ -53,7 +48,7 @@ int QGraphicsSceneEngine::RenderGerber(const std::shared_ptr<Gerber> &gerber)
 {
     BeginRender();
 
-    auto layers = gerber->layers_;
+    auto layers = gerber->GetLayers();
     for (const auto &layer : layers)
     {
         negative_ = layer->IsNegative();
@@ -131,28 +126,7 @@ void QGraphicsSceneEngine::DrawAperture(std::shared_ptr<Aperture> aperture, cons
     if (!PrepareExistAperture(aperture->Code()))
     {
         NewAperture(aperture);
-
-        auto primitives = aperture->Primitives();
-        for (auto &item : primitives)
-        {
-            path_ = QPainterPath();
-            path_.setFillRule(Qt::FillRule::OddEvenFill);
-            item->Draw(*this);
-
-            current_painter_->setPen(QPen(QColor(0, 0, 0, 0), 1.0));
-
-            if (negative_)
-            {
-                current_painter_->setBrush(QColor(255, 255, 255));
-            }
-            else
-            {
-                current_painter_->setBrush(QColor(count_ % 256, (count_ + 153) % 256, (count_ + 25) % 256, 200));
-            }
-
-            current_painter_->drawPath(path_);
-        }
-
+        aperture->Draw(this);
         EndDrawNewAperture();
     }
 
@@ -177,11 +151,15 @@ void QGraphicsSceneEngine::CubicTo(
 void QGraphicsSceneEngine::AddRect(double x, double y, double w, double h)
 {
     path_.addRect(x, y, w, h);
+    current_painter_->drawPath(path_);
+    path_ = QPainterPath();
 }
 
 void QGraphicsSceneEngine::AddCircle(double x, double y, double radius)
 {
     path_.addEllipse(x - radius, y - radius, radius * 2, radius * 2);
+    current_painter_->drawPath(path_);
+    path_ = QPainterPath();
 }
 
 void QGraphicsSceneEngine::MoveTo(const std::pair<double, double> &pt)
@@ -261,8 +239,8 @@ void QGraphicsSceneEngine::NewAperture(std::shared_ptr<Aperture> aperture)
     const auto top = bound_box.Top() * kTimes;
     const auto bottom = bound_box.Bottom() * kTimes;
 
-    auto width = trans_.TranslateLogicCoord(right - left);
-    auto height = trans_.TranslateLogicCoord(top - bottom);
+    auto width = right - left;
+    auto height = top - bottom;
     if (width < 1)
     {
         width = 1;
@@ -278,6 +256,14 @@ void QGraphicsSceneEngine::NewAperture(std::shared_ptr<Aperture> aperture)
     aperture_imgs_[aperture->Code()] = img;
     current_painter_ = std::make_shared<QPainter>(img.get());
     current_painter_->setWindow(left, bottom, right - left, top - bottom);
+
+    current_painter_->setPen(QPen(QColor(0, 0, 0, 0), 1.0));
+    if (negative_) {
+        current_painter_->setBrush(QColor(255, 255, 255));
+    }
+    else {
+        current_painter_->setBrush(QColor(count_ % 256, (count_ + 153) % 256, (count_ + 25) % 256, 200));
+    }
 }
 
 QGraphicsScene *QGraphicsSceneEngine::scene() const

@@ -27,7 +27,8 @@ TEST_F(GerberRendererTest, TestRenderFromGerber)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
@@ -45,7 +46,8 @@ TEST_F(GerberRendererTest, TestScale)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->Scale(1.2, 0.9, 0.8);
 	engine->RenderGerber(gerber);
 
@@ -63,8 +65,9 @@ TEST_F(GerberRendererTest, TestMove)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
 
+	engine->DrawBackground();
 	engine->Move(400, 600);
 	engine->RenderGerber(gerber);
 
@@ -82,7 +85,8 @@ TEST_F(GerberRendererTest, TestConvertStroke2Fill)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->SetConvertStroke2Fills(true);
 
 	engine->RenderGerber(gerber);
@@ -99,7 +103,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile1)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987c.dat.bmp");
@@ -117,7 +122,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile2)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987c.rout.bmp");
@@ -135,7 +141,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile3)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987-c-gbl.bmp");
@@ -153,7 +160,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile4)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987-c-gbs.bmp");
@@ -171,7 +179,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile5)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987-c-gtl.bmp");
@@ -189,7 +198,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile6)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301113987-c-gts.bmp");
@@ -207,7 +217,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile7)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633.rout.bmp");
@@ -225,7 +236,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile8)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633lg.dat.bmp");
@@ -243,7 +255,9 @@ TEST_F(GerberRendererTest, TestRenderGerberFile9)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
+	engine->Scale(5.0);
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633lg.ld12.bmp");
@@ -261,7 +275,9 @@ TEST_F(GerberRendererTest, TestRenderGerberFile10)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground();
+	engine->Scale(5.0);
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633lg.ld21.bmp");
@@ -279,7 +295,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile11)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633-lg-gbl.bmp");
@@ -297,7 +314,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile12)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633-lg-gbs.bmp");
@@ -315,7 +333,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile13)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633-lg-gtl.bmp");
@@ -333,7 +352,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile14)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/2301115633-lg-gts.bmp");
@@ -351,7 +371,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile15)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/hj.324v1.gts.bmp");
@@ -369,7 +390,8 @@ TEST_F(GerberRendererTest, TestRenderGerberFile16)
 	auto gerber = parser->GetGerber();
 
 	auto image = std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
-	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), BoundBox(0.005, 0.005, 0.005, 0.005));
+	auto engine = std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+	engine->DrawBackground(); 
 	engine->RenderGerber(gerber);
 
 	//image->save(QString(TestData) + "results/BOTTOM.art.bmp");

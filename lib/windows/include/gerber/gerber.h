@@ -30,10 +30,17 @@ class GerberApi Gerber {
   UnitType::Type Unit() const;
 
   BoundBox GetBBox() const;
-
-  std::string name_;
   std::string Name() const;
+  void SetName(const std::string& name);
 
+  std::shared_ptr<Aperture> GetAperture(int code) const;
+  void SetAperture(int code, std::shared_ptr<Aperture> aperture);
+
+  const std::vector<std::shared_ptr<GerberLayer>>& GetLayers() const;
+  void AddLayer(std::shared_ptr<GerberLayer> layer);
+
+private:
   std::vector<std::shared_ptr<GerberLayer>> layers_;
   std::vector<std::shared_ptr<Aperture>> apertures_;
+  std::string name_;
 };

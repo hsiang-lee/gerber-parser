@@ -20,7 +20,7 @@ public:
         try
         {
             gerber_ = parser->GetGerber();
-            engine_ = std::make_unique<QGraphicsSceneEngine>(gerber_->GetBBox(), BoundBox(0.025, 0.025, 0.025, 0.025));
+            engine_ = std::make_unique<QGraphicsSceneEngine>(gerber_->GetBBox(), 0.025);
             engine_->RenderGerber(gerber_);
 
             setScene(engine_->scene());
@@ -28,7 +28,7 @@ public:
         catch (const std::exception &e)
         {
             gerber_ = std::make_shared<Gerber>();
-            engine_ = std::make_unique<QGraphicsSceneEngine>(BoundBox(0, 0, 1.0, 1.0), BoundBox(0.025, 0.025, 0.025, 0.025));
+            engine_ = std::make_unique<QGraphicsSceneEngine>(BoundBox(0, 0, 1.0, 1.0), 0.025);
             QMessageBox::warning(this, "Message", e.what(), QMessageBox::Ok);
         }
     }
