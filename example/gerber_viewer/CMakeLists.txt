@@ -1,5 +1,9 @@
 find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 file(GLOB Source ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 add_executable(gerber_viewer ${Source})

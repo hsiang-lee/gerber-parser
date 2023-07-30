@@ -21,7 +21,7 @@ class QGraphicsScene;
 class QGraphicsSceneEngine : public Engine
 {
 public:
-    QGraphicsSceneEngine(const BoundBox &bound_box, const BoundBox &offset);
+    QGraphicsSceneEngine(const BoundBox& bound_box, double offset);
 
     void Resize();
     void Scale(double delta, double center_x = 0.0, double center_y = 0.0);

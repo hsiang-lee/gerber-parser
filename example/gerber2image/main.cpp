@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
           auto image = std::make_unique<QPixmap>(width_pixel * 1.05,
                                                  height_pixel * 1.05);
           auto engine = std::make_unique<QPainterEngine>(
-              image.get(), gerber->GetBBox(), BoundBox(0.05, 0.05, 0.05, 0.05));
+              image.get(), gerber->GetBBox(), 0.05);
           engine->RenderGerber(gerber);
           auto image_file = QString(FLAGS_gerber_file.c_str()) + ".png";
           image->save(image_file);
