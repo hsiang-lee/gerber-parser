@@ -212,8 +212,7 @@ void QPainterEngine::PreparePenAndBrushForStroke(double line_width)
   current_painter_->setPen(pen);
 }
 
-void QPainterEngine::DrawAperture(std::shared_ptr<Aperture> aperture,
-                                  const std::pair<double, double> &start)
+void QPainterEngine::DrawAperture(Aperture* aperture, const std::pair<double, double> &start)
 {
   if (!PrepareExistAperture(aperture->Code()))
   {
@@ -291,7 +290,7 @@ void QPainterEngine::EndDrawOutline()
     path_ = QPainterPath();
 }
 
-void QPainterEngine::BeginDrawStroke(std::shared_ptr<Aperture> aperture)
+void QPainterEngine::BeginDrawStroke(Aperture* aperture)
 {
   if (aperture->SolidCircle())
   {
@@ -335,7 +334,7 @@ std::shared_ptr<QPixmap> QPainterEngine::PrepareExistAperture(int code)
   return nullptr;
 }
 
-void QPainterEngine::NewAperture(std::shared_ptr<Aperture> aperture)
+void QPainterEngine::NewAperture(Aperture* aperture)
 {
   const auto bound_box = aperture->BBox();
   const auto left = bound_box.Left() * kTimes;
