@@ -92,7 +92,7 @@ int QGraphicsSceneEngine::RenderGerber(const std::shared_ptr<Gerber> &gerber)
 
 void QGraphicsSceneEngine::PreparePenAndBrush()
 {
-    /*current_painter_->setPen(QPen(QColor(0, 0, 0, 0), 1.0));
+    current_painter_->setPen(QPen(QColor(0, 0, 0, 0), 1.0));
 
     if (negative_)
     {
@@ -101,12 +101,12 @@ void QGraphicsSceneEngine::PreparePenAndBrush()
     else
     {
         current_painter_->setBrush(QColor(count_ % 256, (count_ + 153) % 256, (count_ + 25) % 256, 200));
-    }*/
+    }
 }
 
 void QGraphicsSceneEngine::PreparePenAndBrushForStroke(double line_width)
 {
-    /*current_painter_->setBrush(QColor(0, 0, 0, 0));
+    current_painter_->setBrush(QColor(0, 0, 0, 0));
 
     auto pen = current_painter_->pen();
     if (negative_)
@@ -118,10 +118,10 @@ void QGraphicsSceneEngine::PreparePenAndBrushForStroke(double line_width)
         pen.setColor(QColor(count_ % 256, (count_ + 153) % 256, (count_ + 25) % 256, 200));
     }
     pen.setWidthF(line_width);
-    current_painter_->setPen(pen);*/
+    current_painter_->setPen(pen);
 }
 
-void QGraphicsSceneEngine::DrawAperture(std::shared_ptr<Aperture> aperture, const std::pair<double, double> &start)
+void QGraphicsSceneEngine::DrawAperture(Aperture* aperture, const std::pair<double, double> &start)
 {
     if (!PrepareExistAperture(aperture->Code()))
     {
@@ -184,7 +184,7 @@ void QGraphicsSceneEngine::EndDrawOutline()
     path_ = QPainterPath();
 }
 
-void QGraphicsSceneEngine::BeginDrawStroke(std::shared_ptr<Aperture> aperture)
+void QGraphicsSceneEngine::BeginDrawStroke(Aperture* aperture)
 {
     if (aperture->SolidCircle())
     {
@@ -231,7 +231,7 @@ std::shared_ptr<QPixmap> QGraphicsSceneEngine::PrepareExistAperture(int code)
     return nullptr;
 }
 
-void QGraphicsSceneEngine::NewAperture(std::shared_ptr<Aperture> aperture)
+void QGraphicsSceneEngine::NewAperture(Aperture* aperture)
 {
     const auto bound_box = aperture->BBox();
     const auto left = bound_box.Left() * kTimes;

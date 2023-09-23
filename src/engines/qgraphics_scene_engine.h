@@ -47,19 +47,19 @@ public:
     void AddCircle(double x, double y, double radius) override;
     void MoveTo(const std::pair<double, double> &pt) override;
     void LineTo(const std::pair<double, double> &pt) override;
-    void DrawAperture(std::shared_ptr<Aperture> aperture, const std::pair<double, double> &start) override;
+    void DrawAperture(Aperture* aperture, const std::pair<double, double> &start) override;
 
     void BeginDrawOutline() override;
     void EndDrawOutline() override;
 
-    void BeginDrawStroke(std::shared_ptr<Aperture> aperture) override;
+    void BeginDrawStroke(Aperture* aperture) override;
     void CachePoint(const std::pair<double, double> &pt) override;
     std::pair<double, double> CachedPoint() const override;
     void EndDrawStroke() override;
 
     void EndDrawNewAperture();
     std::shared_ptr<QPixmap> PrepareExistAperture(int code);
-    void NewAperture(std::shared_ptr<Aperture>);
+    void NewAperture(Aperture*);
 
     QGraphicsScene *scene() const;
 
