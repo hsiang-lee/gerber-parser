@@ -2,7 +2,6 @@
 
 #include <math.h>
 #include <vector>
-#include <memory>
 
 #include "gerber_parser/bound_box.h"
 
@@ -12,9 +11,9 @@ class Primitive;
 class GerberApi Aperture
 {
 protected:
-    std::vector<std::shared_ptr<Primitive>> primitives_{};
-    std::shared_ptr<Primitive> outline_;
-    std::vector<std::shared_ptr<Primitive>> Primitives();
+    std::vector<Primitive *> primitives_{};
+    Primitive *outline_ = nullptr;
+    std::vector<Primitive *> Primitives();
 
     void RenderHole();
 
@@ -34,7 +33,7 @@ protected:
 
 public:
     Aperture(int code);
-    ~Aperture();
+    virtual ~Aperture();
 
     int Code() const;
 
@@ -54,5 +53,5 @@ public:
     virtual bool SolidRectangle() = 0;
     virtual BoundBox BBox() const = 0;
 
-    int Draw(Engine* engine);
+    int Draw(Engine *engine);
 };
