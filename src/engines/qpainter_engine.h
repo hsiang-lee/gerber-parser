@@ -34,7 +34,7 @@ public:
     QRect Dev2Logic(const QRect& rect);
     QRect PainterWindow();
 
-    void DrawBackground(const QColor& color = QColor(255, 255, 255));
+    void DrawBackground(const QColor& color = QColor(0, 0, 0));
     int RenderGerber(const std::shared_ptr<Gerber> &);
 
     void BeginRender();
