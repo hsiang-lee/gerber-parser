@@ -30,8 +30,6 @@ public:
     void SetConvertStroke2Fills(bool value);
     void Reset();
 
-    void SetSelectRect(const QRect& rect);
-
     QPoint Dev2Logic(const QPoint& dev_pos);
     QRect Dev2Logic(const QRect& rect);
     QRect PainterWindow();
@@ -82,7 +80,6 @@ private:
     Transformation trans_;
 
     QPoint movement_;
-    QRect select_rect_;
 
     std::map<int, std::shared_ptr<QPixmap>> aperture_imgs_;
 
@@ -99,7 +96,9 @@ private:
     double rect_x_{0.0};
     double rect_y_{0.0};
 
-    uint32_t count_{0};
     bool negative_{false};
     QPainterPath path_;
+
+    QColor background_;
+    QColor foreground_;
 };
