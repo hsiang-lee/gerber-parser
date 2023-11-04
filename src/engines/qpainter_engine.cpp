@@ -6,8 +6,8 @@
 
 QPainterEngine::QPainterEngine(QPaintDevice *device, const BoundBox &bound_box,
                                double offset)
-    : background_(255, 255, 255),
-      foreground_(0, 0, 0),
+    : background_(0, 0, 0),
+      foreground_(255, 255, 255),
       pic_(device),
       trans_(bound_box.Scaled(kTimes), offset) {
   trans_.SetPhysicalSize(pic_->width(), pic_->height());
