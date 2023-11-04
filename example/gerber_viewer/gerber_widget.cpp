@@ -155,34 +155,6 @@ void GerberWidget::wheelEvent(QWheelEvent* event) {
     undo_stack_.push(new ScaleCmd(this, angle, event->x(), event->y()));
 }
 
-void GerberWidget::mouseMoveEvent(QMouseEvent* event) {
-    if (!engine_) {
-        return;
-    }
-
-    if (cursor().shape() == Qt::CrossCursor) {
-        emit posChanged(engine_->Dev2Logic(event->pos()));
-    }
-
-    if (!(event->buttons() & Qt::LeftButton)) {
-        event->accept();
-        return;
-    }
-
-    if (cursor().shape() == Qt::CrossCursor) {
-        engine_->SetSelectRect(QRect(last_pt_, event->pos()));
-        emit selectedChanged(QRect(engine_->Dev2Logic(last_pt_), engine_->Dev2Logic(event->pos())));
-    }
-    else if (cursor().shape() == Qt::OpenHandCursor) {
-        const auto movement = event->pos() - last_pt_;
-        engine_->Move(movement.x(), movement.y());
-        last_pt_ = event->pos();
-    }
-
-    update();
-    event->accept();
-}
-
 void GerberWidget::mousePressEvent(QMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton) {
