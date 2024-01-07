@@ -10,6 +10,9 @@ class Primitive;
 
 class GerberApi Aperture
 {
+private:
+    uint16_t count_;
+
 protected:
     std::vector<Primitive *> primitives_{};
     Primitive *outline_ = nullptr;
@@ -54,4 +57,7 @@ public:
     virtual BoundBox BBox() const = 0;
 
     int Draw(Engine *engine);
+
+    void Visit();
+    uint16_t GetCount() const;
 };

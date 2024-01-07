@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math.h>
+#include <cstdint>
 #include <vector>
 
 #include "gerber_parser/bound_box.h"
@@ -8,50 +8,48 @@
 class Engine;
 class Primitive;
 
-class GerberApi Aperture
-{
-protected:
-    std::vector<Primitive *> primitives_{};
-    Primitive *outline_ = nullptr;
-    std::vector<Primitive *> Primitives();
+class GerberApi Aperture {
+ private:
+  uint16_t count_;
 
-    void RenderHole();
+ protected:
+  std::vector<Primitive *> primitives_{};
+  Primitive *outline_ = nullptr;
+  std::vector<Primitive *> Primitives();
 
-    void HoleCircle(double d);
-    void HoleRectangle(double w, double h);
+  void RenderHole();
 
-    virtual void RenderAperture() = 0;
+  void HoleCircle(double d);
+  void HoleRectangle(double w, double h);
 
-    double dimension_x_; // Also used for outside diameter of circles
-    double dimension_y_;
-    double hole_x_; // For no hole, make this negative
-    double hole_y_; // For a round hole make this negative
+  virtual void RenderAperture() = 0;
 
-    // Regular Polygon additional modifiers
-    double rotation_; // Degrees of rotaion (rotate the whole thing CCW)
-    int code_;        // The code to use in the D-Code to load this tool
+  double dimension_x_;  // Also used for outside diameter of circles
+  double dimension_y_;
+  double hole_x_;  // For no hole, make this negative
+  double hole_y_;  // For a round hole make this negative
 
-public:
-    Aperture(int code);
-    virtual ~Aperture();
+  // Regular Polygon additional modifiers
+  double rotation_;  // Degrees of rotaion (rotate the whole thing CCW)
+  int code_;         // The code to use in the D-Code to load this tool
 
-    int Code() const;
+ public:
+  Aperture(int code);
+  virtual ~Aperture();
 
-    enum ApertureType
-    {
-        tCircle,
-        tMacro,
-        tObround,
-        tPolygon,
-        tRectangle
-    };
+  int Code() const;
 
-    virtual ApertureType Type() const = 0;
+  enum ApertureType { tCircle, tMacro, tObround, tPolygon, tRectangle };
 
-    // Used to determine if it is a basic shape or not
-    virtual bool SolidCircle() = 0;
-    virtual bool SolidRectangle() = 0;
-    virtual BoundBox BBox() const = 0;
+  virtual ApertureType Type() const = 0;
 
-    int Draw(Engine *engine);
+  // Used to determine if it is a basic shape or not
+  virtual bool SolidCircle() = 0;
+  virtual bool SolidRectangle() = 0;
+  virtual BoundBox BBox() const = 0;
+
+  int Draw(Engine *engine);
+
+  void Visit();
+  uint16_t GetCount() const;
 };
