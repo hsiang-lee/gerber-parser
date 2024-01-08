@@ -18,6 +18,9 @@ elseif (UNIX)
 endif ()
 find_package(gerber_parser REQUIRED)
 
+set(BUILD_EXAMPLES ON)
+set(Qt5_DIR "/home/mini/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5")
+
 add_subdirectory(src)
 
 if(BUILD_EXAMPLES)
