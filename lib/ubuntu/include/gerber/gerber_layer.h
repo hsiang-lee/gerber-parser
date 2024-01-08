@@ -49,6 +49,7 @@ public:
     void SetNegative(bool);
 
     BoundBox GetBBox() const;
+    BoundBox FindPrimitive(const std::pair<double, double>& pt);
     std::vector<Primitive *> Primitives() const;
 
     int Draw(Engine *engine);

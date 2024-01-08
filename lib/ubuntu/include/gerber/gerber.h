@@ -47,6 +47,8 @@ public:
     const std::vector<GerberLayer *> &GetLayers() const;
     void AddLayer(GerberLayer *layer);
 
+    const std::vector<Aperture*>& GetApertureList() const;
+
 private:
     std::vector<GerberLayer *> layers_;
     std::vector<Aperture *> apertures_;
