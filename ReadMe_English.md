@@ -40,7 +40,7 @@ In addition, Qt also provides QSvgGenerator and QPdfWriter, which inherits from 
 In addition to rendering and exporting static images, the GerberParser library also supports some interactive operations. For example, move the position of the image, zoom the image and highlight a certain point. These functions can be used for interactive Gerber display, refer to example/gerber_viewer. It can also be used for segmented rendering and export of larger images, example/gerber2image provides an example. For images with higher resolution, exporting into one image will be subject to many restrictions. Example/gerber2image is exported into multiple images through segmented export, each with a maximum resolution of 20000, which together form a complete image.
 
 ### Supported platform
-GerberParser is written in standard C++, and the dependent Qt5, glog, and gflags all support cross-platform compilation. It has been tested to compile normally on Linux, Mac and Windows.
+GerberParser is written in standard C++, and the dependent Qt6, glog, and gflags all support cross-platform compilation. It has been tested to compile normally on Linux, Mac and Windows.
 
 ### Sample image
 ![gerber image](./img/gerber.png)
@@ -55,7 +55,7 @@ GerberParser is written in standard C++, and the dependent Qt5, glog, and gflags
 - glog(Used for logging)
 - gflags(The sample program used to parse the cui parameter, if you turn off the "BUILD_EXAMPLE" option, this dependency is not needed)
 - googletest(For unit test, this dependency is not needed if the option "BUILD_TESTS" is turned off)
-Qt5 needs to be installed externally. Specify the Qt installation path when CMake, or set the Qt installation path through CMake-GUI, or set the environment variables of Qt on the machine.
+Qt6 needs to be installed externally. Specify the Qt installation path when CMake, or set the Qt installation path through CMake-GUI, or set the environment variables of Qt on the machine.
 glog, gflags, and googletest have been self-contained through git submodules and do not need to be provided externally.
 
 ### Clone：
@@ -69,7 +69,7 @@ git submodule update --recursive --init
 cd gerber-parser
 mkdir build
 cd build
-cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=path/of/Qt
+cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=ON -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt6_DIR=path/of/Qt
 ```
 
 ### Build:

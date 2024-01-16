@@ -19,7 +19,6 @@ endif ()
 find_package(gerber_parser REQUIRED)
 
 set(BUILD_EXAMPLES ON)
-set(Qt5_DIR "/home/mini/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5")
 
 add_subdirectory(src)
 
@@ -40,7 +39,7 @@ endif()
 
 find_program(CLANG_TIDY "clang-tidy")
 if(CLANG_TIDY)
-	find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
+	find_package(Qt6 COMPONENTS Core Widgets Gui REQUIRED)
     file(GLOB_RECURSE AllCppFile ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
     add_custom_target(
         Tidy
@@ -53,7 +52,7 @@ if(CLANG_TIDY)
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src/gerber"
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src/engine"
 		-I "${CMAKE_CURRENT_SOURCE_DIR}/src"
-		-I "${Qt5Widgets_INCLUDE_DIRS}"
+		-I "${Qt6Widgets_INCLUDE_DIRS}"
     )
 
 endif()

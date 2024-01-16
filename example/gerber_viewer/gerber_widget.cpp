@@ -152,7 +152,7 @@ void GerberWidget::resizeEvent(QResizeEvent* event) {
 
 void GerberWidget::wheelEvent(QWheelEvent* event) {
     const auto angle = event->angleDelta().y();
-    undo_stack_.push(new ScaleCmd(this, angle, event->x(), event->y()));
+    undo_stack_.push(new ScaleCmd(this, angle, event->position().x(), event->position().y()));
 }
 
 void GerberWidget::mousePressEvent(QMouseEvent* event)
