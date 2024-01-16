@@ -29,7 +29,7 @@ GerberParser是一个gerber文件解析库。采用标准c++编写，支持rs274
 
 ## 安装
 ### 依赖库
-Qt，请在你的电脑上预先安装Qt库,请到Qt官网下载安装。目前默认使用的是Qt5，Qt6经验证也是正常支持的。如果你使用Qt6，请将CMakeLists.txt中的Qt5改成Qt6。
+Qt，请在你的电脑上预先安装Qt库,请到Qt官网下载安装。目前默认使用的是Qt6。
 
 
 ### 克隆代码：
@@ -44,7 +44,7 @@ git submodule update --recursive --init //拉取子模块，会自动拉取依�
 cd gerber-parser
 mkdir build
 cd build
-cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt5_DIR=path/of/Qt
+cmake .. -G "NMake Makefiles" -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DQt6_DIR=path/of/Qt
 ```
 
 ### 构建:
