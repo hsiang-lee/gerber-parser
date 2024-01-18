@@ -33,7 +33,7 @@ TEST_F(GerberRendererTest, TestRenderFromGerber) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
+   // image->save(QString(TestData) + "results/2301113563-f-gtl.bmp");
 
   QImage expected(QString(TestData) + "results/2301113563-f-gtl.bmp");
   EXPECT_EQ(*image, expected);
@@ -55,7 +55,7 @@ TEST_F(GerberRendererTest, TestScale) {
   engine->Scale(1.2, 0.9, 0.8);
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
+   // image->save(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
 
   QImage expected(QString(TestData) + "results/2301113563-f-gtl_scale1_2.bmp");
   EXPECT_EQ(*image, expected);
@@ -77,7 +77,7 @@ TEST_F(GerberRendererTest, TestMove) {
   engine->Move(400, 600);
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
+   // image->save(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
 
   QImage expected(QString(TestData) + "results/2301113563-f-gtl_move.bmp");
   EXPECT_EQ(*image, expected);
@@ -101,8 +101,7 @@ TEST_F(GerberRendererTest, TestConvertStroke2Fill) {
 
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) +
-  // "results/2301113563-f-gtl_stroke2fill.bmp");
+   // image->save(QString(TestData) + "results/2301113563-f-gtl_stroke2fill.bmp");
 
   QImage expected(QString(TestData) +
                   "results/2301113563-f-gtl_stroke2fill.bmp");
@@ -121,7 +120,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile1) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987c.dat.bmp");
+   // image->save(QString(TestData) + "results/2301113987c.dat.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987c.dat.bmp");
   EXPECT_EQ(*image, expected);
@@ -142,7 +141,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile2) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987c.rout.bmp");
+   // image->save(QString(TestData) + "results/2301113987c.rout.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987c.rout.bmp");
   EXPECT_EQ(*image, expected);
@@ -163,7 +162,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile3) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987-c-gbl.bmp");
+   // image->save(QString(TestData) + "results/2301113987-c-gbl.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987-c-gbl.bmp");
   EXPECT_EQ(*image, expected);
@@ -184,7 +183,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile4) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987-c-gbs.bmp");
+   // image->save(QString(TestData) + "results/2301113987-c-gbs.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987-c-gbs.bmp");
   EXPECT_EQ(*image, expected);
@@ -205,7 +204,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile5) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987-c-gtl.bmp");
+   // image->save(QString(TestData) + "results/2301113987-c-gtl.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987-c-gtl.bmp");
   EXPECT_EQ(*image, expected);
@@ -226,7 +225,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile6) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301113987-c-gts.bmp");
+   // image->save(QString(TestData) + "results/2301113987-c-gts.bmp");
 
   QImage expected(QString(TestData) + "results/2301113987-c-gts.bmp");
   EXPECT_EQ(*image, expected);
@@ -247,7 +246,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile7) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633.rout.bmp");
+   // image->save(QString(TestData) + "results/2301115633.rout.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633.rout.bmp");
   EXPECT_EQ(*image, expected);
@@ -268,7 +267,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile8) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633lg.dat.bmp");
+   // image->save(QString(TestData) + "results/2301115633lg.dat.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633lg.dat.bmp");
   EXPECT_EQ(*image, expected);
@@ -290,7 +289,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile9) {
   engine->Scale(5.0);
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633lg.ld12.bmp");
+   // image->save(QString(TestData) + "results/2301115633lg.ld12.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633lg.ld12.bmp");
   EXPECT_EQ(*image, expected);
@@ -312,7 +311,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile10) {
   engine->Scale(5.0);
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633lg.ld21.bmp");
+   // image->save(QString(TestData) + "results/2301115633lg.ld21.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633lg.ld21.bmp");
   EXPECT_EQ(*image, expected);
@@ -333,7 +332,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile11) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633-lg-gbl.bmp");
+   // image->save(QString(TestData) + "results/2301115633-lg-gbl.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633-lg-gbl.bmp");
   EXPECT_EQ(*image, expected);
@@ -354,7 +353,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile12) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633-lg-gbs.bmp");
+   // image->save(QString(TestData) + "results/2301115633-lg-gbs.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633-lg-gbs.bmp");
   EXPECT_EQ(*image, expected);
@@ -375,7 +374,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile13) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633-lg-gtl.bmp");
+   // image->save(QString(TestData) + "results/2301115633-lg-gtl.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633-lg-gtl.bmp");
   EXPECT_EQ(*image, expected);
@@ -396,7 +395,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile14) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/2301115633-lg-gts.bmp");
+   // image->save(QString(TestData) + "results/2301115633-lg-gts.bmp");
 
   QImage expected(QString(TestData) + "results/2301115633-lg-gts.bmp");
   EXPECT_EQ(*image, expected);
@@ -417,7 +416,7 @@ TEST_F(GerberRendererTest, TestRenderGerberFile15) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/hj.324v1.gts.bmp");
+   // image->save(QString(TestData) + "results/hj.324v1.gts.bmp");
 
   QImage expected(QString(TestData) + "results/hj.324v1.gts.bmp");
   EXPECT_EQ(*image, expected);
@@ -438,9 +437,31 @@ TEST_F(GerberRendererTest, TestRenderGerberFile16) {
   engine->DrawBackground();
   engine->RenderGerber(gerber);
 
-  // image->save(QString(TestData) + "results/BOTTOM.art.bmp");
+   // image->save(QString(TestData) + "results/BOTTOM.art.bmp");
 
   QImage expected(QString(TestData) + "results/BOTTOM.art.bmp");
+  EXPECT_EQ(*image, expected);
+
+  EXPECT_FALSE(gerber->IsNegative());
+  EXPECT_EQ(gerber->Name(), "");
+}
+
+
+TEST_F(GerberRendererTest, TestRenderGerberFile17) {
+  auto parser = std::make_shared<GerberParser>(std::string(TestData) +
+                                               "gerber_files/P20230731.gtl");
+  auto gerber = parser->GetGerber();
+
+  auto image =
+      std::make_unique<QImage>(1600, 1600, QImage::Format::Format_RGB32);
+  auto engine =
+      std::make_unique<QPainterEngine>(image.get(), gerber->GetBBox(), 0.005);
+  engine->DrawBackground();
+  engine->RenderGerber(gerber);
+
+   // image->save(QString(TestData) + "results/P20230731.gtl.bmp");
+
+  QImage expected(QString(TestData) + "results/P20230731.gtl.bmp");
   EXPECT_EQ(*image, expected);
 
   EXPECT_FALSE(gerber->IsNegative());
