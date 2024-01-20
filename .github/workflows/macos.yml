@@ -20,7 +20,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.13.2
       with:
-        version: 5.14.2
+        version: 6.6.1
         target: desktop
         set-env: 'true'
 
