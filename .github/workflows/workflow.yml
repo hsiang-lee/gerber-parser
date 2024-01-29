@@ -19,19 +19,19 @@ jobs:
     steps:
     - name: Cache build
       id: cache_build_windows
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ./build
         key: cache_build_windows
     
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.13.2
+      uses: jurplel/install-qt-action@v3
       with:
         target: desktop
         set-env: 'true'
         version: 6.6.1
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: 'true'
     
@@ -70,19 +70,19 @@ jobs:
     steps:
     - name: Cache build
       id: cache_build_ubuntu
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ./build
         key: cache_build_ubuntu
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.13.2
+      uses: jurplel/install-qt-action@v3
       with:
         target: desktop
         set-env: 'true'
         version: 6.6.1
       
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: 'true'
     
@@ -105,19 +105,19 @@ jobs:
     steps:
     - name: Cache build
       id: cache_build_macos
-      uses: actions/cache@v1
+      uses: actions/cache@v4
       with:
         path: ./build
         key: cache_build_macos
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2.13.2
+      uses: jurplel/install-qt-action@v3
       with:
         version: 6.2.0
         target: desktop
         set-env: 'true'
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: 'true'
     
