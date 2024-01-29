@@ -17,13 +17,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Cache build
-      id: cache_build_windows
-      uses: actions/cache@v4
-      with:
-        path: ./build
-        key: cache_build_windows
-    
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -34,7 +27,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: 'true'
-    
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -68,13 +61,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Cache build
-      id: cache_build_ubuntu
-      uses: actions/cache@v4
-      with:
-        path: ./build
-        key: cache_build_ubuntu
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -85,7 +71,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: 'true'
-    
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -103,13 +89,6 @@ jobs:
     runs-on: macOS-latest
 
     steps:
-    - name: Cache build
-      id: cache_build_macos
-      uses: actions/cache@v4
-      with:
-        path: ./build
-        key: cache_build_macos
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -120,7 +99,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: 'true'
-    
+
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
