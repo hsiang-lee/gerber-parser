@@ -17,6 +17,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Cache build
+      id: cache_build_windows
+      uses: actions/cache@v1
+      with:
+        path: ./build
+        key: cache_build_windows
+    
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.13.2
       with:
@@ -36,6 +43,7 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
 
     #- name: Test
      # working-directory: ${{github.workspace}}/build
@@ -60,6 +68,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Cache build
+      id: cache_build_ubuntu
+      uses: actions/cache@v1
+      with:
+        path: ./build
+        key: cache_build_ubuntu
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.13.2
       with:
@@ -88,6 +103,13 @@ jobs:
     runs-on: macOS-latest
 
     steps:
+    - name: Cache build
+      id: cache_build_macos
+      uses: actions/cache@v1
+      with:
+        path: ./build
+        key: cache_build_macos
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.13.2
       with:
