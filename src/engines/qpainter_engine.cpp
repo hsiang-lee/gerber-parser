@@ -259,8 +259,14 @@ void QPainterEngine::NewAperture(Aperture *aperture) {
   const auto left_top = painter_->deviceTransform().map(QPoint(left, top));
   const auto right_bottom =
       painter_->deviceTransform().map(QPoint(right, bottom));
-  const auto width = (right_bottom - left_top).x();
-  const auto height = (right_bottom - left_top).y();
+  auto width = (right_bottom - left_top).x();
+  auto height = (right_bottom - left_top).y();
+  const auto minimum = std::min(width, height);
+  if(minimum < 20) {
+    const double scale = 20.0 / minimum;
+    width *= scale;
+    height *= scale;
+  }
 
   auto img = std::make_shared<QPixmap>(width, height);
   img->fill(Qt::transparent);
