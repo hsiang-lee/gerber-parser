@@ -1,3 +1,6 @@
+#include "pybind11/pybind11.h"
+#include "pybind11/stl.h"
+
 #include <QApplication>
 #include <QPixmap>
 
@@ -8,28 +11,21 @@
 #include "gerber_parser/gerber_parser.h"
 #include "engines/qpainter_engine.h"
 
-extern "C" {
 
-typedef struct ImageData_t {
-    uchar* data;
-    int size;
-}ImageData;
-
-ImageData RenderGerber2Image(char* gerber_file, int width, int height)
+std::vector<std::uint8_t> RenderGerber2Image(const std::string& gerber_file, int width, int height)
 {
     int argc = 1;
     char arg1[] = "pygerber-parser";
     char* argv[] = {arg1};
 	QApplication app(argc, argv);
 
-    std::string file_path = std::string(gerber_file);
-	if (file_path.empty()) {
+	if (gerber_file.empty()) {
           std::cout << "null gerber file path." << std::endl;
           return {};
 	}
 
 	try {
-          auto parser = std::make_shared<GerberParser>(file_path);
+          auto parser = std::make_shared<GerberParser>(gerber_file);
           auto gerber = parser->GetGerber();
           auto image = std::make_unique<QPixmap>(width, height);
           auto engine = std::make_unique<QPainterEngine>(
@@ -37,13 +33,7 @@ ImageData RenderGerber2Image(char* gerber_file, int width, int height)
           engine->RenderGerber(gerber);
 
           auto img = image->toImage();
-          ImageData result;
-          result.size = img.sizeInBytes();
-          auto* data = (uchar*)malloc(result.size);
-          memcpy(data, img.bits(), result.size);
-          result.data = data;
-
-          return result;
+          return std::vector<std::uint8_t>(img.bits(), img.bits() + img.sizeInBytes());
     }
     catch (const std::exception& e) {
           std::cout << e.what() << std::endl;
@@ -51,4 +41,6 @@ ImageData RenderGerber2Image(char* gerber_file, int width, int height)
     }
 }
 
+PYBIND11_MODULE(pygerber_parser, m) {
+    m.def("gerber2image", &RenderGerber2Image, "render gerber file to image data");
 }

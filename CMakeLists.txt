@@ -20,6 +20,7 @@ find_package(gerber_parser REQUIRED)
 
 set(BUILD_EXAMPLES ON)
 
+add_subdirectory(3rdparty/pybind11)
 add_subdirectory(src)
 
 if(BUILD_EXAMPLES)
