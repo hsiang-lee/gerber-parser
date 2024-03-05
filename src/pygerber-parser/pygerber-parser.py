@@ -1,6 +1,4 @@
-import ctypes
+import pygerber_parser
 
-lib = ctypes.cdll.LoadLibrary('./libpygerber-parser.so')
-
-def gerber2image(gerber_file:str):
-    result = lib.RenderGerber2Image(ctypes.c_char_p(bytes(gerber_file, encoding="utf-8")))
+def gerber2image(gerber_file):
+    result = gerber2image(gerber_file)
