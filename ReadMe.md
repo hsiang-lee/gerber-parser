@@ -79,7 +79,7 @@ image->save(path_you_want_to_save_image);//Save the image rendered to file.
 * email: leehsiang@hotmail.com
 * Website: https://www.cnblogs.com/leehsiang
 * Github: [@hsiang-lee](https://github.com/hsiang-lee)
-* Wechat: ![lee_hsiang](./img/wechat.jpeg)
+* Wechat: ![leehsiang1995](./img/wechat.jpeg)
 
 ## 🤝 贡献代码
 

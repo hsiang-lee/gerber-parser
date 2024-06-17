@@ -104,7 +104,7 @@ GerberParser also includes some simple tools, which are in the example directory
 
 * Website: https://www.cnblogs.com/leehsiang
 * Github: [@hsiang-lee](https://github.com/hsiang-lee)
-* Wechat: lee_hsiang
+* Wechat: leehsiang1995
 * Email: leehsiang@hotmail.com
 
 ## 🤝 Contributing
