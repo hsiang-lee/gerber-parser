@@ -1,0 +1,29 @@
+
+#ifndef sodium_version_H
+#define sodium_version_H
+
+
+
+#define SODIUM_VERSION_STRING "@VERSION@"
+
+#define SODIUM_LIBRARY_VERSION_MAJOR @SODIUM_LIBRARY_VERSION_MAJOR@
+#define SODIUM_LIBRARY_VERSION_MINOR @SODIUM_LIBRARY_VERSION_MINOR@
+@SODIUM_LIBRARY_MINIMAL_DEF@
+
+
+
+
+const char *sodium_version_string(void);
+
+
+int         sodium_library_version_major(void);
+
+
+int         sodium_library_version_minor(void);
+
+
+int         sodium_library_minimal(void);
+
+
+
+#endif
