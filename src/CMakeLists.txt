@@ -1,7 +1,7 @@
 find_package(Qt6 COMPONENTS Core Widgets Gui REQUIRED)
 set(CMAKE_AUTOMOC ON)
 
-file(GLOB Engines ${CMAKE_CURRENT_SOURCE_DIR}/engines/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/engines/*.h)
+file(GLOB Engines ${CMAKE_CURRENT_SOURCE_DIR}/engines/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/parser/*.cpp)
 add_library(gerber_engine STATIC ${Engines})
 target_include_directories(
 	gerber_engine PUBLIC

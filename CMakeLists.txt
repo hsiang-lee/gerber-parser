@@ -6,18 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_TESTS OFF)
 option(BUILD_EXAMPLES OFF)
 
-if (WIN32)
-	message(STATUS "Now is windows")
-	set(gerber_parser_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/windows/cmake)
-elseif (APPLE)
-	message(STATUS "Now is Apple systens.")
-	set(gerber_parser_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/macos/cmake)
-elseif (UNIX)
-	message(STATUS "Now is UNIX-like OS's.")
-	set(gerber_parser_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/ubuntu/cmake)
-endif ()
-find_package(gerber_parser REQUIRED)
-
 set(BUILD_EXAMPLES ON)
 
 add_subdirectory(3rdparty/pybind11)
@@ -32,7 +20,7 @@ if(BUILD_EXAMPLES)
 endif()
 
 if(BUILD_TESTS)
-	add_subdirectory(3rdparty/googletest)
+	add_subdirectory(3rdpary/googletest)
 
 	enable_testing()
 	add_subdirectory(tests)
