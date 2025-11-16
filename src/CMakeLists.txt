@@ -11,4 +11,4 @@ target_link_libraries(gerber_engine PUBLIC gerber_parser Qt6::Core Qt6::Widgets 
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Engine})
 
-#add_subdirectory(pygerber-parser)
+add_subdirectory(pygerber-parser)
