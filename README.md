@@ -88,7 +88,7 @@ src/
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-repo/gerber-parser.git
+git clone https://github.com/hsiang-lee/gerber-parser.git
 cd gerber-parser
 
 # 初始化子模块
@@ -238,8 +238,8 @@ make test
 
 ## 📞 联系方式
 
-- 项目主页：https://github.com/your-repo/gerber-parser
-- Issues：https://github.com/your-repo/gerber-parser/issues
+- 项目主页：https://github.com/hsiang-lee/gerber-parser.git
+- Issues：https://github.com/hsiang-lee/gerber-parser/issues
 - 邮箱：leehsiang@hotmail.com
 
 ---
