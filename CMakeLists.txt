@@ -20,7 +20,7 @@ if(BUILD_EXAMPLES)
 endif()
 
 if(BUILD_TESTS)
-	add_subdirectory(3rdpary/googletest)
+	add_subdirectory(3rdparty/googletest)
 
 	enable_testing()
 	add_subdirectory(tests)
