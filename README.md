@@ -27,9 +27,16 @@
 
 If this project has been helpful to you, please consider supporting our development work. Your support will help us continuously improve the project:
 
-![Donation QR Code](img/donate.jpg)
+<div>
+  <style>.pp-3ZRR9DFDYY3R8{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
+  <form action="https://www.paypal.com/ncp/payment/3ZRR9DFDYY3R8" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+    <input class="pp-3ZRR9DFDYY3R8" type="submit" value="Donate" />
+    <img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
+    <section style="font-size: 0.75rem;"> 技术支持提供方： <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+  </form>
+</div>
 
-**Scan the QR code above to donate** or support in other ways:
+**Click the "Donate" button above** or support in other ways:
 - ⭐ **Star this project** - Let more people see it
 - 🐛 **Submit Issues** - Report problems or suggest features
 - 📖 **Improve documentation** - Help enhance user guides
