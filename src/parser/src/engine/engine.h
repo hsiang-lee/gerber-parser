@@ -4,7 +4,7 @@
 
 class Aperture;
 
-class GerberApi Engine
+class Engine
 {
 public:
     Engine() = default;

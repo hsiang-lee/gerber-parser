@@ -9,7 +9,7 @@ class Engine;
 class Outline;
 class Primitive;
 
-class GerberApi Aperture {
+class Aperture {
  private:
   uint16_t count_;
 

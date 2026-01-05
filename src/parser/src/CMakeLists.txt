@@ -1,5 +1,4 @@
 file(GLOB Log ${CMAKE_CURRENT_SOURCE_DIR}/log/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/log/*.h)
-file(GLOB Permission ${CMAKE_CURRENT_SOURCE_DIR}/permission/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/permission/*.h)
 file(GLOB_RECURSE Gerber ${CMAKE_CURRENT_SOURCE_DIR}/gerber_parser/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/gerber_parser/*.h)
 
 if (WIN32)
@@ -10,7 +9,7 @@ elseif (UNIX)
 	set(Prefix ubuntu)
 endif ()
 
-add_library(gerber_parser SHARED ${Gerber} ${Permission} ${Log})
+add_library(gerber_parser SHARED ${Gerber} ${Log})
 target_include_directories(
 	gerber_parser PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/gerber_parser>
@@ -18,22 +17,14 @@ target_include_directories(
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
 	$<INSTALL_INTERFACE:${Prefix}/include>
 )
-target_link_libraries(gerber_parser PRIVATE license)
+# Remove license dependency
 if (WIN32)
-	target_compile_definitions(gerber_parser PUBLIC
-		$<BUILD_INTERFACE:GerberApi=__declspec\(dllexport\)>
-		$<INSTALL_INTERFACE:GerberApi=__declspec\(dllimport\)>
-	)
 else ()
-	target_compile_definitions(gerber_parser PUBLIC
-		$<BUILD_INTERFACE:GerberApi=__attribute__\(\(__visibility__\(\"default\"\)\)\)>
-		$<INSTALL_INTERFACE:GerberApi=>
-	)
 	target_compile_options(gerber_parser PRIVATE -fPIC)
 	set_target_properties(gerber_parser PROPERTIES LINK_FLAGS -fvisibility=hidden)
 endif()
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Gerber} ${Log} ${Permission})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Gerber} ${Log})
 
 install(TARGETS gerber_parser
 	EXPORT gerber_parser

@@ -6,7 +6,7 @@
 class Gerber;
 class GerberParserImpl;
 
-class GerberApi GerberParser
+class GerberParser
 {
 private:
     GerberParserImpl *impl_;

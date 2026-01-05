@@ -10,7 +10,7 @@ class Plotter;
 class Engine;
 class Primitive;
 
-class GerberApi GerberLayer
+class GerberLayer
 {
 private:
     std::vector<Primitive *> primitives_{};

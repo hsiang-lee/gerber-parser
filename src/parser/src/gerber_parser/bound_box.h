@@ -1,7 +1,7 @@
 #pragma once
 #include <utility>
 
-class GerberApi BoundBox
+class BoundBox
 {
     double left_;
     double bottom_;

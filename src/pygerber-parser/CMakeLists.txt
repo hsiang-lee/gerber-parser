@@ -8,7 +8,7 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 set(MODULE_NAME pygerber_parser)
 
 # 获取pybind11
-add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/pybind11)
+add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/pybind11 ${CMAKE_BINARY_DIR}/pybind11)
 
 file(GLOB Source ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 

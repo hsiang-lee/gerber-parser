@@ -20,7 +20,7 @@ public:
     static double Get_mm(double number, Type unit);
 };
 
-class GerberApi Gerber
+class Gerber
 {
 public:
     Gerber()

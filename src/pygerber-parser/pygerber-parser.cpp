@@ -134,7 +134,7 @@ public:
     }
     
     std::vector<std::uint8_t> render_to_image(int width = 800, int height = 600) {
-        return RenderGerber2Image(parser_->GetFileName(), width, height);
+        return RenderGerber2Image(parser_->FileName(), width, height);
     }
     
 private:
@@ -180,8 +180,8 @@ PYBIND11_MODULE(pygerber_parser, m) {
         .def("get_height", &PyGerberParser::get_height)
         .def("render_to_image", &PyGerberParser::render_to_image,
              py::arg("width") = 800, py::arg("height") = 600)
-        .def("__repr__", [](const PyGerberParser& parser) {
-            return "GerberParser(filename='" + 
-                   (parser.is_valid() ? "valid" : "invalid") + "')";
+        .def("__repr__", [](const PyGerberParser& parser) -> std::string {
+            std::string status = parser.is_valid() ? "valid" : "invalid";
+            return "GerberParser(filename='" + status + "')";
         });
 }

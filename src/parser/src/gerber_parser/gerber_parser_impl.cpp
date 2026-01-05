@@ -18,7 +18,6 @@
 #include "parser/star_parser.h"
 #include "parser/xcode_parser.h"
 #include "parser/ycode_parser.h"
-#include "permission/permission.h"
 
 GerberParserImpl::GerberParserImpl(const std::string &file_name)
     : file_name_(file_name), parsers_(10) {
@@ -63,19 +62,6 @@ void GerberParserImpl::Init() {
 std::string GerberParserImpl::FileName() const { return file_name_; }
 
 std::shared_ptr<Gerber> GerberParserImpl::GetGerber() const {
-  Permission per;
-  if (per.accept()) {
-    return gerber_;
-  }
-
-  std::random_device rd;
-  std::uniform_int_distribution<> dis(0, 50);
-  const auto rand_no = dis(rd);
-  if (rand_no % 3 == 1) {
-    throw std::runtime_error("No valid license detected. Please buy license.");
-  }
-
-  std::this_thread::sleep_for(std::chrono::seconds(rand_no % 5 + 5));
   return gerber_;
 }
 
