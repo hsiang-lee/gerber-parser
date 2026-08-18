@@ -60,6 +60,7 @@ QRect QPainterEngine::PainterWindow() { return trans_.GetPainterWindow(); }
 
 std::shared_ptr<QPainter> QPainterEngine::CreatePainter(QPaintDevice *pic) {
   auto painter = std::make_shared<QPainter>(pic);
+  painter->setRenderHint(QPainter::Antialiasing, true);
   painter->setWindow(trans_.GetPainterWindow());
   painter->setViewport(trans_.GetPainterViewport());
   painter->translate(trans_.GetPainterWindow().center());
@@ -152,6 +153,8 @@ void QPainterEngine::PreparePenAndBrushForStroke(double line_width) {
     pen.setColor(foreground_);
   }
   pen.setWidthF(line_width);
+  pen.setCapStyle(Qt::RoundCap);
+  pen.setJoinStyle(Qt::RoundJoin);
   current_painter_->setPen(pen);
 }
 
@@ -272,6 +275,7 @@ void QPainterEngine::NewAperture(Aperture *aperture) {
   img->fill(Qt::transparent);
   aperture_imgs_[aperture->Code()] = img;
   current_painter_ = std::make_shared<QPainter>(img.get());
+  current_painter_->setRenderHint(QPainter::Antialiasing, true);
   current_painter_->setWindow(left, bottom, right - left, top - bottom);
   current_painter_->setPen(QPen(Qt::transparent, 1.0));
   if (negative_) {
