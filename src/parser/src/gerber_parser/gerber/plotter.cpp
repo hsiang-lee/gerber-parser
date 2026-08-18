@@ -289,46 +289,35 @@ void Plotter::DrawArc() {
   tmp->end_.first = pre_x_ = UnitType::Get_mm(x_, layer_.unit_);
   tmp->end_.second = pre_y_ = UnitType::Get_mm(y_, layer_.unit_);
 
-  auto right = x3 + x1;
-  auto top = y3 + y1;
-  auto left = right;
-  auto bottom = top;
-
-  const auto rad = std::sqrt(x1 * x1 + y1 * y1);  // Radius
+  const auto rad = std::sqrt(x1 * x1 + y1 * y1);
   const auto start_angle = std::atan2(y1, x1);
-  const auto end_angle = start_angle + angle * kPi / 180;
-  if (0 > start_angle && 0 < end_angle) {
-    right = x3 + rad;
-  } else {
-    right = x3 + rad * std::max(std::cos(start_angle), std::cos(end_angle));
-  }
+  const auto end_angle   = start_angle + angle * kPi / 180.0;
+  const double a_lo = std::min(start_angle, end_angle);
+  const double a_hi = std::max(start_angle, end_angle);
 
-  if (kPi > start_angle && kPi < end_angle) {
-    left = x3 - rad;
-  } else {
-    left = x3 + rad * std::min(std::cos(start_angle), std::cos(end_angle));
-  }
-
-  if (kPi / 2 > start_angle && kPi / 2 < end_angle) {
-    top = y3 - rad;
-  } else {
-    top = y3 - rad * std::max(std::sin(start_angle), std::sin(end_angle));
-  }
-
-  if (3 * kPi / 2 > start_angle && 3 * kPi / 2 < end_angle) {
-    bottom = x3 + rad;
-  } else {
-    bottom = x3 - rad * std::min(std::sin(start_angle), std::sin(end_angle));
+  double left = INFINITY, right = -INFINITY, top = -INFINITY, bottom = INFINITY;
+  auto acc = [&](double ang) {
+      const double px = x3 + rad * std::cos(ang);
+      const double py = y3 + rad * std::sin(ang);
+      left = std::min(left, px);  
+      right = std::max(right, px);
+      bottom = std::min(bottom, py);  
+      top = std::max(top, py);
+  };
+  acc(start_angle); 
+  acc(end_angle);
+  for (int k = (int)std::floor(a_lo / (kPi / 2)); k <= (int)std::ceil(a_hi / (kPi / 2)); ++k) {
+      const double ang = k * (kPi / 2);
+      if (ang >= a_lo && ang <= a_hi) acc(ang);
   }
 
   if (current_aperture_ && !outline_) {
-    const auto bound_box = current_aperture_->BBox();
-    left += bound_box.Left();
-    bottom += bound_box.Bottom();
-    right += bound_box.Right();
-    top += bound_box.Top();
+      const auto bb = current_aperture_->BBox();
+      left += bb.Left(); 
+      right += bb.Right(); 
+      top += bb.Top(); 
+      bottom += bb.Bottom();
   }
-
   layer_.bound_box_.Update(left, right, top, bottom);
 }
 
