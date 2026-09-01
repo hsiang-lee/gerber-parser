@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![Qt](https://img.shields.io/badge/Qt-6.0+-green.svg)](https://www.qt.io/)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/your-repo/gerber-parser)
+[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](https://github.com/hsiang-lee/gerber-parser)
 
 **高性能的C++ Gerber文件解析和渲染库，采用解析与渲染分离的架构设计**
 
@@ -20,20 +20,27 @@
 - **解析与渲染分离**：核心解析器与渲染引擎完全解耦，便于扩展和定制
 - **多渲染引擎支持**：提供QPainter和QGraphicsScene两种渲染后端
 - **高性能**：优化的解析算法和内存管理
-- **跨平台**：基于Qt框架，支持Windows、Linux、macOS
+- **跨平台**：基于Qt框架，原生支持Linux。需要Windows/macOS？[联系我们](mailto:leehsiang@hotmail.com)获取有偿跨平台支持。
 - **Python绑定**：通过pybind11提供完整的Python接口
 
 ## 💝 支持项目
 
-如果这个项目对您有帮助，请考虑支持我们的开发工作。您的支持将帮助我们持续改进项目：
+<div align="center">
+
+| | |
+|---|---|
+| 🚀 | **这个项目为您节省了数周的Gerber解析开发时间。** |
+| 💰 | 您的捐赠将直接用于功能开发和项目维护。 |
+
+<br>
 
 ![捐赠二维码](img/donate.jpg)
 
-**扫描上方二维码进行捐赠** 或通过其他方式支持：
-- ⭐ **Star这个项目** - 让更多人看到
-- 🐛 **提交Issue** - 报告问题或建议功能
-- 📖 **完善文档** - 帮助改进使用指南
-- 🔄 **分享给其他开发者** - 传播开源精神
+<br>
+
+**⭐ 给项目Star** · **🐛 提交Issue** · **📖 完善文档** · **🔄 分享给他人**
+
+</div>
 
 ## 📸 渲染示例
 

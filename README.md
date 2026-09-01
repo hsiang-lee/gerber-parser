@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![Qt](https://img.shields.io/badge/Qt-6.0+-green.svg)](https://www.qt.io/)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/your-repo/gerber-parser)
+[![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](https://github.com/hsiang-lee/gerber-parser)
 
 **High-performance C++ Gerber file parsing and rendering library with separation architecture design between parsing and rendering**
 
@@ -20,20 +20,27 @@
 - **Separation of parsing and rendering**: Core parser is completely decoupled from rendering engine for easy extension and customization
 - **Multiple rendering engine support**: Provides QPainter and QGraphicsScene rendering backends
 - **High performance**: Optimized parsing algorithms and memory management
-- **Cross-platform**: Based on Qt framework, supports Windows, Linux, macOS
+- **Cross-platform**: Qt-based, supports Linux natively. Need Windows/macOS? [Contact us](mailto:leehsiang@hotmail.com) for paid cross-platform support.
 - **Python bindings**: Complete Python interface through pybind11
 
 ## 💝 Support the Project
 
-If this project has been helpful to you, please consider supporting our development work. Your support will help us continuously improve the project:
+<div align="center">
+
+| | |
+|---|---|
+| 🚀 | **This project saves you weeks of Gerber parsing development.** |
+| 💰 | Your donation directly funds feature development and maintenance. |
+
+<br>
 
 [![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/ncp/payment/3ZRR9DFDYY3R8)
 
-**Click the "Donate" button above** or support in other ways:
-- ⭐ **Star this project** - Let more people see it
-- 🐛 **Submit Issues** - Report problems or suggest features
-- 📖 **Improve documentation** - Help enhance user guides
-- 🔄 **Share with other developers** - Spread the open source spirit
+<br>
+
+**⭐ Star this project** · **🐛 Submit Issues** · **📖 Improve docs** · **🔄 Share with others**
+
+</div>
 
 ## 📸 Rendering Examples
 
