@@ -1,0 +1,9 @@
+G04 Blend2D unit fixture: step-and-repeat 2x2 at 1mm*
+%FSLAX24Y24*%
+%MOMM*%
+%SRX2Y2I1.0J1.0*%
+%ADD10C,0.4*%
+D10*
+X10000Y10000D03*
+%SR*%
+M02*

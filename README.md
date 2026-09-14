@@ -6,7 +6,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
-[![Qt](https://img.shields.io/badge/Qt-6.0+-green.svg)](https://www.qt.io/)
 [![Platform](https://img.shields.io/badge/Platform-Linux-lightgrey.svg)](https://github.com/hsiang-lee/gerber-parser)
 
 **High-performance C++ Gerber file parsing and rendering library with separation architecture design between parsing and rendering**
@@ -18,10 +17,9 @@
 ## 🎯 Project Features
 
 - **Separation of parsing and rendering**: Core parser is completely decoupled from rendering engine for easy extension and customization
-- **Multiple rendering engine support**: Provides QPainter and QGraphicsScene rendering backends
+- **Blend2D rendering engine**: Provides a high-performance 2D rendering backend with headless image export
 - **High performance**: Optimized parsing algorithms and memory management
-- **Cross-platform**: Qt-based, supports Linux natively. Need Windows/macOS? [Contact us](mailto:leehsiang@hotmail.com) for paid cross-platform support.
-- **Python bindings**: Complete Python interface through pybind11
+- **Cross-platform**: Blend2D-based, supports Linux natively. Need Windows/macOS? [Contact us](mailto:leehsiang@hotmail.com) for paid cross-platform support.
 
 ## 💝 Support the Project
 
@@ -63,11 +61,8 @@ src/
 │   ├── gerber_parser/ # Parser core implementation
 │   ├── engine/       # Parser engine interface
 │   └── parser/       # Various Gerber code parsers
-├── engines/          # Rendering engines
-│   ├── qpainter_engine.cpp/h    # QPainter rendering engine
-│   ├── qgraphics_scene_engine.cpp/h # QGraphicsScene rendering engine
-│   └── transformation.cpp/h     # Coordinate transformation tools
-└── pygerber-parser/  # Python bindings
+└── engines/          # Rendering engines
+    └── blend2d_engine.cpp/h     # Blend2D rendering engine
 ```
 
 ### Parser Features
@@ -80,8 +75,7 @@ src/
 
 ### Rendering Engine Features
 
-- **QPainter engine**: Lightweight, suitable for image export and simple display
-- **QGraphicsScene engine**: Feature-rich, supports interactive viewing and editing
+- **Blend2D engine**: Headless rendering, PNG export via built-in codec
 - Extensible rendering interface, easy to add new rendering backends
 
 ## 🚀 Quick Start
@@ -90,8 +84,7 @@ src/
 
 - CMake 3.20+
 - C++17 compatible compiler (GCC 7+, Clang 5+, MSVC 2019+)
-- Qt 6.0+
-- Python 3.6+ (optional, for Python bindings)
+- Blend2D (via vcpkg, see vcpkg.json)
 
 ### Build the Project
 
@@ -115,7 +108,7 @@ make -j$(nproc)
 
 ### Run Examples
 
-The project provides several example programs:
+The project provides one example program:
 
 #### 1. Gerber to Image Tool
 
@@ -124,27 +117,14 @@ The project provides several example programs:
 ./example/gerber2image/gerber2image --gerber_file="path/to/gerber/file" --um_pixel=5
 ```
 
-#### 2. Gerber Viewer
-
-```bash
-# Launch interactive Gerber file viewer
-./example/gerber_viewer/gerber_viewer
-```
-
-#### 3. QGraphicsScene Viewer
-
-```bash
-# Viewer using QGraphicsScene
-./example/gerber_viewer_qgraphics/gerber_viewer_qgraphics
-```
-
 ## 📖 API Usage Examples
 
 ### C++ API
 
 ```cpp
+#include <blend2d.h>
 #include "gerber_parser/gerber_parser.h"
-#include "engines/qpainter_engine.h"
+#include "engines/blend2d_engine.h"
 
 // Parse Gerber file
 auto parser = std::make_shared<GerberParser>("path/to/gerber/file");
@@ -154,37 +134,14 @@ auto gerber = parser->GetGerber();
 const auto& bbox = gerber->GetBBox();
 std::cout << "Width: " << bbox.Width() << " Height: " << bbox.Height() << std::endl;
 
-// Render using QPainter
-QPixmap image(800, 600);
-auto engine = std::make_unique<QPainterEngine>(&image, bbox, 0.05);
-engine->RenderGerber(gerber);
-image.save("output.png");
+// Render using Blend2D and export to PNG
+BLImage image(800, 600, BL_FORMAT_PRGB32);
+Blend2DEngine engine(image, bbox, 0.05);
+engine.DrawBackground();
+const int ret = engine.RenderGerber(gerber);
+if (ret != 0) return ret;
+image.writeToFile("output.png");
 ```
-
-### Python API
-
-```python
-import pygerber_parser
-import numpy as np
-from PIL import Image
-
-# Method 1: Using functional API
-image_data = pygerber_parser.gerber2image("path/to/gerber/file", 800, 600)
-
-# Convert to PIL image
-arr = np.array(image_data, dtype=np.uint8).reshape((600, 800, 4))
-img = Image.fromarray(arr, 'RGBA')
-img.save("output.png")
-
-# Method 2: Using object-oriented API
-parser = pygerber_parser.GerberParser("path/to/gerber/file")
-if parser.is_valid():
-    print(f"Size: {parser.get_width()} x {parser.get_height()}")
-    image_data = parser.render_to_image(800, 600)
-    # Process image data...
-```
-
-For detailed Python usage guide, please refer to [PYTHON_USAGE.md](PYTHON_USAGE.md)
 
 ## 🔧 Development Guide
 
@@ -240,8 +197,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Thanks to the following open source projects for their support:
 
-- [Qt](https://www.qt.io/) - Cross-platform application framework
-- [pybind11](https://github.com/pybind/pybind11) - Python binding generator
+- [Blend2D](https://blend2d.com/) - High-performance 2D rendering library (Zlib license)
 - [Google Test](https://github.com/google/googletest) - C++ testing framework
 - [gflags](https://github.com/gflags/gflags) - Command line argument parsing
 
