@@ -1,9 +1,0 @@
-[submodule "3rdparty/gflags"]
-	path = 3rdparty/gflags
-	url = https://github.com/gflags/gflags
-[submodule "3rdparty/googletest"]
-	path = 3rdparty/googletest
-	url = https://github.com/google/googletest
-[submodule "3rdparty/pybind11"]
-	path = 3rdparty/pybind11
-	url = git@github.com:pybind/pybind11.git

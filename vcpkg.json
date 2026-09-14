@@ -1,0 +1,9 @@
+{
+  "name": "gerber-parser",
+  "version": "1.0",
+  "dependencies": [
+    "blend2d",
+    "gtest",
+    "gflags"
+  ]
+}

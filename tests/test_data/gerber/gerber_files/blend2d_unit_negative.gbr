@@ -1,0 +1,8 @@
+G04 Blend2D unit fixture: clear (negative) layer single flash*
+%FSLAX24Y24*%
+%MOMM*%
+%LPC*%
+%ADD10C,0.4*%
+D10*
+X10000Y10000D03*
+M02*

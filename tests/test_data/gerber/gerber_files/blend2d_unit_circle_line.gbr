@@ -1,0 +1,9 @@
+G04 Blend2D unit fixture: circle aperture flash + stroke line*
+%FSLAX24Y24*%
+%MOMM*%
+%ADD10C,0.4*%
+D10*
+X10000Y10000D03*
+G01*
+X20000Y20000D01*
+M02*

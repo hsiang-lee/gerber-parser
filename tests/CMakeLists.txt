@@ -1,9 +1,8 @@
 # Note: CMake support is community-based. The maintainers do not use CMake
 # internally.
 
-find_package(Qt6 COMPONENTS Core Widgets Gui REQUIRED)
-
-set(CMAKE_AUTOMOC ON)
+find_package(GTest CONFIG REQUIRED)
+find_package(blend2d CONFIG REQUIRED)
 
 file(GLOB_RECURSE
 	TestSrc
@@ -14,8 +13,9 @@ add_executable(TestGerberRenderer ${TestSrc})
 target_link_libraries(
 	TestGerberRenderer PRIVATE
 	gerber_engine
-	gtest
-	gtest_main
+	GTest::gtest
+	GTest::gtest_main
+	blend2d::blend2d
 )
 target_compile_definitions(TestGerberRenderer PRIVATE TestData="${CMAKE_CURRENT_SOURCE_DIR}/test_data/gerber/")
 
