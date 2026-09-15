@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_TESTS OFF)
 option(BUILD_EXAMPLES OFF)
 
-set(BUILD_EXAMPLES ON)
-
 add_subdirectory(src)
 
 if(BUILD_EXAMPLES)
