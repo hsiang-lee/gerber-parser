@@ -57,12 +57,14 @@
 
 ```
 src/
-├── parser/           # Gerber文件解析器
-│   ├── gerber_parser/ # 解析器核心实现
-│   ├── engine/       # 解析引擎接口
-│   └── parser/       # 各种Gerber代码解析器
-└── engines/          # 渲染引擎
-    └── blend2d_engine.cpp/h     # Blend2D渲染引擎
+├── parser/                     # Gerber文件解析器
+│   └── src/
+│       ├── gerber_parser/      # 解析器核心实现
+│       ├── engine/             # 解析引擎接口
+│       └── parser/             # 各种Gerber代码解析器
+└── engines/                    # 渲染引擎
+    ├── engine_common.h         # 引擎共享常量
+    └── blend2d_engine.cpp/h    # Blend2D渲染引擎
 ```
 
 ### 解析器特性
@@ -84,26 +86,19 @@ src/
 
 - CMake 3.20+
 - C++17兼容编译器（GCC 7+, Clang 5+, MSVC 2019+）
-- Blend2D（通过vcpkg安装，详见vcpkg.json）
+- vcpkg（设置 `VCPKG_ROOT` 环境变量）
+- Blend2D（通过vcpkg manifest安装，详见vcpkg.json）
+
+所有依赖由vcpkg manifest自动安装，无需手动初始化子模块。
 
 ### 构建项目
 
 ```bash
-# 克隆项目
+# 前置条件：安装vcpkg并设置VCPKG_ROOT环境变量
 git clone https://github.com/hsiang-lee/gerber-parser.git
 cd gerber-parser
-
-# 初始化子模块
-git submodule update --init --recursive
-
-# 创建构建目录
-mkdir build && cd build
-
-# 配置项目
-cmake .. -DCMAKE_BUILD_TYPE=Release
-
-# 编译
-make -j$(nproc)
+cmake --preset default        # vcpkg manifest自动安装blend2d/gtest/gflags
+cmake --build --preset default
 ```
 
 ### 运行示例
@@ -114,8 +109,10 @@ make -j$(nproc)
 
 ```bash
 # 将Gerber文件转换为PNG图像
-./example/gerber2image/gerber2image --gerber_file="path/to/gerber/file" --um_pixel=5
+./build/example/gerber2image/gerber2image --gerber_file="path/to/gerber/file" --um_pixel=5
 ```
+
+输出的PNG会写入输入文件同目录，命名为 `<输入文件>.png`。
 
 ## 📖 API使用示例
 
@@ -147,10 +144,10 @@ image.writeToFile("output.png");
 
 ### 添加新的渲染引擎
 
-1. 继承`RenderEngine`基类
+1. 继承`Engine`基类
 2. 实现`RenderGerber`方法
-3. 在`engines/`目录中添加新的引擎文件
-4. 更新CMakeLists.txt文件
+3. 在`src/engines/`目录中添加新的引擎文件
+4. 无需修改CMakeLists.txt（CMake GLOB会自动收集`engines/*.cpp`，`gerber_engine`目标已链接`blend2d::blend2d`）
 
 ### 扩展解析器功能
 
@@ -163,14 +160,14 @@ image.writeToFile("output.png");
 项目包含完整的测试套件：
 
 ```bash
-# 启用测试构建
-cmake .. -DBUILD_TESTS=ON
+# 配置并构建（default preset已启用测试）
+cmake --preset default && cmake --build --preset default
 
 # 运行测试
-make test
+ctest --preset default   # 或：ctest --test-dir build
 ```
 
-测试数据位于`tests/test_data/gerber/`目录中。
+测试输入位于`tests/test_data/gerber/gerber_files/`目录，金标参考为`tests/test_data/gerber/results/`下的19张Blend2D渲染PNG。比对采用容差图像比对（非逐像素相等）。
 
 ## 🤝 贡献指南
 

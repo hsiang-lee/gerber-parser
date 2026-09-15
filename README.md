@@ -57,12 +57,14 @@
 
 ```
 src/
-├── parser/           # Gerber file parser
-│   ├── gerber_parser/ # Parser core implementation
-│   ├── engine/       # Parser engine interface
-│   └── parser/       # Various Gerber code parsers
-└── engines/          # Rendering engines
-    └── blend2d_engine.cpp/h     # Blend2D rendering engine
+├── parser/                     # Gerber file parser
+│   └── src/
+│       ├── gerber_parser/      # Parser core implementation
+│       ├── engine/             # Parser engine interface
+│       └── parser/             # Various Gerber code parsers
+└── engines/                    # Rendering engines
+    ├── engine_common.h         # Shared engine constants
+    └── blend2d_engine.cpp/h    # Blend2D rendering engine
 ```
 
 ### Parser Features
@@ -84,26 +86,19 @@ src/
 
 - CMake 3.20+
 - C++17 compatible compiler (GCC 7+, Clang 5+, MSVC 2019+)
-- Blend2D (via vcpkg, see vcpkg.json)
+- vcpkg (set the `VCPKG_ROOT` environment variable)
+- Blend2D (via vcpkg manifest, see vcpkg.json)
+
+All dependencies are installed automatically by the vcpkg manifest — no manual submodule initialization required.
 
 ### Build the Project
 
 ```bash
-# Clone the project
+# Prerequisite: install vcpkg and set the VCPKG_ROOT environment variable
 git clone https://github.com/hsiang-lee/gerber-parser.git
 cd gerber-parser
-
-# Initialize submodules
-git submodule update --init --recursive
-
-# Create build directory
-mkdir build && cd build
-
-# Configure the project
-cmake .. -DCMAKE_BUILD_TYPE=Release
-
-# Compile
-make -j$(nproc)
+cmake --preset default        # vcpkg manifest auto-installs blend2d/gtest/gflags
+cmake --build --preset default
 ```
 
 ### Run Examples
@@ -114,8 +109,10 @@ The project provides one example program:
 
 ```bash
 # Convert Gerber file to PNG image
-./example/gerber2image/gerber2image --gerber_file="path/to/gerber/file" --um_pixel=5
+./build/example/gerber2image/gerber2image --gerber_file="path/to/gerber/file" --um_pixel=5
 ```
+
+The output PNG is written next to the input file as `<input file>.png`.
 
 ## 📖 API Usage Examples
 
@@ -147,10 +144,10 @@ image.writeToFile("output.png");
 
 ### Add a New Rendering Engine
 
-1. Inherit from the `RenderEngine` base class
+1. Inherit from the `Engine` base class
 2. Implement the `RenderGerber` method
-3. Add new engine files in the `engines/` directory
-4. Update the CMakeLists.txt file
+3. Add new engine files in the `src/engines/` directory
+4. No CMakeLists.txt changes needed (CMake GLOB automatically collects `engines/*.cpp`, and the `gerber_engine` target already links `blend2d::blend2d`)
 
 ### Extend Parser Functionality
 
@@ -163,14 +160,14 @@ image.writeToFile("output.png");
 The project includes a complete test suite:
 
 ```bash
-# Enable test building
-cmake .. -DBUILD_TESTS=ON
+# Configure and build (tests enabled by default preset)
+cmake --preset default && cmake --build --preset default
 
 # Run tests
-make test
+ctest --preset default   # or: ctest --test-dir build
 ```
 
-Test data is located in the `tests/test_data/gerber/` directory.
+Test inputs live in `tests/test_data/gerber/gerber_files/`, and the golden references are 19 Blend2D-rendered PNGs under `tests/test_data/gerber/results/`. Comparisons use a tolerance-based image diff (not strict per-pixel equality).
 
 ## 🤝 Contribution Guide
 
