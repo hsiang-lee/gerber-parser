@@ -25,7 +25,8 @@ GerberParserImpl::GerberParserImpl(const std::string &file_name)
   LoadGerber(file_name);
 }
 
-GerberParserImpl::GerberParserImpl(const std::vector<char> &gerber_data) {
+GerberParserImpl::GerberParserImpl(const std::vector<char> &gerber_data)
+    : parsers_(10) {
   Init();
   LoadGerber(gerber_data);
 }
